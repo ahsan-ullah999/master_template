@@ -14,16 +14,22 @@
             <!--begin::Row-->
             <div class="row">
               <div class="col-sm-6"><h3 class="mb-0">Home</h3></div>
-              <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-end d-flex gap-2">
-                  <a href="{{ route('register') }}" class="btn btn-primary">
-                      <i class="bi bi-person-plus"></i> Register
-                  </a>            
-                  <a href="{{ route('login') }}" class="btn btn-success">
-                      <i class="bi bi-box-arrow-in-right"></i> Login
-                  </a>
-                </ol>
+              @auth
+                <x-navbar/>
+              @endauth
+              @guest
+                <div class="col-sm-6">
+                  <ol class="breadcrumb float-sm-end d-flex gap-2">
+                      <a href="{{ route('register') }}" class="btn btn-primary">
+                          <i class="bi bi-person-plus"></i> Register
+                      </a>            
+                      <a href="{{ route('login') }}" class="btn btn-success">
+                          <i class="bi bi-box-arrow-in-right"></i> Login
+                      </a>
+                  </ol>
               </div>
+              @endguest
+
             </div>
             <!--end::Row-->
           </div>

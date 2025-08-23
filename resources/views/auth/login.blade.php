@@ -92,7 +92,7 @@
                 </div>
             <!--begin::Row-->
             <div class="row">
-                                                        @error('remember')
+                      @error('remember')
                           <span class="text-danger">{{ $message }}</span>
                       @enderror
               <div class="col-8">
