@@ -41,15 +41,14 @@ class AuthController extends Controller
             'email' => ['required', 'max:255', 'email'],
             'password' => ['required']
         ]);
-        $remember = $request->filled('remember');
    
         // Try to login the user
-        if(Auth::attempt($fields,$remember)){
+        if(Auth::attempt($fields, $request->remember)){
                return redirect()->route('dashboard')->with('success', 'Welcome back!');
         }else{
             return back()->withErrors([
-                'email'=> 'The provided credentials do not match our records.'
-            ]);
+                'remember'=> 'The provided credentials do not match our records.'
+            ])->onlyInput('email');
         };
 
     }
