@@ -76,17 +76,17 @@
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
       <!--begin::Header-->
-       <x-navbar/>
+       
       <!--end::Header-->
       <!--begin::Sidebar-->
-       <x-sidebar/>
+       
       <!--end::Sidebar-->
       <!--begin::App Main-->
        @yield('content')
 
         <!--end::App Main-->
       <!--begin::Footer-->
-       <x-footer/>
+       
       <!--end::Footer-->
     </div>
     <!--end::App Wrapper-->
