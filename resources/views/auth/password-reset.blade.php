@@ -4,7 +4,7 @@
   <!--begin::Head-->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>AdminLTE 4 | Login Page</title>
+    <title>AdminLTE 4 | Reset password</title>
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light dark" />
@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
     <!--end::Accessibility Meta Tags-->
     <!--begin::Primary Meta Tags-->
-    <meta name="title" content="AdminLTE 4 | Login Page" />
+    <meta name="title" content="AdminLTE 4 | Register Page" />
     <meta name="author" content="ColorlibHQ" />
     <meta
       name="description"
@@ -26,7 +26,7 @@
     <!--begin::Accessibility Features-->
     <!-- Skip links will be dynamically added by accessibility.js -->
     <meta name="supported-color-schemes" content="light dark" />
-    <link rel="preload" href="../css/adminlte.css" as="style" />
+    <link rel="preload" href="{{asset('/')}}adminlte/dist/css/adminlte.css" as="style" />
     <!--end::Accessibility Features-->
     <!--begin::Fonts-->
     <link
@@ -58,79 +58,61 @@
   </head>
   <!--end::Head-->
   <!--begin::Body-->
-  <body class="login-page bg-body-secondary">
-    <div class="login-box">
-      <div class="login-logo">
-        <a href="../index2.html"><b>Admin</b>LTE</a>
+  <body class="register-page bg-body-secondary">
+    <div class="register-box">
+      <div class="register-logo">
+        <a href="{{route('login')}}"><b>Admin</b>LTE</a>
       </div>
-      <!-- /.login-logo -->
+      <!-- /.register-logo -->
       <div class="card">
-        <div class="card-body login-card-body">
-          <p class="login-box-msg">Sign in to start your session</p>
-                          <!--Success Message -->
-            @if(session('success'))
+        <div class="card-body register-card-body">
+          <p class="register-box-msg">Reset your password</p>
+                <!--Success Message -->
+            @if(session('status'))
               <div class="alert alert-success">
-                {{ session('success') }}
+                {{ session('status') }}
               </div>
             @endif
 
-          <form action="{{route('login')}}" method="post">
+        <form action="{{ route('password.update') }}" method="post">
             @csrf
-                <div class="input-group mb-3">
-                <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email" />
-                <div class="input-group-text"><span class="bi bi-envelope"></span></div>
-                        @error('email')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                </div>
-                <div class="input-group mb-3">
-                  <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" />
-                  <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
-                  @error('password')
-                      <span class="text-danger">{{ $message }}</span>
-                  @enderror
-                </div>
-            <!--begin::Row-->
-            <div class="row">
-                      @error('remember')
-                          <span class="text-danger">{{ $message }}</span>
-                      @enderror
-              <div class="col-8">
-                <div>
-                  <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                  <label for="remember">Remember me</label>
-                </div>
-              </div>
-              <!-- /.col -->
-              <div class="col-4">
-                <div class="d-grid gap-2">
 
-                  <button type="submit" class="btn btn-primary">Sign In</button>
-                </div>
-              </div>
-              <!-- /.col -->
-            </div>
-            <!--end::Row-->
-          </form>
-          <div class="social-auth-links text-center mb-3 d-grid gap-2">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-primary">
-              <i class="bi bi-facebook me-2"></i> Sign in using Facebook
-            </a>
-            <a href="#" class="btn btn-danger">
-              <i class="bi bi-google me-2"></i> Sign in using Google+
-            </a>
-          </div>
-          <!-- /.social-auth-links -->
-          <p class="mb-1"><a href="{{route('password.request')}}">I forgot my password</a></p>
-          <p class="mb-0">
-            <a href="{{route('register')}}" class="text-center"> Register a new membership </a>
-          </p>
+            <input type="hidden" name="token" value="{{ $token }}">
+
+            {{-- Email --}}
+        <div class="input-group mb-3">
+          <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email" />
+          <div class="input-group-text"><span class="bi bi-envelope"></span></div>
+          @error('email')
+              <span class="text-danger">{{ $message }}</span>
+          @enderror
         </div>
-        <!-- /.login-card-body -->
+            {{-- Password --}}
+        <div class="input-group mb-3">
+          <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" />
+          <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+          @error('password')
+              <span class="text-danger">{{ $message }}</span>
+          @enderror
+        </div>
+
+            {{-- Confirm Password --}}
+        <div class="input-group mb-3">
+          <input type="password" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Password" />
+          <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+
+        </div>
+      {{-- Submit Button --}}
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-block">Reset password</button>
+          </div>
+        </form>
+          <!-- /.social-auth-links -->
+        </div>
+        <!-- /.register-card-body -->
       </div>
     </div>
-    <!-- /.login-box -->
+    <!-- /.register-box -->
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
     <script
       src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"

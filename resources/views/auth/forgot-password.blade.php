@@ -4,7 +4,7 @@
   <!--begin::Head-->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>AdminLTE 4 | Login Page</title>
+    <title>AdminLTE 4 | Forgot password</title>
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light dark" />
@@ -66,15 +66,15 @@
       <!-- /.login-logo -->
       <div class="card">
         <div class="card-body login-card-body">
-          <p class="login-box-msg">Sign in to start your session</p>
+          <p class="login-box-msg">Request a password reset email</p>
                           <!--Success Message -->
-            @if(session('success'))
+            @if(session('status'))
               <div class="alert alert-success">
-                {{ session('success') }}
+                {{ session('status') }}
               </div>
             @endif
 
-          <form action="{{route('login')}}" method="post">
+          <form action="{{route('password.email')}}" method="post">
             @csrf
                 <div class="input-group mb-3">
                 <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email" />
@@ -83,49 +83,20 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                 </div>
-                <div class="input-group mb-3">
-                  <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" />
-                  <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
-                  @error('password')
-                      <span class="text-danger">{{ $message }}</span>
-                  @enderror
-                </div>
+
             <!--begin::Row-->
-            <div class="row">
-                      @error('remember')
-                          <span class="text-danger">{{ $message }}</span>
-                      @enderror
-              <div class="col-8">
-                <div>
-                  <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                  <label for="remember">Remember me</label>
-                </div>
-              </div>
-              <!-- /.col -->
+            <div class="row">              <!-- /.col -->
               <div class="col-4">
                 <div class="d-grid gap-2">
-
-                  <button type="submit" class="btn btn-primary">Sign In</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
               </div>
               <!-- /.col -->
             </div>
             <!--end::Row-->
           </form>
-          <div class="social-auth-links text-center mb-3 d-grid gap-2">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-primary">
-              <i class="bi bi-facebook me-2"></i> Sign in using Facebook
-            </a>
-            <a href="#" class="btn btn-danger">
-              <i class="bi bi-google me-2"></i> Sign in using Google+
-            </a>
-          </div>
+
           <!-- /.social-auth-links -->
-          <p class="mb-1"><a href="{{route('password.request')}}">I forgot my password</a></p>
-          <p class="mb-0">
-            <a href="{{route('register')}}" class="text-center"> Register a new membership </a>
-          </p>
         </div>
         <!-- /.login-card-body -->
       </div>
