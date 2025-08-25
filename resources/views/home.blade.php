@@ -3,9 +3,15 @@
      @section('title')
       Home
      @endsection
-
+     @auth
+       <x-navbar/>
+     @endauth
 
      @section('content')
+     @auth
+       <x-sidebar/>
+     @endauth
+    
       <main class="app-main">
         <!--begin::App Content Header-->
         <div class="app-content-header">
@@ -14,9 +20,6 @@
             <!--begin::Row-->
             <div class="row">
               <div class="col-sm-6"><h3 class="mb-0">Home</h3></div>
-              @auth
-                <x-navbar/>
-              @endauth
               @guest
                 <div class="col-sm-6">
                   <ol class="breadcrumb float-sm-end d-flex gap-2">

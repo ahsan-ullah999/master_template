@@ -1,8 +1,11 @@
 @extends('layouts.app')  {{-- change to your layout file name --}}
 
 @section('title', 'My Profile')
+<x-navbar/>
+
 
 @section('content')
+<x-sidebar/>
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -15,7 +18,7 @@
                     
                     <!-- Profile Image -->
                     <div class="text-center mb-4">
-                        <img id="preview" src="https://via.placeholder.com/120"
+                        <img id="preview" src="{{ asset('/') }}adminlte/dist/assets/img/user2-160x160.jpg"
                              class="rounded-circle border border-3" width="120" height="120" alt="Profile Picture">
                         <div class="mt-2">
                             <input type="file" class="form-control w-50 mx-auto" id="profileImage" accept="image/*">

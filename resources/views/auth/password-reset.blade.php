@@ -91,15 +91,17 @@
         <div class="input-group mb-3">
           <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" />
           <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
-          @error('password')
-              <span class="text-danger">{{ $message }}</span>
-          @enderror
+
         </div>
 
             {{-- Confirm Password --}}
         <div class="input-group mb-3">
-          <input type="password" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Password" />
+          <input type="password" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Confirm Password" />
           <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+                    @error('password')
+              <span class="text-danger">{{ $message }}</span>
+          @enderror
+
 
         </div>
       {{-- Submit Button --}}
