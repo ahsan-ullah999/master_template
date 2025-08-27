@@ -154,7 +154,7 @@
                   class="user-image rounded-circle shadow"
                   alt="User Image"
                 />
-                <span class="d-none d-md-inline">{{auth()->user()->name}}</span>
+                <span class="d-none d-md-inline">{{auth()->user()->name}} ({{ auth()->user()->roles->pluck('name')->implode(', ') }})</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                 <!--begin::User Image-->

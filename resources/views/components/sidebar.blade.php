@@ -39,41 +39,34 @@
                 </a>
                 
               </li>
-              <li class="nav-item">
-                <a href="./generate/theme.html" class="nav-link">
-                  <i class="nav-icon bi bi-palette"></i>
-                  <p>Theme Generate</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon bi bi-box-seam-fill"></i>
-                  <p>
-                    Widgets
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
+              @can('view user')
                   <li class="nav-item">
-                    <a href="./widgets/small-box.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Small Box</p>
+                    <a href="{{route('users.index')}}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
+                      <i class="bi bi-person"></i>
+                      <p>User</p>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a href="./widgets/info-box.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>info Box</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./widgets/cards.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Cards</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
+              @endcan
+
+
+              @can('view permission')
+                    <li class="nav-item">
+                      <a href="{{route('permissions.index')}}" class="nav-link {{ request()->routeIs('permissions.index') ? 'active' : '' }}">
+                        <i class="bi bi-key"></i>
+                        <p>permissions</p>
+                      </a>
+                    </li>
+              @endcan
+              @can('view role')
+                    <li class="nav-item">
+                      <a href="{{route('roles.index')}}" class="nav-link {{ request()->routeIs('roles.index') ? 'active' : '' }}">
+                        <i class="bi bi-shield-lock"></i>
+                        <p>Roles</p>
+                      </a>
+                    </li>
+              @endcan
+
+
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-clipboard-fill"></i>

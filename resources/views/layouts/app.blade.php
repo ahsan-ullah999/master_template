@@ -26,7 +26,7 @@
     <!--begin::Accessibility Features-->
     <!-- Skip links will be dynamically added by accessibility.js -->
     <meta name="supported-color-schemes" content="light dark" />
-    <link rel="preload" href="./css/adminlte.css" as="style" />
+    <link rel="preload" href="{{ asset('adminlte/dist/css/adminlte.css') }}"as="style" />
     <!--end::Accessibility Features-->
     <!--begin::Fonts-->
     <link
@@ -53,7 +53,7 @@
     />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="{{ asset('/') }}adminlte/dist/css/adminlte.css" />
+    <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
     <!-- apexcharts -->
     <link
@@ -107,7 +107,7 @@
       crossorigin="anonymous"
     ></script>
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-    <script src="{{asset('/')}}adminlte/dist/js/adminlte.js"></script>
+    <script src="{{ asset('adminlte/dist/js/adminlte.js') }}"></script>
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
     <script>
       const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
