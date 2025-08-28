@@ -17,6 +17,7 @@ class PermissionsController extends Controller implements HasMiddleware
             new Middleware('permission:view permission', only: ['index']),
             new Middleware('permission:edit permission', only: ['edit']),
             new Middleware('permission:create permission', only: ['create']),
+            new Middleware('permission:delete permission', only: ['delete']),
         ];
     }
 
@@ -75,8 +76,21 @@ class PermissionsController extends Controller implements HasMiddleware
         }
     }
 
-    //for delete permission page
-    public function destroy(){
-        
+        //for delete permission page
+    public function destroy($id)
+    {
+        $permission = Permission::find($id);
+
+        if (!$permission) {
+            return redirect()->route('permissions.index')
+                ->with('error', 'Permission not found');
+        }
+
+        $permission->delete();
+
+        return redirect()->route('permissions.index')
+            ->with('success', 'Permission deleted successfully');
     }
+
+
 }

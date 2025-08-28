@@ -37,12 +37,18 @@
             @can('edit permission')
                <a class="btn btn-sm btn-warning" href="{{ route('permissions.edit',$permission->id) }}">Edit</a>
             @endcan
-           @can('delete permission')
-            <form method="POST" action="#" class="d-inline">
-              @csrf @method('DELETE')
-              <button class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</button>
-            </form>
-           @endcan
+              @can('delete permission')          
+                <form action="{{ route('permissions.destroy',$permission->id) }}" 
+                      method="POST" 
+                      class="d-inline"
+                      onsubmit="return confirm('Are you sure you want to delete this permission?');">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+              @endcan
+
+
 
           </td>
         </tr>

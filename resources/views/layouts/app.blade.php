@@ -317,6 +317,26 @@
       const sparkline3 = new ApexCharts(document.querySelector('#sparkline-3'), option_sparkline3);
       sparkline3.render();
     </script>
+    {{-- <script type="text/javascript">
+        function deletePermission(id) {
+          if (confirm("Are you sure you want to delete?")) {
+            $.ajax({
+              url: '/permissions/' + id,
+              type: 'DELETE',
+              headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+              },
+              success: function(response) {
+                alert(response.message);
+                window.location.reload(); // refresh page instead of redirect
+              },
+              error: function(xhr) {
+                alert(xhr.responseJSON?.message || "Something went wrong");
+              }
+            });
+          }
+        }
+    </script> --}}
     <!--end::Script-->
   </body>
   <!--end::Body-->

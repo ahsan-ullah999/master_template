@@ -187,7 +187,7 @@
                     @csrf
                     <button type="submit" class="btn btn-flat float-end btn btn-danger text-white mt-3"><i class="bi bi-box-arrow-right"></i>Sign out</button>
                   </form>
-                  <a href="{{route('profile')}}" class="btn btn-primary btn-flat"><i class="bi bi-person-circle"></i>Profile</a>
+                  <a href="{{route('profile.index')}}" class="btn btn-primary btn-flat"><i class="bi bi-person-circle"></i>Profile</a>
                 </li>
                 <!--end::Menu Footer-->
               </ul>

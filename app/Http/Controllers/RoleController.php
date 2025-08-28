@@ -17,7 +17,8 @@ class RoleController extends Controller implements HasMiddleware
         return [
             new Middleware('permission:view role', only: ['index']),
             new Middleware('permission:edit role', only: ['edit']),
-            new Middleware('permission:create role', only: ['create']),
+            // new Middleware('permission:create role', only: ['create']),
+            new Middleware('permission:delete role', only: ['delete']),
         ];
     }
 
@@ -66,26 +67,41 @@ class RoleController extends Controller implements HasMiddleware
         ]);
     }
 
-public function update($id, Request $request){
-    $role = Role::findOrFail($id);
-    $validator = Validator::make($request->all(),[
-        'name' => 'required|unique:roles,name,'.$id
-    ]);
+    public function update($id, Request $request){
+        $role = Role::findOrFail($id);
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|unique:roles,name,'.$id
+        ]);
 
-    if($validator->passes()){
-        $role->name = $request->name;
-        $role->save();
+        if($validator->passes()){
+            $role->name = $request->name;
+            $role->save();
 
-        if(!empty($request->permission)){
-            $role->syncPermissions($request->permission);
+            if(!empty($request->permission)){
+                $role->syncPermissions($request->permission);
+            } else {
+                $role->syncPermissions([]);
+            }
+
+            return redirect()->route('roles.index')->with('success','Role updated successfully');
         } else {
-            $role->syncPermissions([]);
+            return redirect()->route('roles.edit',$id)->withInput()->withErrors($validator);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $role = Role::find($id);
+
+        if (!$role) {
+            return redirect()->route('roles.index')
+                ->with('error', 'Role not found');
         }
 
-        return redirect()->route('roles.index')->with('success','Role updated successfully');
-    } else {
-        return redirect()->route('roles.edit',$id)->withInput()->withErrors($validator);
+        $role->delete();
+
+        return redirect()->route('roles.index')
+            ->with('success', 'Role deleted successfully');
     }
-}
 
 }
