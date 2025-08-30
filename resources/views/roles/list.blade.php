@@ -7,9 +7,9 @@
 <div class="content p-3">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Roles / List</h3>
-    {{-- @can('create role') --}}
-        <a href="{{ route('roles.create') }}" class="btn btn-primary">Create</a>
-    {{-- @endcan --}}
+
+    <a href="{{ route('roles.create') }}" class="btn btn-primary">Create</a>
+
     
   </div>
             @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif

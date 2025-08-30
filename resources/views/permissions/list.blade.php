@@ -7,7 +7,10 @@
 <div class="content p-3">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Permissions</h3>
-    <a href="{{ route('permissions.create') }}" class="btn btn-primary">Create</a>
+    @can('create permission')
+       <a href="{{ route('permissions.create') }}" class="btn btn-primary">Create</a>
+    @endcan
+   
   </div>
   @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif
   <table class="table table-bordered">

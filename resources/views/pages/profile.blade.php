@@ -12,6 +12,7 @@
             @if(session('success'))
               <div class="alert alert-success">{{ session('success') }}</div>
             @endif
+            @method('PUT')
 
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
@@ -32,7 +33,7 @@
                     </div>
 
                     <!-- Profile Form -->
-                    <form id="profileForm" method="POST" action="#" enctype="multipart/form-data">
+                    <form id="profileForm" method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="mb-3">

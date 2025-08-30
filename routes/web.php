@@ -18,7 +18,7 @@ Route::view('/dashboard','dashboard')->name('dashboard');
 Route::post('/logout',[AuthController::class,'logout'])->name('logout');
 // Profile Routes
 Route::get('/profile', [ProfileController::class,'index'])->name('profile.index');
-// Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 // Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 //route for permission
