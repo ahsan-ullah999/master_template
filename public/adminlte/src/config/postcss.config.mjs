@@ -5,10 +5,12 @@ const postcssConfig = {
     sourcesContent: true
   },
   plugins: {
-    ...(process.env.NODE_ENV === 'RTL' ? { rtlcss: {} } : {}),
-    autoprefixer: {
-      cascade: false
-    }
+    //     tailwindcss: {},
+    //     autoprefixer: {},
+    // ...(process.env.NODE_ENV === 'RTL' ? { rtlcss: {} } : {}),
+    // autoprefixer: {
+    //   cascade: false
+    // }
   }
 }
 

@@ -8,8 +8,8 @@
                 <i class="bi bi-list"></i>
               </a>
             </li>
-            <li class="nav-item d-none d-md-block"><a href="{{route('home')}}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
-            <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
+            <li class="nav-item d-none d-md-block"><a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
+            {{-- <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li> --}}
           </ul>
           <!--end::Start Navbar Links-->
           <!--begin::End Navbar Links-->
@@ -21,7 +21,7 @@
               </a>
             </li>
             <!--end::Navbar Search-->
-            <!--begin::Messages Dropdown Menu-->
+            {{-- <!--begin::Messages Dropdown Menu-->
             <li class="nav-item dropdown">
               <a class="nav-link" data-bs-toggle="dropdown" href="#">
                 <i class="bi bi-chat-text"></i>
@@ -108,9 +108,9 @@
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
               </div>
-            </li>
+            </li> --}}
             <!--end::Messages Dropdown Menu-->
-            <!--begin::Notifications Dropdown Menu-->
+            {{-- <!--begin::Notifications Dropdown Menu-->
             <li class="nav-item dropdown">
               <a class="nav-link" data-bs-toggle="dropdown" href="#">
                 <i class="bi bi-bell-fill"></i>
@@ -136,7 +136,7 @@
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
               </div>
-            </li>
+            </li> --}}
             <!--end::Notifications Dropdown Menu-->
             <!--begin::Fullscreen Toggle-->
             <li class="nav-item">
@@ -165,13 +165,13 @@
                     alt="User Image"
                   />
                   <p>
-                    {{auth()->user()->name}} - Web Developer
-                    <small>Member since Nov. 2023</small>
+                    {{auth()->user()->name}} - {{ auth()->user()->roles->pluck('name')->implode(', ') }}
+                    <small>Member since- {{ \Carbon\Carbon::parse( auth()->user()->created_at)->format('d M, Y') }} </small>
                   </p>
                 </li>
                 <!--end::User Image-->
                 <!--begin::Menu Body-->
-                <li class="user-body">
+                {{-- <li class="user-body">
                   <!--begin::Row-->
                   <div class="row">
                     <div class="col-4 text-center"><a href="#">Followers</a></div>
@@ -179,7 +179,7 @@
                     <div class="col-4 text-center"><a href="#">Friends</a></div>
                   </div>
                   <!--end::Row-->
-                </li>
+                </li> --}}
                 <!--end::Menu Body-->
                 <!--begin::Menu Footer-->
                 <li class="user-footer">
@@ -187,7 +187,7 @@
                     @csrf
                     <button type="submit" class="btn btn-flat float-end btn btn-danger text-white mt-3"><i class="bi bi-box-arrow-right"></i>Sign out</button>
                   </form>
-                  <a href="{{route('profile.index')}}" class="btn btn-primary btn-flat"><i class="bi bi-person-circle"></i>Profile</a>
+                  <a href="{{route('profile.edit')}}" class="btn btn-primary btn-flat"><i class="bi bi-person-circle"></i>Profile</a>
                 </li>
                 <!--end::Menu Footer-->
               </ul>

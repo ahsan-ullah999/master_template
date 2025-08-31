@@ -40,7 +40,7 @@
                 
               </li>
               @can('view user')
-                  <li class="nav-item">
+                  <li class="nav-item">           
                     <a href="{{route('users.index')}}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
                       <i class="bi bi-person"></i>
                       <p>User</p>
@@ -50,7 +50,7 @@
 
 
               @can('view permission')
-                    <li class="nav-item">
+                    <li class="nav-item">                    
                       <a href="{{route('permissions.index')}}" class="nav-link {{ request()->routeIs('permissions.index') ? 'active' : '' }}">
                         <i class="bi bi-key"></i>
                         <p>permissions</p>
@@ -58,7 +58,7 @@
                     </li>
               @endcan
               @can('view role')
-                    <li class="nav-item">
+                    <li class="nav-item">                      
                       <a href="{{route('roles.index')}}" class="nav-link {{ request()->routeIs('roles.index') ? 'active' : '' }}">
                         <i class="bi bi-shield-lock"></i>
                         <p>Roles</p>
@@ -67,7 +67,7 @@
               @endcan
 
 
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-clipboard-fill"></i>
                   <p>
@@ -138,8 +138,8 @@
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-tree-fill"></i>
                   <p>
@@ -167,8 +167,8 @@
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-pencil-square"></i>
                   <p>
@@ -184,8 +184,8 @@
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-table"></i>
                   <p>
@@ -201,8 +201,8 @@
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-header">EXAMPLES</li>
+              </li> --}}
+              {{-- <li class="nav-header">EXAMPLES</li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-box-arrow-in-right"></i>
@@ -210,8 +210,8 @@
                     Auth
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
-                </a>
-                <ul class="nav nav-treeview">
+                </a> --}}
+                {{-- <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="nav-icon bi bi-box-arrow-in-right"></i>
@@ -234,8 +234,8 @@
                         </a>
                       </li>
                     </ul>
-                  </li>
-                  <li class="nav-item">
+                  </li> --}}
+                  {{-- <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="nav-icon bi bi-box-arrow-in-right"></i>
                       <p>
@@ -265,27 +265,27 @@
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-header">DOCUMENTATIONS</li>
+              </li> --}}
+              {{-- <li class="nav-header">DOCUMENTATIONS</li>
               <li class="nav-item">
                 <a href="./docs/introduction.html" class="nav-link">
                   <i class="nav-icon bi bi-download"></i>
                   <p>Installation</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="./docs/layout.html" class="nav-link">
                   <i class="nav-icon bi bi-grip-horizontal"></i>
                   <p>Layout</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="./docs/color-mode.html" class="nav-link">
                   <i class="nav-icon bi bi-star-half"></i>
                   <p>Color Mode</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-ui-checks-grid"></i>
                   <p>
@@ -307,8 +307,8 @@
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-filetype-js"></i>
                   <p>
@@ -324,39 +324,39 @@
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="./docs/browser-support.html" class="nav-link">
                   <i class="nav-icon bi bi-browser-edge"></i>
                   <p>Browser Support</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="./docs/how-to-contribute.html" class="nav-link">
                   <i class="nav-icon bi bi-hand-thumbs-up-fill"></i>
                   <p>How To Contribute</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="./docs/faq.html" class="nav-link">
                   <i class="nav-icon bi bi-question-circle-fill"></i>
                   <p>FAQ</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="./docs/license.html" class="nav-link">
                   <i class="nav-icon bi bi-patch-check-fill"></i>
                   <p>License</p>
                 </a>
-              </li>
-              <li class="nav-header">MULTI LEVEL EXAMPLE</li>
+              </li> --}}
+              {{-- <li class="nav-header">MULTI LEVEL EXAMPLE</li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Level 1</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>
@@ -407,32 +407,32 @@
                     </a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Level 1</p>
                 </a>
-              </li>
-              <li class="nav-header">LABELS</li>
+              </li> --}}
+              {{-- <li class="nav-header">LABELS</li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-circle text-danger"></i>
                   <p class="text">Important</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-circle text-warning"></i>
                   <p>Warning</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> --}}
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-circle text-info"></i>
                   <p>Informational</p>
                 </a>
-              </li>
+              </li> --}}
             </ul>
             <!--end::Sidebar Menu-->
           </nav>

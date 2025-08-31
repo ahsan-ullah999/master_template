@@ -2,63 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    public function index()
+    /**
+     * Display the user's profile form.
+     */
+    public function edit(Request $request): View
     {
-        $user = Auth::user();   // get logged-in user
-        return view('pages.profile', compact('user'));
+        return view('profile.edit', [
+            'user' => $request->user(),
+        ]);
     }
 
-        // Update profile
-    public function update(Request $request)
+    /**
+     * Update the user's profile information.
+     */
+    public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-    /** @var \App\Models\User $user */
-        $user = Auth::user();
+        $request->user()->fill($request->validated());
 
-        // Validate input
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|min:6|confirmed',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
+        }
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    /**
+     * Delete the user's account.
+     */
+    public function destroy(Request $request): RedirectResponse
+    {
+        $request->validateWithBag('userDeletion', [
+            'password' => ['required', 'current_password'],
         ]);
 
-        // Update name & email
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $user = $request->user();
 
-        // Update password if given
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-        }
+        Auth::logout();
 
-        // Upload profile image
-        if ($request->hasFile('profile_image')) {
-            $file = $request->file('profile_image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/profile_images'), $filename);
+        $user->delete();
 
-            // Delete old image if exists
-            if ($user->profile_image && file_exists(public_path('uploads/profile_images/' . $user->profile_image))) {
-                unlink(public_path('uploads/profile_images/' . $user->profile_image));
-            }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-            $user->profile_image = $filename;
-        }
-
-        $user->save();
-
-        return redirect()->route('profile.index')->with('success', 'Profile updated successfully!');
+        return Redirect::to('/');
     }
-
-        //for update permission page
-
-
 }

@@ -6,7 +6,7 @@
 <x-sidebar/>
 <div class="content mt-4 px-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>Permissions / Creat</h3>
+    <h3>Permissions / Create</h3>
     <a href="{{ route('permissions.index') }}" class="btn btn-dark">Back</a>
 </div>
   <form method="post" action="{{ route('permissions.store') }}" class="col-md-6">

@@ -5,7 +5,7 @@
 <x-sidebar/>
 <div class="content mt-4 px-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>Roles / Creat</h3>
+    <h3>Roles / Create</h3>
     <a href="{{ route('roles.index') }}" class="btn btn-dark">Back</a>
 </div>
   <form method="post" action="{{ route('roles.store') }}" class="col-md-6">

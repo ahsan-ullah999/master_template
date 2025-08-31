@@ -74,44 +74,63 @@
               </div>
             @endif
 
-          <form action="{{route('login')}}" method="post">
-            @csrf
-                <div class="input-group mb-3">
-                <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email" />
-                <div class="input-group-text"><span class="bi bi-envelope"></span></div>
-                        @error('email')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                </div>
-                <div class="input-group mb-3">
-                  <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" />
-                  <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
-                  @error('password')
-                      <span class="text-danger">{{ $message }}</span>
-                  @enderror
-                </div>
-            <!--begin::Row-->
-            <div class="row">
-                      @error('remember')
-                          <span class="text-danger">{{ $message }}</span>
-                      @enderror
-              <div class="col-8">
-                <div>
-                  <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                  <label for="remember">Remember me</label>
-                </div>
-              </div>
-              <!-- /.col -->
-              <div class="col-4">
-                <div class="d-grid gap-2">
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
 
-                  <button type="submit" class="btn btn-primary">Sign In</button>
+
+    <!-- Email -->
+    <div class="input-group mb-3">
+        <x-text-input id="email" 
+                      type="email" 
+                      name="email" 
+                      :value="old('email')" 
+                      required 
+                      autocomplete="username"
+                      placeholder="Email"
+                      class="form-control" />
+        <div class="input-group-text"><span class="bi bi-envelope"></span></div>
+        <x-input-error :messages="$errors->get('email')" class="text-danger mb-2" />
+    </div>
+
+    <!-- Password -->
+    <div class="input-group mb-3">
+        <x-text-input id="password" 
+                      type="password" 
+                      name="password" 
+                      required 
+                      autocomplete="current-password"
+                      placeholder="Password"
+                      class="form-control" />
+        <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+        <x-input-error :messages="$errors->get('password')" class="text-danger mb-2" />
+    </div>
+
+        <!-- Remember Me -->
+            <div class="col-8">
+                <div>
+                  <input type="checkbox" name="remember" id="remember_me" class="form-check-input">
+                  <label for="remember">{{ __('Remember me') }}</label>
                 </div>
-              </div>
-              <!-- /.col -->
             </div>
-            <!--end::Row-->
-          </form>
+        {{-- <div class="block mt-4">
+            <label for="remember_me" class="inline-flex items-center">
+                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+            </label>
+        </div> --}}
+
+        <div class="flex items-center justify-end mt-4">
+            @if (Route::has('password.request'))
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+                    {{ __('Forgot your password?') }}
+                </a>
+            @endif
+
+            <x-primary-button class="ms-5 btn btn-primary btn-block">
+                {{ __('Log in') }}
+            </x-primary-button>
+        </div>
+    </form>
           <div class="social-auth-links text-center mb-3 d-grid gap-2">
             <p>- OR -</p>
             <a href="#" class="btn btn-primary">
@@ -122,7 +141,7 @@
             </a>
           </div>
           <!-- /.social-auth-links -->
-          <p class="mb-1"><a href="{{route('password.request')}}">I forgot my password</a></p>
+          
           <p class="mb-0">
             <a href="{{route('register')}}" class="text-center"> Register a new membership </a>
           </p>

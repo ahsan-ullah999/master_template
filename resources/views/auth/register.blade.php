@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <!--begin::Head-->
@@ -73,54 +72,87 @@
                 {{ session('success') }}
               </div>
             @endif
-
-      <form action="{{ route('register') }}" method="post">
+    <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- name -->
-        <div class="input-group mb-3">
-          <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Full Name" />
-          <div class="input-group-text"><span class="bi bi-person"></span></div>
-          @error('name')
-              <span class="text-danger">{{ $message }}</span>
-          @enderror
-        </div>
+  <!-- Name -->
+    <div class="input-group mb-3">
+        <x-text-input id="name" 
+                      type="text" 
+                      name="name" 
+                      :value="old('name')" 
+                      required 
+                      autofocus 
+                      autocomplete="name"
+                      placeholder="Full Name"
+                      class="form-control"/>
+        <div class="input-group-text"><span class="bi bi-person"></span></div>
+        <x-input-error :messages="$errors->get('name')" class="text-danger mb-2" />
+    </div>
+ 
 
-        <!-- Email -->
-        <div class="input-group mb-3">
-          <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email" />
-          <div class="input-group-text"><span class="bi bi-envelope"></span></div>
-          @error('email')
-              <span class="text-danger">{{ $message }}</span>
-          @enderror
-        </div>
+    <!-- Email -->
+    <div class="input-group mb-3">
+        <x-text-input id="email" 
+                      type="email" 
+                      name="email" 
+                      :value="old('email')" 
+                      required 
+                      autocomplete="useremail"
+                      placeholder="Email"
+                      class="form-control" />
+        <div class="input-group-text"><span class="bi bi-envelope"></span></div>
+        <x-input-error :messages="$errors->get('email')" class="text-danger mb-2" />
+    </div>
+    
 
-        <!-- Password -->
-        <div class="input-group mb-3">
-          <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" />
-          <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
-          @error('password')
-              <span class="text-danger">{{ $message }}</span>
-          @enderror
-        </div>
+    <!-- Password -->
+    <div class="input-group mb-3">
+        <x-text-input id="password" 
+                      type="password" 
+                      name="password" 
+                      required 
+                      autocomplete="new-password"
+                      placeholder="Password"
+                      class="form-control" />
+        <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+        <x-input-error :messages="$errors->get('password')" class="text-danger mb-2" />
+    </div>
+    
+
+    <!-- Confirm Password -->
+    <div class="input-group mb-3">
+        <x-text-input id="password_confirmation" 
+                      type="password" 
+                      name="password_confirmation" 
+                      required 
+                      autocomplete="new-password"
+                      placeholder="Confirm Password"
+                      class="form-control" />
+        <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+        <x-input-error :messages="$errors->get('password_confirmation')" class="text-danger mb-2" />
+    </div>
 
 
 
-        <div class="row">
-          <div class="col-8">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" required>
-              <label class="form-check-label">
-                I agree to the <a href="#">terms</a>
-              </label>
+    <!-- Terms & Submit -->
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" required>
+                        <label class="form-check-label">
+                            I agree to the <a href="#">terms</a>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <x-primary-button class="btn btn-primary btn-block">
+                        {{ __('Register') }}
+                    </x-primary-button>
+                </div>
             </div>
-          </div>
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Register</button>
-          </div>
-        </div>
-      </form>
-          <div class="social-auth-links text-center mb-3 d-grid gap-2">
+    </form>
+   <div class="social-auth-links text-center mb-3 d-grid gap-2">
             <p>- OR -</p>
             <a href="#" class="btn btn-primary">
               <i class="bi bi-facebook me-2"></i> Sign in using Facebook

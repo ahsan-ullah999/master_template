@@ -7,8 +7,10 @@
 <div class="content p-3">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Roles / List</h3>
-
-    <a href="{{ route('roles.create') }}" class="btn btn-primary">Create</a>
+    @can('create role')
+        <a href="{{ route('roles.create') }}" class="btn btn-primary">Create</a>
+    @endcan
+  
 
     
   </div>
@@ -19,9 +21,10 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Permission</th>                     
-                    <th>Created</th>                  
+                    <th>Created</th>  
+                    @canany(['edit role','delete role'])
                     <th>Actions</th>
-                  
+                    @endcanany                                
                 </tr>
             </thead>
                 <tbody>
@@ -41,21 +44,24 @@
                             <td>
                             {{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}
                             </td>
-                            <td>
-                                @can('edit role')     
-                                  <a class="btn btn-sm btn-warning" href="{{ route('roles.edit',$role->id) }}">Edit</a>
-                                @endcan
-                                @can('delete role')
-                                <form action="{{ route('roles.destroy',$role->id) }}" 
-                                        method="POST" 
-                                        class="d-inline"
-                                        onsubmit="return confirm('Are you sure you want to delete this role?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                                @endcan
-                            </td>
+                            @canany(['edit role','delete role'])
+                                <td>
+                                    @can('edit role')     
+                                    <a class="btn btn-sm btn-warning" href="{{ route('roles.edit',$role->id) }}">Edit</a>
+                                    @endcan
+                                    @can('delete role')
+                                    <form action="{{ route('roles.destroy',$role->id) }}" 
+                                            method="POST" 
+                                            class="d-inline"
+                                            onsubmit="return confirm('Are you sure you want to delete this role?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                    @endcan
+                                </td>
+                            @endcanany
+
                         </tr>
                     @endforeach
                     @endif

@@ -18,6 +18,7 @@ class UserContrioller extends Controller implements HasMiddleware
         return [
             new Middleware('permission:view user', only: ['index']),
             new Middleware('permission:edit user', only: ['edit']),
+            new Middleware('permission:delete user', only: ['delete']),
             
         ];
     }
@@ -98,8 +99,18 @@ class UserContrioller extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->route('users.index')
+                ->with('error', 'User not found');
+        }
+
+        $user->delete();
+
+        return redirect()->route('users.index')
+            ->with('success', 'users deleted successfully');
     }
 }

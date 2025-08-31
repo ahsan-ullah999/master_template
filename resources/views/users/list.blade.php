@@ -7,7 +7,10 @@
 <div class="content p-3">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>User / List</h3>
-    <a href="#" class="btn btn-primary">Create</a>
+    @can('create user')
+         <a href="#" class="btn btn-primary">Create</a>
+    @endcan
+   
   </div>
             @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif
         <table class="table table-bordered">
@@ -18,7 +21,10 @@
                     <th>Email</th>
                     <th>Role</th>
                     <th>Created</th>
-                    <th>Actions</th>
+                    @canany(['edit user','delete user'])
+                        <th>Actions</th>
+                    @endcan
+                    
                 </tr>
             </thead>
                 <tbody>
@@ -41,16 +47,23 @@
                             <td>
                             {{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}
                             </td>
+                            @canany(['edit user', 'delete user'])
                             <td>
                                 @can('edit user')
-                                    <a class="btn btn-sm btn-warning" href="{{ route('users.edit',$user->id) }}">Edit</a>
+                                <a class="btn btn-sm btn-warning" href="{{ route('users.edit',$user->id) }}">Edit</a>
                                 @endcan
-                                
-                                {{-- <form method="POST" action="#" class="d-inline">
-                                @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</button>
-                                </form> --}}
+                                @can('delete user')          
+                                    <form action="{{ route('users.destroy',$user->id) }}" 
+                                        method="POST" 
+                                        class="d-inline"
+                                        onsubmit="return confirm('Are you sure you want to delete this User?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                @endcan
                             </td>
+                            @endcanany
                         </tr>
                     @endforeach
                     @endif

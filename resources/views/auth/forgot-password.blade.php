@@ -74,28 +74,29 @@
               </div>
             @endif
 
-          <form action="{{route('password.email')}}" method="post">
-            @csrf
-                <div class="input-group mb-3">
-                <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email" />
-                <div class="input-group-text"><span class="bi bi-envelope"></span></div>
-                        @error('email')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                </div>
+    <form method="POST" action="{{ route('password.email') }}">
+        @csrf
 
-            <!--begin::Row-->
-            <div class="row">              <!-- /.col -->
-              <div class="col-4">
-                <div class="d-grid gap-2">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-              </div>
-              <!-- /.col -->
-            </div>
-            <!--end::Row-->
-          </form>
+        <!-- Email Address -->
+    <div class="input-group mb-3">
+        <x-text-input id="email" 
+                      type="email" 
+                      name="email" 
+                      :value="old('email')" 
+                      required 
+                      autocomplete="useremail"
+                      placeholder="Email"
+                      class="form-control" />
+        <div class="input-group-text"><span class="bi bi-envelope"></span></div>
+        <x-input-error :messages="$errors->get('email')" class="text-danger mb-2" />
+    </div>
 
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button class="btn btn-primary ">
+                {{ __('Email Password Reset Link') }}
+            </x-primary-button>
+        </div>
+    </form>
           <!-- /.social-auth-links -->
         </div>
         <!-- /.login-card-body -->
