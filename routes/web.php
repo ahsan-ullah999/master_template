@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserContrioller;
@@ -41,6 +42,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles/{id}/edit', [RoleController::class,'edit'])->name('roles.edit');
     Route::post('/roles/{id}', [RoleController::class,'update'])->name('roles.update');
     Route::delete('/roles/{id}', [RoleController::class,'destroy'])->name('roles.destroy');
+    //route for products
+    Route::get('/products', [ProductController::class,'index'])->name('products.index');
+    Route::get('/products/create', [ProductController::class,'create'])->name('products.create');
+    Route::post('/products', [ProductController::class,'store'])->name('products.store');
+    Route::get('/products/{id}/edit', [ProductController::class,'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class,'update'])->name('products.update');
+    Route::delete('/products/{id}', [ProductController::class,'destroy'])->name('products.destroy');
+
+
 });
 
 require __DIR__.'/auth.php';

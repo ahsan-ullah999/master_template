@@ -145,12 +145,12 @@
                 <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
               </a>
             </li>
-            <!--end::Fullscreen Toggle-->
+            <!--end::Fullscreen  Toggle-->
             <!--begin::User Menu Dropdown-->
             <li class="nav-item dropdown user-menu">
               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                 <img
-                  src="{{ asset('/') }}adminlte/dist/assets/img/user2-160x160.jpg"
+                  src="{{ asset('adminlte/dist/assets/img/user2-160x160.jpg') }}"
                   class="user-image rounded-circle shadow"
                   alt="User Image"
                 />
@@ -160,7 +160,7 @@
                 <!--begin::User Image-->
                 <li class="user-header text-bg-primary">
                   <img
-                    src="{{ asset('/') }}adminlte/dist/assets/img/user2-160x160.jpg"
+                    src="{{ asset('adminlte/dist/assets/img/user2-160x160.jpg') }}"
                     class="rounded-circle shadow"
                     alt="User Image"
                   />

@@ -5,7 +5,7 @@
           <a href="./index.html" class="brand-link">
             <!--begin::Brand Image-->
             <img
-              src="{{ asset('/') }}adminlte/dist/assets/img/AdminLTELogo.png"
+              src="{{ asset('adminlte/dist/assets/img/AdminLTELogo.png') }}"
               alt="AdminLTE Logo"
               class="brand-image opacity-75 shadow"
             />
@@ -65,6 +65,15 @@
                       </a>
                     </li>
               @endcan
+              @can('view product')
+                    <li class="nav-item">                      
+                      <a href="{{route('products.index')}}" class="nav-link {{ request()->routeIs('products.index') ? 'active' : '' }}">
+                        <i class="bi bi-cart-fill"></i>
+                        <p>Product</p>
+                      </a>
+                    </li>
+              @endcan
+
 
 
               {{-- <li class="nav-item">
