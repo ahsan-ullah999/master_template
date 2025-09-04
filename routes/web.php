@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -49,7 +50,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/{id}/edit', [ProductController::class,'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class,'update'])->name('products.update');
     Route::delete('/products/{id}', [ProductController::class,'destroy'])->name('products.destroy');
+    //route for products
 
+    Route::get('/companies', [CompanyController::class,'index'])->name('companies.index');
+    Route::get('/companies/create', [CompanyController::class,'create'])->name('companies.create');
+    Route::post('/companies', [CompanyController::class,'store'])->name('companies.store');
+    Route::get('/companies/{id}/edit', [CompanyController::class,'edit'])->name('companies.edit');
+    Route::put('/companies/{company}', [CompanyController::class,'update'])->name('companies.update');
+        Route::get('/companies/{company}', [CompanyController::class, 'show'])->name('companies.show');
 
 });
 

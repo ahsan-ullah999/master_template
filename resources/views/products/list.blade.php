@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title','Products')
 <x-navbar/>
 @section('content')
 <x-sidebar/>

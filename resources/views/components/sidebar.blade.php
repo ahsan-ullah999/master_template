@@ -34,11 +34,61 @@
                   <i class="nav-icon bi bi-speedometer"></i>
                   <p>
                     Dashboard
+                  </p>
+                </a>
+              </li>
+              <!--begin::Business Menu-->
+              <li class="nav-item {{ request()->routeIs('companies.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-building"></i>
+                  <p>
+                    Business
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
                 </a>
-                
+                <ul class="nav nav-treeview">
+                  @can('view company')
+                  <li class="nav-item">
+                    <a href="{{ route('companies.index') }}" 
+                      class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-globe2"></i>
+                      <p>Company</p>
+                    </a>
+                  </li>
+                  @endcan
+
+                  <li class="nav-item">
+                    <a href="./UI/icons.html" class="nav-link">
+                      <i class="nav-icon bi bi-diagram-3"></i>
+                      <p>Branch</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
+                {{-- <li class="nav-item menu-open">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-building"></i>
+                  <p>
+                    Buseness
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('companies.index')}}" class="nav-link {{ request()->routeIs('companies.index') ? 'active' : '' }}">
+                     <i class="bi bi-globe2"></i>
+                      <p>Company</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                     <i class="bi bi-diagram-3"></i>
+                      <p>Branch</p>
+                    </a>
+                  </li>
+                </ul>
+              </li> --}}
+              <!--ending::buseness Menu-->
               @can('view user')
                   <li class="nav-item">           
                     <a href="{{route('users.index')}}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
@@ -53,7 +103,7 @@
                     <li class="nav-item">                    
                       <a href="{{route('permissions.index')}}" class="nav-link {{ request()->routeIs('permissions.index') ? 'active' : '' }}">
                         <i class="bi bi-key"></i>
-                        <p>permissions</p>
+                        <p>Permissions</p>
                       </a>
                     </li>
               @endcan
