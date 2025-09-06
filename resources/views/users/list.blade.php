@@ -3,79 +3,77 @@
 <x-navbar/>
 @section('content')
 <x-sidebar/>
+<div class="container mt-3">
 
-<div class="content p-3">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>User / List</h3>
-    @can('create user')
-         <a href="{{ route('users.create') }}" class="btn btn-primary">Create</a>
-    @endcan
-   
-  </div>
-            @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Created</th>
-                    @canany(['edit user','delete user'])
-                        <th>Actions</th>
-                    @endcan
-                    
-                </tr>
-            </thead>
-                <tbody>
-                    @if ($users->isNotEmpty())
-                    
-                    @foreach ($users as $user)
-                        <tr>
-                            <td>
-                            {{ $user->id }}
-                            </td>
-                            <td>
-                            {{ $user->name }}
-                            </td>
-                            <td>
-                            {{ $user->email }}
-                            </td>
-                            <td>
-                            {{ $user->roles->pluck('name')->implode(', ') }}
-                            </td>
-                            <td>
-                            {{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}
-                            </td>
-                            @canany(['edit user', 'delete user'])
-                            <td>
-                                @can('edit user')
-                                <a class="btn btn-sm btn-warning" href="{{ route('users.edit',$user->id) }}">Edit</a>
-                                @endcan
-                                @can('delete user')          
-                                    <form action="{{ route('users.destroy',$user->id) }}" 
-                                        method="POST" 
-                                        class="d-inline"
-                                        onsubmit="return confirm('Are you sure you want to delete this User?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
-                                @endcan
-                            </td>
-                            @endcanany
-                        </tr>
-                    @endforeach
-                    @endif
-                
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2>Users List</h2>
 
-                
-                </tbody>
-        </table>
-   
-    <div class="d-flex-between  mt-3">
-    {{ $users->links() }}
+        <div class="d-flex align-items-center gap-2">
+            <!-- Search box -->
+         
+            <div class="d-flex mb-2">
+                <input 
+                type="text" 
+                name="search" 
+                id="searchInput" 
+                class="form-control" 
+                placeholder="Search users...">
+            </div>
+            
+            <!-- Add product button -->
+            @can('create user')
+            <a href="{{ route('users.create') }}" class="btn btn-primary mb-2">
+                <i class="bi bi-plus-lg"></i> Create Users
+            </a>
+            @endcan
+        </div>
     </div>
-  
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    <!-- Product table (load partial here) -->
+    <div id="userTable">
+        @include('users.partials.table', ['users' => $users])
+    </div>
 </div>
+
+
+    @push('scripts')
+        <script>
+                $(document).ready(function () {
+                    // Debounced live search
+                    let delayTimer;
+                    $('#searchInput').on('keyup', function () {
+                        clearTimeout(delayTimer);
+                        delayTimer = setTimeout(function() {
+                            fetchUsers(1, $('#searchInput').val()); // reset to page 1
+                        }, 300);
+                    });
+
+                    // Pagination with search term preserved
+                    $(document).on('click', '#userTable .pagination a', function (e) {
+                        e.preventDefault();
+                        let page = $(this).attr('href').split('page=')[1];
+                        let search = $('#searchInput').val();
+                        fetchUsers(page, search);
+                    });
+
+                    // AJAX fetch
+                    function fetchUsers(page = 1, search = "") {
+                        $.ajax({
+                            url: "{{ route('users.index') }}?page=" + page + "&search=" + search,
+                            type: "GET",
+                            success: function (data) {
+                                $('#userTable').html(data);
+                            },
+                            error: function (xhr) {
+                                console.error("Error loading users:", xhr.responseText);
+                            }
+                        });
+                    }
+                });
+
+        </script>
+    @endpush
 @endsection

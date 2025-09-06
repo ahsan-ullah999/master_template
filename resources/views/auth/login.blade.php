@@ -4,7 +4,7 @@
   <!--begin::Head-->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>AdminLTE 4 | Login Page</title>
+    <title>Web-xpress | Login Page</title>
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light dark" />
@@ -53,7 +53,7 @@
     />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="{{asset('/')}}adminlte/dist/css/adminlte.css" />
+    <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
   </head>
   <!--end::Head-->
@@ -61,7 +61,7 @@
   <body class="login-page bg-body-secondary">
     <div class="login-box">
       <div class="login-logo">
-        <a href="../index2.html"><b>Admin</b>LTE</a>
+        <a href="../index2.html"><b>Web-</b>Xpress</a>
       </div>
       <!-- /.login-logo -->
       <div class="card">

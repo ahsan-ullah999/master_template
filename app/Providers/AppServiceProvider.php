@@ -28,9 +28,9 @@ class AppServiceProvider extends ServiceProvider
         return $user->hasRole('Super Admin') ? true : null;
         });
 
-        view()->composer('*', function ($view) {
-        $company = Company::first(); // get the first company
-        $view->with('appCompany', $company);
-        });
+        // view()->composer('*', function ($view) {
+        // $company = Company::first(); // get the first company
+        // $view->with('appCompany', $company);
+        // });
     }
 }

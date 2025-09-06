@@ -26,12 +26,25 @@ class UserContrioller extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index()
+public function index(Request $request)
     {
-        $users = User::latest()->paginate(10);
-        return view('users.list',[
-            'users' => $users
-        ]);
+        $query = User::query();
+
+        if ($request->search) {
+            $query->where('name', 'like', '%' . $request->search . '%')
+                // ->orWhere('role', 'like', '%' . $request->search . '%');
+                ->orWhere('email', 'like', '%' . $request->search . '%');
+        }
+
+        $users = $query->orderBy('created_at', 'DESC')->paginate(2);
+
+        // If AJAX request, return only the table partial
+        if ($request->ajax()) {
+            return view('users.partials.table', compact('users'))->render();
+        }
+
+        // Otherwise, return full page
+        return view('users.list', compact('users'));
     }
 
     /**

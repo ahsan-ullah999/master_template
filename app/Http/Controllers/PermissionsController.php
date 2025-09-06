@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+//use App\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -25,12 +26,27 @@ class PermissionsController extends Controller implements HasMiddleware
 
 
     //for show permission page
-    public function index(){
-        $permissions = Permission::orderBy('created_at','DESC')->paginate(10);
-        return view('permissions.list',[
-            'permissions'=> $permissions
-        ]);
+public function index(Request $request)
+    {
+        // $products = Product::orderBy('created_at','DESC')->paginate(2);
+        // return view('products.list',[
+        //     'products'=> $products
+        // ]);
+    $query = Permission::query();
 
+    if ($request->search) {
+        $query->where('name', 'like', '%' . $request->search . '%');  
+    }
+
+    $permissions = $query->orderBy('created_at', 'DESC')->paginate(10);
+
+    // If AJAX request, return only the table partial
+    if ($request->ajax()) {
+        return view('permissions.partials.table', compact('permissions'))->render();
+    }
+
+    // Otherwise, return full page
+    return view('permissions.list', compact('permissions'));
     }
 
     //for create permission page

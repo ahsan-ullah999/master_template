@@ -3,7 +3,7 @@
   <!--begin::Head-->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>AdminLTE 4 | Register Page</title>
+    <title>Web-Xpress | Register Page</title>
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light dark" />
@@ -25,7 +25,7 @@
     <!--begin::Accessibility Features-->
     <!-- Skip links will be dynamically added by accessibility.js -->
     <meta name="supported-color-schemes" content="light dark" />
-    <link rel="preload" href="{{asset('/')}}adminlte/dist/css/adminlte.css" as="style" />
+    <link rel="preload" href="{{ asset('adminlte/dist/css/adminlte.css') }}" as="style" />
     <!--end::Accessibility Features-->
     <!--begin::Fonts-->
     <link
@@ -52,7 +52,7 @@
     />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="{{asset('/')}}adminlte/dist/css/adminlte.css" />
+    <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
   </head>
   <!--end::Head-->
@@ -60,7 +60,7 @@
   <body class="register-page bg-body-secondary">
     <div class="register-box">
       <div class="register-logo">
-        <a href="{{route('register')}}"><b>Admin</b>LTE</a>
+        <a href="{{route('register')}}"><b>Web-</b>Xpress</a>
       </div>
       <!-- /.register-logo -->
       <div class="card">
