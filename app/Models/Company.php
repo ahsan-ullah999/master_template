@@ -35,5 +35,9 @@ class Company extends Model
         'address',
         'status',
     ];
+    public function branches()
+    {
+        return $this->hasMany(Branch::class);
+    }
 
 }

@@ -1,5 +1,5 @@
     <table class="table table-bordered table-striped align-middle">
-        <thead class="table-info item-center">
+        <thead class="table-dark item-center">
             <tr>
                 
                 <th>Company<br>Name</th>

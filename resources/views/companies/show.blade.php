@@ -12,18 +12,27 @@
                 <div class="col-12 d-flex align-items-center gap-5">
                     <div>
                         <h2 class="fw-bold">{{ $company->name }}</h2>
-                        <h6>Branch : {{ $company->branch }}</h6>
-                    </div>
-
                     {{-- Show branches if available --}}
-                    {{-- @if($company->branches->count() > 0)
+                    
+                    @if($company->branches->count() > 0)
                         <p class="fw-semibold">
                             Branches:
-                            {{ $company->branches->pluck('name')->join(', ') }}
+                            @foreach($company->branches as $branch)
+                                <a href="{{ route('branches.show', $branch->id) }}" class="text-decoration-none">
+                                    {{ $branch->name }}
+                                </a>@if(!$loop->last), @endif
+                            @endforeach
                         </p>
                     @else
                         <p class="text-muted">No branches available</p>
-                    @endif --}}
+                    @endif
+
+                    
+
+                        {{-- <h6>Branch : {{ $company->branch }}</h6> --}}
+                    </div>
+
+
                     @if($company->logo)
                         <img src="{{ asset('storage/'.$company->logo) }}" 
                              class="img-thumbnail shadow-sm" 
@@ -125,9 +134,11 @@
                 <a href="{{ route('companies.index') }}" class="btn btn-secondary">
                     <i class="bi bi-arrow-left"></i> Back to List
                 </a>
+                @can('edit company')
                 <a href="{{ route('companies.edit', $company->id) }}" class="btn btn-warning">
                     <i class="bi bi-pencil-square"></i> Edit
                 </a>
+                @endcan
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductController;
@@ -50,14 +51,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/{id}/edit', [ProductController::class,'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class,'update'])->name('products.update');
     Route::delete('/products/{id}', [ProductController::class,'destroy'])->name('products.destroy');
-    //route for products
+    //route for company
 
     Route::get('/companies', [CompanyController::class,'index'])->name('companies.index');
     Route::get('/companies/create', [CompanyController::class,'create'])->name('companies.create');
     Route::post('/companies', [CompanyController::class,'store'])->name('companies.store');
     Route::get('/companies/{id}/edit', [CompanyController::class,'edit'])->name('companies.edit');
     Route::put('/companies/{company}', [CompanyController::class,'update'])->name('companies.update');
-        Route::get('/companies/{company}', [CompanyController::class, 'show'])->name('companies.show');
+    Route::get('/companies/{company}', [CompanyController::class, 'show'])->name('companies.show');
+    // Branch Routes
+    Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
+    Route::get('/branches/create', [BranchController::class, 'create'])->name('branches.create');
+    Route::post('/branches', [BranchController::class, 'store'])->name('branches.store');
+    Route::get('/branches/{branch}/edit', [BranchController::class, 'edit'])->name('branches.edit');
+    Route::put('/branches/{branch}', [BranchController::class, 'update'])->name('branches.update');
+    Route::get('/branches/{branch}', [BranchController::class, 'show'])->name('branches.show');
+    Route::put('/branches/{branch}/toggle-status', [BranchController::class,'toggleStatus'])->name('branches.toggleStatus');
+
+
 
 });
 

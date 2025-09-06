@@ -23,7 +23,7 @@
                 </td>
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->code ?? '-' }}</td>
-                @canany(['edit product','delete product'], $post)
+                @canany(['edit product','delete product'])
                 <td>
                     @can('edit product')
                     <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-warning">

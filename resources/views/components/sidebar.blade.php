@@ -38,7 +38,7 @@
                 </a>
               </li>
               <!--begin::Business Menu-->
-              <li class="nav-item {{ request()->routeIs('companies.*') ? 'menu-open' : '' }}">
+              <li class="nav-item {{ request()->routeIs('companies.*','branches.*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-building"></i>
                   <p>
@@ -56,13 +56,16 @@
                     </a>
                   </li>
                   @endcan
-
+                  @can('view branch')
                   <li class="nav-item">
-                    <a href="./UI/icons.html" class="nav-link">
+                    <a href="{{ route('branches.index') }}" 
+                    class="nav-link {{ request()->routeIs('branches.*') ? 'active' : '' }}">
                       <i class="nav-icon bi bi-diagram-3"></i>
                       <p>Branch</p>
                     </a>
                   </li>
+                  @endcan
+
                 </ul>
               </li>
                 {{-- <li class="nav-item menu-open">
