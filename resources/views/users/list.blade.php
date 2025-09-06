@@ -8,7 +8,7 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>User / List</h3>
     @can('create user')
-         <a href="#" class="btn btn-primary">Create</a>
+         <a href="{{ route('users.create') }}" class="btn btn-primary">Create</a>
     @endcan
    
   </div>

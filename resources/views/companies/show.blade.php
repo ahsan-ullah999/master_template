@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','View')
+@section('title','Company Info')
 <x-navbar/>
 @section('content')
 <x-sidebar/>

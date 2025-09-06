@@ -17,6 +17,7 @@ class UserContrioller extends Controller implements HasMiddleware
     {
         return [
             new Middleware('permission:view user', only: ['index']),
+            new Middleware('permission:create user', only: ['create']),
             new Middleware('permission:edit user', only: ['edit']),
             new Middleware('permission:delete user', only: ['delete']),
             
@@ -38,15 +39,31 @@ class UserContrioller extends Controller implements HasMiddleware
      */
     public function create()
     {
-        //
+            $roles = Role::orderBy('name','ASC')->get();
+            return view('users.create', compact('roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+  public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+            'role' => 'required|array'
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        $user->syncRoles($request->role);
+
+        return redirect()->route('users.index')->with('success','User created successfully');
     }
 
     /**

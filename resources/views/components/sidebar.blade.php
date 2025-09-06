@@ -2,16 +2,36 @@
         <!--begin::Sidebar Brand-->
         <div class="sidebar-brand">
           <!--begin::Brand Link-->
+          {{-- <a href="{{ route('companies.index') }}" class="brand-link">
+              <!--begin::Brand Image-->
+              @if($appCompany && $appCompany->logo)
+                  <img src="{{ asset('storage/'.$appCompany->logo) }}" 
+                      alt="{{ $appCompany->name }}" 
+                      class="brand-image opacity-75 shadow" />
+              @else
+                  <img src="{{ asset('adminlte/dist/assets/img/AdminLTELogo.png') }}" 
+                      alt="Default Logo" 
+                      class="brand-image opacity-75 shadow" />
+              @endif
+              <!--end::Brand Image-->
+
+              <!--begin::Brand Text-->
+              <span class="brand-text fw-bold">
+                  {{ $appCompany->name ?? 'My Company' }}
+              </span>
+              <!--end::Brand Text-->
+          </a> --}}
+
           <a href="./index.html" class="brand-link">
             <!--begin::Brand Image-->
             <img
-              src="{{ asset('adminlte/dist/assets/img/AdminLTELogo.png') }}"
-              alt="AdminLTE Logo"
+              src="{{ asset('adminlte/dist/assets/img/logo.png') }}"
+              alt=""
               class="brand-image opacity-75 shadow"
             />
             <!--end::Brand Image-->
             <!--begin::Brand Text-->
-            <span class="brand-text fw-light">AdminLTE 4</span>
+            <span class="brand-text fw-light">Web-Xpress</span>
             <!--end::Brand Text-->
           </a>
           <!--end::Brand Link-->

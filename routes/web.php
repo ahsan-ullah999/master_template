@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
     //route for user
     Route::get('/users', [UserContrioller::class,'index'])->name('users.index');
     Route::get('/users/{id}/edit', [UserContrioller::class,'edit'])->name('users.edit');
+    Route::get('/users/create', [UserContrioller::class, 'create'])->name('users.create');
+    Route::post('/users', [UserContrioller::class, 'store'])->name('users.store');
     Route::post('/users/{id}', [UserContrioller::class,'update'])->name('users.update');
     Route::delete('/users/{id}', [UserContrioller::class,'destroy'])->name('users.destroy');
 
