@@ -26,25 +26,60 @@ class UserContrioller extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-public function index(Request $request)
+    public function index(Request $request)
     {
-        $query = User::query();
+        $query = User::with('roles'); // eager load roles
 
+        // Search filter
         if ($request->search) {
-            $query->where('name', 'like', '%' . $request->search . '%')
-                // ->orWhere('role', 'like', '%' . $request->search . '%');
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
                 ->orWhere('email', 'like', '%' . $request->search . '%');
+            });
         }
 
-        $users = $query->orderBy('created_at', 'DESC')->paginate(2);
+        // Role filter
+        if ($request->role && $request->role !== 'all') {
+            $query->whereHas('roles', function($q) use ($request) {
+                $q->where('name', $request->role);
+            });
+        }
 
-        // If AJAX request, return only the table partial
+        // Sort filter
+        if ($request->sort) {
+            switch ($request->sort) {
+                case 'latest':
+                    $query->orderBy('created_at', 'DESC');
+                    break;
+                case 'oldest':
+                    $query->orderBy('created_at', 'ASC');
+                    break;
+                case 'role_asc':
+                    $query->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                        ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->select('users.*')
+                        ->orderBy('roles.name', 'ASC');
+                    break;
+                case 'role_desc':
+                    $query->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                        ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->select('users.*')
+                        ->orderBy('roles.name', 'DESC');
+                    break;
+            }
+        } else {
+            $query->orderBy('created_at', 'DESC');
+        }
+
+        $users = $query->paginate(10);
+
+        $roles = \Spatie\Permission\Models\Role::orderBy('name', 'ASC')->get();
+
         if ($request->ajax()) {
             return view('users.partials.table', compact('users'))->render();
         }
 
-        // Otherwise, return full page
-        return view('users.list', compact('users'));
+        return view('users.list', compact('users', 'roles'));
     }
 
     /**

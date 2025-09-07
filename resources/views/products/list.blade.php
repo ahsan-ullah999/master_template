@@ -19,6 +19,15 @@
                 class="form-control" 
                 placeholder="Search products...">
             </div>
+                <!-- Sort By dropdown -->
+    <div class="d-flex mb-2">
+        <select id="sortSelect" class="form-select">
+            <option value="latest">Latest</option>
+            <option value="oldest">Oldest</option>
+            <option value="name_asc">Name (A → Z)</option>
+            <option value="name_desc">Name (Z → A)</option>
+        </select>
+    </div>
             
             <!-- Add product button -->
             @can('create product')
@@ -39,43 +48,48 @@
 </div>
 
 
-    @push('scripts')
+        @push('scripts')
         <script>
-                $(document).ready(function () {
-                    // Debounced live search
-                    let delayTimer;
-                    $('#searchInput').on('keyup', function () {
-                        clearTimeout(delayTimer);
-                        delayTimer = setTimeout(function() {
-                            fetchProducts(1, $('#searchInput').val()); // reset to page 1
-                        }, 300);
-                    });
+        $(document).ready(function () {
+            let delayTimer;
 
-                    // Pagination with search term preserved
-                    $(document).on('click', '#productTable .pagination a', function (e) {
-                        e.preventDefault();
-                        let page = $(this).attr('href').split('page=')[1];
-                        let search = $('#searchInput').val();
-                        fetchProducts(page, search);
-                    });
+            // Search
+            $('#searchInput').on('keyup', function () {
+                clearTimeout(delayTimer);
+                delayTimer = setTimeout(function() {
+                    fetchProducts(1, $('#searchInput').val(), $('#sortSelect').val());
+                }, 300);
+            });
 
-                    // AJAX fetch
-                    function fetchProducts(page = 1, search = "") {
-                        $.ajax({
-                            url: "{{ route('products.index') }}?page=" + page + "&search=" + search,
-                            type: "GET",
-                            success: function (data) {
-                                $('#productTable').html(data);
-                            },
-                            error: function (xhr) {
-                                console.error("Error loading products:", xhr.responseText);
-                            }
-                        });
+            // Sort change
+            $('#sortSelect').on('change', function () {
+                fetchProducts(1, $('#searchInput').val(), $(this).val());
+            });
+
+            // Pagination
+            $(document).on('click', '#productTable .pagination a', function (e) {
+                e.preventDefault();
+                let page = $(this).attr('href').split('page=')[1];
+                fetchProducts(page, $('#searchInput').val(), $('#sortSelect').val());
+            });
+
+            // Fetch function
+            function fetchProducts(page = 1, search = "", sort = "latest") {
+                $.ajax({
+                    url: "{{ route('products.index') }}?page=" + page + "&search=" + search + "&sort=" + sort,
+                    type: "GET",
+                    success: function (data) {
+                        $('#productTable').html(data);
+                    },
+                    error: function (xhr) {
+                        console.error("Error loading products:", xhr.responseText);
                     }
                 });
-
+            }
+        });
         </script>
-    @endpush
+        @endpush
+
 
 
 

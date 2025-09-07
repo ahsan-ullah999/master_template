@@ -1,11 +1,16 @@
 <?php
 
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\FlatController;
+use App\Http\Controllers\FloorController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\SeatController;
 use App\Http\Controllers\UserContrioller;
 use Illuminate\Support\Facades\Route;
 
@@ -69,7 +74,45 @@ Route::middleware('auth')->group(function () {
     Route::put('/branches/{branch}', [BranchController::class, 'update'])->name('branches.update');
     Route::get('/branches/{branch}', [BranchController::class, 'show'])->name('branches.show');
     Route::put('/branches/{branch}/toggle-status', [BranchController::class,'toggleStatus'])->name('branches.toggleStatus');
+        // Buildings Routes
+    Route::get('/buildings', [BuildingController::class, 'index'])->name('buildings.index');
+    Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
+    Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
+    Route::get('/buildings/{building}/edit', [BuildingController::class, 'edit'])->name('buildings.edit');
+    Route::put('/buildings/{building}', [BuildingController::class, 'update'])->name('buildings.update');
+    Route::delete('/buildings/{id}', [BuildingController::class,'destroy'])->name('buildings.destroy');
 
+    // floors Routes
+    Route::get('/floors', [FloorController::class, 'index'])->name('floors.index');
+    Route::get('/floors/create', [FloorController::class, 'create'])->name('floors.create');
+    Route::post('/floors', [FloorController::class, 'store'])->name('floors.store');
+    Route::get('/floors/{floor}/edit', [FloorController::class, 'edit'])->name('floors.edit');
+    Route::put('/floors/{floor}', [FloorController::class, 'update'])->name('floors.update');
+    Route::delete('/floors/{id}', [FloorController::class,'destroy'])->name('floors.destroy');
+
+        // flate Routes
+    Route::get('/flats', [FlatController::class, 'index'])->name('flats.index');
+    Route::get('/flats/create', [FlatController::class, 'create'])->name('flats.create');
+    Route::post('/flats', [FlatController::class, 'store'])->name('flats.store');
+    Route::get('/flats/{flat}/edit', [FlatController::class, 'edit'])->name('flats.edit');
+    Route::put('/flats/{flat}', [FlatController::class, 'update'])->name('flats.update');
+    Route::delete('/flats/{id}', [FlatController::class,'destroy'])->name('flats.destroy');
+
+    // room Routes
+    Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+    Route::get('/rooms/create', [RoomController::class, 'create'])->name('rooms.create');
+    Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
+    Route::get('/rooms/{room}/edit', [RoomController::class, 'edit'])->name('rooms.edit');
+    Route::put('/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
+    Route::delete('/rooms/{id}', [RoomController::class,'destroy'])->name('rooms.destroy');
+
+    // room Routes
+    Route::get('/seats', [SeatController::class, 'index'])->name('seats.index');
+    Route::get('/seats/create', [SeatController::class, 'create'])->name('seats.create');
+    Route::post('/seats', [SeatController::class, 'store'])->name('seats.store');
+    Route::get('/seats/{seat}/edit', [SeatController::class, 'edit'])->name('seats.edit');
+    Route::put('/seats/{seat}', [SeatController::class, 'update'])->name('seats.update');
+    Route::delete('/seats/{id}', [SeatController::class,'destroy'])->name('seats.destroy');
 
 
 });

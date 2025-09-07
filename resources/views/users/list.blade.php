@@ -11,14 +11,30 @@
         <div class="d-flex align-items-center gap-2">
             <!-- Search box -->
          
-            <div class="d-flex mb-2">
-                <input 
-                type="text" 
-                name="search" 
-                id="searchInput" 
-                class="form-control" 
-                placeholder="Search users...">
-            </div>
+<div class="d-flex mb-2 gap-2">
+    <input 
+        type="text" 
+        name="search" 
+        id="searchInput" 
+        class="form-control" 
+        placeholder="Search users...">
+
+    <select id="sortSelect" class="form-select">
+        <option value="latest">Latest</option>
+        <option value="oldest">Oldest</option>
+        <option value="role_asc">Role (A → Z)</option>
+        <option value="role_desc">Role (Z → A)</option>
+    </select>
+
+    <select id="roleFilter" class="form-select">
+        <option value="all">All Roles</option>
+        @foreach($roles as $role)
+            <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
+        @endforeach
+    </select>
+</div>
+
+            
             
             <!-- Add product button -->
             @can('create user')
@@ -41,39 +57,49 @@
 
     @push('scripts')
         <script>
-                $(document).ready(function () {
-                    // Debounced live search
-                    let delayTimer;
-                    $('#searchInput').on('keyup', function () {
-                        clearTimeout(delayTimer);
-                        delayTimer = setTimeout(function() {
-                            fetchUsers(1, $('#searchInput').val()); // reset to page 1
-                        }, 300);
-                    });
+        $(document).ready(function () {
+            let delayTimer;
 
-                    // Pagination with search term preserved
-                    $(document).on('click', '#userTable .pagination a', function (e) {
-                        e.preventDefault();
-                        let page = $(this).attr('href').split('page=')[1];
-                        let search = $('#searchInput').val();
-                        fetchUsers(page, search);
-                    });
+            // Search
+            $('#searchInput').on('keyup', function () {
+                clearTimeout(delayTimer);
+                delayTimer = setTimeout(function() {
+                    fetchUsers(1, $('#searchInput').val(), $('#sortSelect').val(), $('#roleFilter').val());
+                }, 300);
+            });
 
-                    // AJAX fetch
-                    function fetchUsers(page = 1, search = "") {
-                        $.ajax({
-                            url: "{{ route('users.index') }}?page=" + page + "&search=" + search,
-                            type: "GET",
-                            success: function (data) {
-                                $('#userTable').html(data);
-                            },
-                            error: function (xhr) {
-                                console.error("Error loading users:", xhr.responseText);
-                            }
-                        });
+            // Sort
+            $('#sortSelect').on('change', function () {
+                fetchUsers(1, $('#searchInput').val(), $(this).val(), $('#roleFilter').val());
+            });
+
+            // Role filter
+            $('#roleFilter').on('change', function () {
+                fetchUsers(1, $('#searchInput').val(), $('#sortSelect').val(), $(this).val());
+            });
+
+            // Pagination
+            $(document).on('click', '#userTable .pagination a', function (e) {
+                e.preventDefault();
+                let page = $(this).attr('href').split('page=')[1];
+                fetchUsers(page, $('#searchInput').val(), $('#sortSelect').val(), $('#roleFilter').val());
+            });
+
+            // Fetch function
+            function fetchUsers(page = 1, search = "", sort = "latest", role = "all") {
+                $.ajax({
+                    url: "{{ route('users.index') }}?page=" + page + "&search=" + search + "&sort=" + sort + "&role=" + role,
+                    type: "GET",
+                    success: function (data) {
+                        $('#userTable').html(data);
+                    },
+                    error: function (xhr) {
+                        console.error("Error loading users:", xhr.responseText);
                     }
                 });
-
+            }
+        });
         </script>
     @endpush
+
 @endsection

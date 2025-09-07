@@ -22,7 +22,7 @@
               <!--end::Brand Text-->
           </a> --}}
 
-          <a href="./index.html" class="brand-link">
+          <a href="{{ route('home') }}" class="brand-link">
             <!--begin::Brand Image-->
             <img
               src="{{ asset('adminlte/dist/assets/img/logo.png') }}"
@@ -58,7 +58,7 @@
                 </a>
               </li>
               <!--begin::Business Menu-->
-              <li class="nav-item {{ request()->routeIs('companies.*','branches.*') ? 'menu-open' : '' }}">
+              <li class="nav-item {{ request()->routeIs('companies.*','branches.*','buildings.*','floors.*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-building"></i>
                   <p>
@@ -85,6 +85,20 @@
                     </a>
                   </li>
                   @endcan
+                  <li class="nav-item">
+                    <a href="{{ route('buildings.index') }}" 
+                    class="nav-link {{ request()->routeIs('buildings.*') ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-house"></i>
+                      <p>Building</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('floors.index') }}" 
+                    class="nav-link {{ request()->routeIs('floors.*') ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-star"></i>
+                      <p>Floor</p>
+                    </a>
+                  </li>
 
                 </ul>
               </li>

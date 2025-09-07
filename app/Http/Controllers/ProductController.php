@@ -24,29 +24,46 @@ class ProductController extends Controller implements HasMiddleware
 
 
     //for show products page
-public function index(Request $request)
+    public function index(Request $request)
     {
-        // $products = Product::orderBy('created_at','DESC')->paginate(2);
-        // return view('products.list',[
-        //     'products'=> $products
-        // ]);
         $query = Product::query();
 
+        // Search filter
         if ($request->search) {
             $query->where('name', 'like', '%' . $request->search . '%')
                 ->orWhere('code', 'like', '%' . $request->search . '%');
         }
 
-        $products = $query->orderBy('created_at', 'DESC')->paginate(2);
+        // Sort filter
+        if ($request->sort) {
+            switch ($request->sort) {
+                case 'name_asc':
+                    $query->orderBy('name', 'ASC');
+                    break;
+                case 'name_desc':
+                    $query->orderBy('name', 'DESC');
+                    break;
+                case 'latest':
+                    $query->orderBy('created_at', 'DESC');
+                    break;
+                case 'oldest':
+                    $query->orderBy('created_at', 'ASC');
+                    break;
+                default:
+                    $query->orderBy('created_at', 'DESC');
+            }
+        } else {
+            $query->orderBy('created_at', 'DESC'); // default
+        }
 
-        // If AJAX request, return only the table partial
+        $products = $query->paginate(10);
+
         if ($request->ajax()) {
             return view('products.partials.table', compact('products'))->render();
         }
-
-        // Otherwise, return full page
         return view('products.list', compact('products'));
     }
+
 
     //for create products
     public function create(){
