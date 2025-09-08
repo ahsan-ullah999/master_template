@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Flat;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class RoomController extends Controller
+class RoomController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view room', only: ['index']),
+            new Middleware('permission:edit room', only: ['edit']),
+            new Middleware('permission:create room', only: ['create']),
+            new Middleware('permission:delete room', only: ['delete']),
+        ];
+    }
+
     public function index()
     {
         $rooms = Room::with('flat')->paginate(10);

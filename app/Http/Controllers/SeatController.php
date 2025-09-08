@@ -5,9 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use App\Models\Seat;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class SeatController extends Controller
+class SeatController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view seat', only: ['index']),
+            new Middleware('permission:edit seat', only: ['edit']),
+            new Middleware('permission:create seat', only: ['create']),
+            new Middleware('permission:delete seat', only: ['delete']),
+        ];
+    }
+
     public function index()
     {
         $seats = Seat::with('room')->paginate(10);

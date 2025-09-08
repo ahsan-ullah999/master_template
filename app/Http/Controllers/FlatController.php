@@ -5,9 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Flat;
 use App\Models\Floor;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class FlatController extends Controller
+class FlatController extends Controller implements HasMiddleware
 {
+        public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view flat', only: ['index']),
+            new Middleware('permission:edit flat', only: ['edit']),
+            new Middleware('permission:create flat', only: ['create']),
+            new Middleware('permission:delete flat', only: ['delete']),
+        ];
+    }
+
+
     public function index()
     {
         $flats = Flat::with('floor')->paginate(10);

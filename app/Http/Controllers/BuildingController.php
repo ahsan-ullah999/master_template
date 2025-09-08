@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use App\Models\Building;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class BuildingController extends Controller
+class BuildingController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view building', only: ['index']),
+            new Middleware('permission:edit building', only: ['edit']),
+            new Middleware('permission:create building', only: ['create']),
+            new Middleware('permission:delete building', only: ['delete']),
+        ];
+    }
+
     public function index()
     {
         $buildings = Building::with('branch')->paginate(10);

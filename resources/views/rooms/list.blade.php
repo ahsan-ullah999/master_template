@@ -7,9 +7,12 @@
 <div class="container mt-3">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h2>Rooms List</h2>
+        @can('create room')
         <a href="{{ route('rooms.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Add Room
         </a>
+        @endcan
+
     </div>
 
     @if(session('success'))
@@ -24,7 +27,9 @@
                 <th>Room Name</th>
                 <th>Room Number</th>
                 <th>Status</th>
-                <th width="200">Actions</th>
+                @canany(['edit room', 'delete room'])
+                 <th width="200">Actions</th>   
+                @endcanany
             </tr>
         </thead>
         <tbody>
@@ -39,17 +44,24 @@
                             {{ ucfirst($room->status) }}
                         </span>
                     </td>
+                    @canany(['edit room', 'delete room'])
                     <td>
-                        <a href="{{ route('rooms.edit',$room->id) }}" class="btn btn-sm btn-warning">
+                        @can('edit room')
+                            <a href="{{ route('rooms.edit',$room->id) }}" class="btn btn-sm btn-warning">
                             <i class="bi bi-pencil-square"></i> Edit
-                        </a>
+                            </a>
+                        @endcan
+                        @can('delete room')
                         <form action="{{ route('rooms.destroy',$room->id) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
                             <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this room?')">
                                 <i class="bi bi-trash"></i> Delete
                             </button>
                         </form>
+                        @endcan
                     </td>
+                    @endcanany
+
                 </tr>
             @empty
                 <tr><td colspan="6" class="text-center text-muted">No room found</td></tr>

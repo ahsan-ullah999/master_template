@@ -7,9 +7,12 @@
 <div class="container mt-3">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h2>Building List</h2>
+        @can('create building')
         <a href="{{ route('buildings.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Add Building
         </a>
+        @endcan
+
     </div>
 
     @if(session('success'))
@@ -24,7 +27,9 @@
                 <th>Building Name</th>
                 <th>Address</th>
                 <th>Status</th>
-                <th width="200">Actions</th>
+                @canany(['edit building', 'delete building'])
+                    <th width="200">Actions</th>
+                @endcanany                
             </tr>
         </thead>
         <tbody>
@@ -39,17 +44,24 @@
                             {{ ucfirst($building->status) }}
                         </span>
                     </td>
+                    @canany(['edit building', 'delete building'])
                     <td>
+                        @can('edit building')
                         <a href="{{ route('buildings.edit',$building->id) }}" class="btn btn-sm btn-warning">
                             <i class="bi bi-pencil-square"></i> Edit
                         </a>
+                        @endcan
+                        @can('delete building')
                         <form action="{{ route('buildings.destroy',$building->id) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
                             <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this building?')">
                                 <i class="bi bi-trash"></i> Delete
                             </button>
                         </form>
+                        @endcan                        
                     </td>
+                    @endcanany
+                    
                 </tr>
             @empty
                 <tr><td colspan="6" class="text-center text-muted">No buildings found</td></tr>

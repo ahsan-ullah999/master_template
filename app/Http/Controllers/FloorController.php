@@ -5,9 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Building;
 use App\Models\Floor;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class FloorController extends Controller
+class FloorController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view floor', only: ['index']),
+            new Middleware('permission:edit floor', only: ['edit']),
+            new Middleware('permission:create floor', only: ['create']),
+            new Middleware('permission:delete floor', only: ['delete']),
+        ];
+    }
+
+
     public function index()
     {
         $floors = Floor::with('building')->paginate(10);

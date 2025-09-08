@@ -51,85 +51,102 @@
             >
               <li class="nav-item ">
                 <a href="{{route('dashboard')}}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                  <i class="nav-icon bi bi-speedometer"></i>
+                  <i class="nav-icon bi bi-speedometer text-warning"></i>
                   <p>
                     Dashboard
                   </p>
                 </a>
               </li>
               <!--begin::Business Menu-->
-              <li class="nav-item {{ request()->routeIs('companies.*','branches.*','buildings.*','floors.*') ? 'menu-open' : '' }}">
-                <a href="#" class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}">
-                  <i class="nav-icon bi bi-building"></i>
-                  <p>
-                    Business
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  @can('view company')
-                  <li class="nav-item">
-                    <a href="{{ route('companies.index') }}" 
-                      class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}">
-                      <i class="nav-icon bi bi-globe2"></i>
-                      <p>Company</p>
-                    </a>
-                  </li>
-                  @endcan
-                  @can('view branch')
-                  <li class="nav-item">
-                    <a href="{{ route('branches.index') }}" 
-                    class="nav-link {{ request()->routeIs('branches.*') ? 'active' : '' }}">
-                      <i class="nav-icon bi bi-diagram-3"></i>
-                      <p>Branch</p>
-                    </a>
-                  </li>
-                  @endcan
-                  <li class="nav-item">
-                    <a href="{{ route('buildings.index') }}" 
-                    class="nav-link {{ request()->routeIs('buildings.*') ? 'active' : '' }}">
-                      <i class="nav-icon bi bi-house"></i>
-                      <p>Building</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{ route('floors.index') }}" 
-                    class="nav-link {{ request()->routeIs('floors.*') ? 'active' : '' }}">
-                      <i class="nav-icon bi bi-star"></i>
-                      <p>Floor</p>
-                    </a>
-                  </li>
+              <li class="nav-item {{ request()->routeIs('companies.*','branches.*','buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'menu-open' : '' }}">
+                  <a href="#" class="nav-link {{ request()->routeIs('companies.*','branches.*','buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-building text-primary"></i>
+                      <p>
+                          Business
+                          <i class="nav-arrow bi bi-chevron-right"></i>
+                      </p>
+                  </a>
 
-                </ul>
+                  <ul class="nav nav-treeview">
+                      @can('view company')
+                      <li class="nav-item">
+                          <a href="{{ route('companies.index') }}" 
+                            class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}">
+                              <i class="nav-icon bi bi-globe2 text-success"></i>
+                              <p>Company</p>
+                          </a>
+                      </li>
+                      @endcan
+
+                      @can('view branch')
+                      <li class="nav-item">
+                          <a href="{{ route('branches.index') }}" 
+                            class="nav-link {{ request()->routeIs('branches.*') ? 'active' : '' }}">
+                              <i class="nav-icon bi bi-diagram-3 text-warning"></i>
+                              <p>Branch</p>
+                          </a>
+                      </li>
+                      @endcan
+
+                      <!-- Building Section -->
+                      <li class="nav-item {{ request()->routeIs('buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'menu-open' : '' }}">
+                        @can('view building')
+                          <a href="{{ route('buildings.index') }}" 
+                            class="nav-link {{ request()->routeIs('buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'active' : '' }}">
+                              <i class="nav-icon bi bi-house-door text-info"></i>
+                              <p>
+                                  Building
+                                  <i class="nav-arrow bi bi-chevron-right"></i>
+                              </p>
+                          </a>
+                        @endcan
+
+                          <ul class="nav nav-treeview ms-3">
+                            @can('view floor')
+                              <li class="nav-item">
+                                  <a href="{{ route('floors.index') }}" 
+                                    class="nav-link {{ request()->routeIs('floors.*') ? 'active' : '' }}">
+                                      <i class="bi bi-layers text-danger"></i>
+                                      <p>Floor</p>
+                                  </a>
+                              </li>
+                            @endcan
+                            @can('view flat')
+                              <li class="nav-item">
+                                  <a href="{{ route('flats.index') }}" 
+                                    class="nav-link {{ request()->routeIs('flats.*') ? 'active' : '' }}">
+                                      <i class="bi bi-house text-success"></i>
+                                      <p>Flat</p>
+                                  </a>
+                              </li>
+                            @endcan  
+                            @can('view room')
+                              <li class="nav-item">
+                                  <a href="{{ route('rooms.index') }}" 
+                                    class="nav-link {{ request()->routeIs('rooms.*') ? 'active' : '' }}">
+                                      <i class="bi bi-door-open text-primary"></i>
+                                      <p>Room</p>
+                                  </a>
+                              </li>
+                            @endcan  
+                            @can('view seat')
+                              <li class="nav-item">
+                                  <a href="{{ route('seats.index') }}" 
+                                    class="nav-link {{ request()->routeIs('seats.*') ? 'active' : '' }}">
+                                      <i class="bi bi-circle text-success"></i>
+                                      <p>Seat</p>
+                                  </a>
+                              </li>
+                            @endcan                                
+                          </ul>
+                      </li>
+                  </ul>
               </li>
-                {{-- <li class="nav-item menu-open">
-                <a href="#" class="nav-link">
-                  <i class="bi bi-building"></i>
-                  <p>
-                    Buseness
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="{{route('companies.index')}}" class="nav-link {{ request()->routeIs('companies.index') ? 'active' : '' }}">
-                     <i class="bi bi-globe2"></i>
-                      <p>Company</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                     <i class="bi bi-diagram-3"></i>
-                      <p>Branch</p>
-                    </a>
-                  </li>
-                </ul>
-              </li> --}}
-              <!--ending::buseness Menu-->
+
               @can('view user')
                   <li class="nav-item">           
                     <a href="{{route('users.index')}}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
-                      <i class="bi bi-person"></i>
+                      <i class="bi bi-person text-primary"></i>
                       <p>User</p>
                     </a>
                   </li>
@@ -139,7 +156,7 @@
               @can('view permission')
                     <li class="nav-item">                    
                       <a href="{{route('permissions.index')}}" class="nav-link {{ request()->routeIs('permissions.index') ? 'active' : '' }}">
-                        <i class="bi bi-key"></i>
+                        <i class="bi bi-key text-danger"></i>
                         <p>Permissions</p>
                       </a>
                     </li>
@@ -147,7 +164,7 @@
               @can('view role')
                     <li class="nav-item">                      
                       <a href="{{route('roles.index')}}" class="nav-link {{ request()->routeIs('roles.index') ? 'active' : '' }}">
-                        <i class="bi bi-shield-lock"></i>
+                        <i class="bi bi-shield-lock text-danger"></i>
                         <p>Roles</p>
                       </a>
                     </li>
@@ -155,7 +172,7 @@
               @can('view product')
                     <li class="nav-item">                      
                       <a href="{{route('products.index')}}" class="nav-link {{ request()->routeIs('products.index') ? 'active' : '' }}">
-                        <i class="bi bi-cart-fill"></i>
+                        <i class="bi bi-cart-fill text-success"></i>
                         <p>Product</p>
                       </a>
                     </li>
