@@ -2,12 +2,12 @@
         <thead class="table-dark item-center">
             <tr>
                 
-                <th>Company<br>Name</th>
-                <th>Company<br>Email</th>
-                <th>Company<br>Address</th>
-                <th>Company<br>Contact</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Contact</th>
                 <th>Status</th>
-                <th>Company<br>Logo</th>
+                <th>Logo</th>
                 @canany(['edit company', 'show company'],)
                 <th>Actions</th>
                 @endcanany

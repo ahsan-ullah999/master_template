@@ -145,17 +145,22 @@
 
               @can('view user')
                   <li class="nav-item">           
-                    <a href="{{route('users.index')}}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
+                    <a href="{{route('users.index')}}" class="nav-link {{ request()->routeIs('users.index','users.create','users.edit') ? 'active' : '' }}">
                       <i class="bi bi-person text-primary"></i>
                       <p>User</p>
                     </a>
                   </li>
               @endcan
-
+                  <li class="nav-item">           
+                    <a href="{{route('members.index')}}" class="nav-link {{ request()->routeIs('members.index','members.create','members.edit') ? 'active' : '' }}">
+                      <i class="bi bi-person text-primary"></i>
+                      <p>Member</p>
+                    </a>
+                  </li>
 
               @can('view permission')
                     <li class="nav-item">                    
-                      <a href="{{route('permissions.index')}}" class="nav-link {{ request()->routeIs('permissions.index') ? 'active' : '' }}">
+                      <a href="{{route('permissions.index')}}" class="nav-link {{ request()->routeIs('permissions.index','permissions.create','permissions.edit') ? 'active' : '' }}">
                         <i class="bi bi-key text-danger"></i>
                         <p>Permissions</p>
                       </a>
@@ -163,7 +168,7 @@
               @endcan
               @can('view role')
                     <li class="nav-item">                      
-                      <a href="{{route('roles.index')}}" class="nav-link {{ request()->routeIs('roles.index') ? 'active' : '' }}">
+                      <a href="{{route('roles.index')}}" class="nav-link {{ request()->routeIs('roles.index','roles.create','roles.edit') ? 'active' : '' }}">
                         <i class="bi bi-shield-lock text-danger"></i>
                         <p>Roles</p>
                       </a>
@@ -171,7 +176,7 @@
               @endcan
               @can('view product')
                     <li class="nav-item">                      
-                      <a href="{{route('products.index')}}" class="nav-link {{ request()->routeIs('products.index') ? 'active' : '' }}">
+                      <a href="{{route('products.index')}}" class="nav-link {{ request()->routeIs('products.index','products.create','products.edit') ? 'active' : '' }}">
                         <i class="bi bi-cart-fill text-success"></i>
                         <p>Product</p>
                       </a>

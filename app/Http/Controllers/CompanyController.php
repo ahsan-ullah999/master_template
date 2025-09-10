@@ -44,6 +44,9 @@ class CompanyController extends Controller implements HasMiddleware
 
     public function show(Company $company)
     {
+        $company->load([
+        'branches.buildings.floors.flats.rooms.seats'
+        ]);
         return view('companies.show', compact('company'));
     }
 

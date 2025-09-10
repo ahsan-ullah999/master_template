@@ -19,6 +19,10 @@
                 <input type="text" name="seat_number" value="{{ old('seat_number',$seat->seat_number ?? '') }}" class="form-control">
             </div>
             <div class="col-md-6">
+                <label class="form-label">Description *</label>
+                <input type="text" name="description" value="{{ old('description',$seat->description ?? '') }}" class="form-control">
+            </div>
+            <div class="col-md-6">
                 <label class="form-label">Status</label>
                 <select name="status" class="form-select">
                     <option value="active" {{ old('status',$seat->status ?? '')=='active'?'selected':'' }}>Active</option>

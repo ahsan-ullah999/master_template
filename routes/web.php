@@ -5,6 +5,8 @@ use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\FlatController;
 use App\Http\Controllers\FloorController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\NameController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -113,6 +115,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/seats/{seat}/edit', [SeatController::class, 'edit'])->name('seats.edit');
     Route::put('/seats/{seat}', [SeatController::class, 'update'])->name('seats.update');
     Route::delete('/seats/{id}', [SeatController::class,'destroy'])->name('seats.destroy');
+
+
+    /** Members */
+    Route::get('/members',                [MemberController::class,'index'])->name('members.index');
+    Route::get('/members/suspended',      [MemberController::class,'suspended'])->name('members.suspended');
+    Route::get('/members/create',         [MemberController::class,'create'])->name('members.create');
+    Route::post('/members',               [MemberController::class,'store'])->name('members.store');
+    Route::get('/members/{id}',           [MemberController::class,'show'])->name('members.show');
+    Route::get('/members/{id}/edit',      [MemberController::class,'edit'])->name('members.edit');
+    Route::put('/members/{id}',           [MemberController::class,'update'])->name('members.update');
+    Route::delete('/members/{id}',        [MemberController::class,'destroy'])->name('members.destroy');
+
+    Route::patch('/members/{id}/suspend',   [MemberController::class,'suspend'])->name('members.suspend');
+    Route::patch('/members/{id}/reactivate',[MemberController::class,'reactivate'])->name('members.reactivate');
+
+    /** Dependent select JSON endpoints */
+    Route::get('/members/deps/branches/{company}',  [MemberController::class,'branchesByCompany'])->name('members.deps.branches');
+    Route::get('/members/deps/buildings/{branch}',  [MemberController::class,'buildingsByBranch'])->name('members.deps.buildings');
+    Route::get('/members/deps/floors/{building}',   [MemberController::class,'floorsByBuilding'])->name('members.deps.floors');
+    Route::get('/members/deps/flats/{floor}',       [MemberController::class,'flatsByFloor'])->name('members.deps.flats');
+    Route::get('/members/deps/rooms/{flat}',        [MemberController::class,'roomsByFlat'])->name('members.deps.rooms');
+    Route::get('/members/deps/seats/{room}',        [MemberController::class,'seatsByRoom'])->name('members.deps.seats');
+
+    
 
 
 });
