@@ -19,55 +19,60 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Branch</th>
-                <th>Building Name</th>
-                <th>Address</th>
-                <th>Status</th>
-                @canany(['edit building', 'delete building'])
-                    <th width="200">Actions</th>
-                @endcanany                
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($buildings as $building)
-                <tr>
-                    <td>{{ $building->id }}</td>
-                    <td>{{ $building->branch->name }}</td>
-                    <td>{{ $building->name }}</td>
-                    <td>{{ $building->address }}</td>
-                    <td>
-                        <span class="badge bg-{{ $building->status == 'active' ? 'success' : 'secondary' }}">
-                            {{ ucfirst($building->status) }}
-                        </span>
-                    </td>
-                    @canany(['edit building', 'delete building'])
-                    <td>
-                        @can('edit building')
-                        <a href="{{ route('buildings.edit',$building->id) }}" class="btn btn-sm btn-warning">
-                            <i class="bi bi-pencil-square"></i> Edit
-                        </a>
-                        @endcan
-                        @can('delete building')
-                        <form action="{{ route('buildings.destroy',$building->id) }}" method="POST" class="d-inline">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this building?')">
-                                <i class="bi bi-trash"></i> Delete
-                            </button>
-                        </form>
-                        @endcan                        
-                    </td>
-                    @endcanany
-                    
-                </tr>
-            @empty
-                <tr><td colspan="6" class="text-center text-muted">No buildings found</td></tr>
-            @endforelse
-        </tbody>
-    </table>
-    {{ $buildings->links() }}
+        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+            <table class="table align-middle table-hover table-striped">
+                <thead class="table-light sticky-top" style="z-index: 1;">
+                    <tr>
+                        <th>Branch</th>
+                        <th>Building</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        @canany(['edit building','delete building'])
+                            <th>Actions</th>
+                        @endcanany
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($buildings as $building)
+                    <tr>
+                        <td>{{ $building->branch->name }}</td>
+                        <td>{{ $building->name }}</td>
+                        <td>{{ $building->address }}</td>
+                        <td>
+                            <span class="badge {{ $building->status == 'active' ? 'bg-success' : 'bg-secondary' }}">
+                                {{ ucfirst($building->status) }}
+                            </span>
+                        </td>
+                        @canany(['edit building','delete building'])
+                        <td >
+                            <div class="gap-2">
+                                @can('edit building')
+                                <a href="{{ route('buildings.edit',$building->id) }}" 
+                                class="btn btn-primary rounded-circle btn-sm" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                @endcan
+                                @can('delete building')
+                                <form action="{{ route('buildings.destroy',$building->id) }}" method="POST" class="d-inline">
+                                    @csrf @method('DELETE')
+                                    <button class="btn btn-danger rounded-circle btn-sm" title="Delete"
+                                            onclick="return confirm('Delete this building?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                                @endcan
+                            </div>
+                        </td>
+                        @endcanany
+                    </tr>
+                    @empty
+                    <tr><td colspan="5" class="text-center text-muted">No buildings found</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{ $buildings->links() }}
+
 </div>
 @endsection

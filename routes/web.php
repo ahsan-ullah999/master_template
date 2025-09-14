@@ -108,13 +108,16 @@ Route::middleware('auth')->group(function () {
     Route::put('/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
     Route::delete('/rooms/{id}', [RoomController::class,'destroy'])->name('rooms.destroy');
 
-    // room Routes
+    // seat Routes
     Route::get('/seats', [SeatController::class, 'index'])->name('seats.index');
     Route::get('/seats/create', [SeatController::class, 'create'])->name('seats.create');
     Route::post('/seats', [SeatController::class, 'store'])->name('seats.store');
     Route::get('/seats/{seat}/edit', [SeatController::class, 'edit'])->name('seats.edit');
     Route::put('/seats/{seat}', [SeatController::class, 'update'])->name('seats.update');
     Route::delete('/seats/{id}', [SeatController::class,'destroy'])->name('seats.destroy');
+    Route::get('/buildings/{id}/flats', [SeatController::class, 'getFlats']);
+    Route::get('/flats/{id}/rooms', [SeatController::class, 'getRooms']);
+
 
 
     /** Members */

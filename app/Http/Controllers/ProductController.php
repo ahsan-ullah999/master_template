@@ -78,7 +78,7 @@ class ProductController extends Controller implements HasMiddleware
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $product = $request->only('name', 'code');
+        $product = $request->only('name', 'code','description');
 
         if ($request->hasFile('image')) {
             $product['image'] = $request->file('image')->store('products', 'public');
@@ -104,7 +104,7 @@ class ProductController extends Controller implements HasMiddleware
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $products = $request->only('name', 'code');
+        $products = $request->only('name', 'code','description');
 
         if ($request->hasFile('image')) {
             if ($product->image) {

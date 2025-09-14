@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title','Products/Edit')
 <x-navbar/>
 @section('content')
 <x-sidebar/>
@@ -12,6 +13,12 @@
             <label class="form-label">Product Name *</label>
             <input type="text" name="name" value="{{ old('name',$product->name) }}" class="form-control @error('name') is-invalid @enderror" required>
             @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label">Description *</label>            
+            <textarea name="description" class="form-control" rows="5">{{ old('description',$product->description ?? '') }}</textarea>
+            @error('description') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
         <div class="mb-3">
