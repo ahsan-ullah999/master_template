@@ -20,6 +20,11 @@
             <textarea name="description" class="form-control" rows="5">{{ old('description',$product->description ?? '') }}</textarea>
             @error('description') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
+        <div class="mb-3">
+            <label class="form-label">Product Price</label>
+            <input type="text" name="price" value="{{ old('price',$product->price) }}" class="form-control @error('code') is-invalid @enderror">
+            @error('price') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
 
         <div class="mb-3">
             <label class="form-label">Product Code</label>

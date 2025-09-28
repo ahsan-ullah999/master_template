@@ -31,7 +31,7 @@
                             @endif
                         </div>
                         <div>
-                            <h6 class="mb-0">{{ $company->name }}</h6>
+                            <h6 class="mb-0">{{ ucfirst(strtolower($company->name)) }}</h6>
                             <small class="text-muted">{{ $company->email }}</small>
                         </div>
                     </div>
@@ -56,14 +56,14 @@
                     <div class="d-flex gap-2">
                         @can('show company')
                         <a href="{{ route('companies.show', $company->id) }}" 
-                           class="btn btn-success rounded-circle" 
+                           class="btn btn-success" 
                            title="View">
                             <i class="bi bi-eye"></i>
                         </a>
                         @endcan
                         @can('edit company')
                         <a href="{{ route('companies.edit', $company->id) }}" 
-                           class="btn btn-primary rounded-circle" 
+                           class="btn btn-primary" 
                            title="Edit">
                             <i class="bi bi-pencil"></i>
                         </a>

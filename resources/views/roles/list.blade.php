@@ -7,18 +7,18 @@
 <div class="content p-3">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Roles / List</h3>
-    @can('create role')
+    {{-- @can('create role') --}}
         <a href="{{ route('roles.create') }}" class="btn btn-primary">Create</a>
-    @endcan
+    {{-- @endcan --}}
   
 
     
   </div>
             @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif
-        <table class="table table-bordered">
+        <table class="table align-middle table-hover table-striped">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>No.</th>
                     <th>Name</th>
                     <th>Permission</th>                     
                     <th>Created</th>  
@@ -33,10 +33,10 @@
                     @foreach ($roles as $role)
                         <tr>
                             <td>
-                            {{ $role->id }}
+                            {{ $loop->iteration }}
                             </td>
                             <td>
-                            {{ $role->name }}
+                            {{ ucfirst(strtolower($role->name)) }}
                             </td>
                             <td style="max-width: 300px; white-space: normal;">
                             {{ $role->permissions->pluck('name')->implode(', ') }}
@@ -47,16 +47,20 @@
                             @canany(['edit role','delete role'])
                                 <td>
                                     @can('edit role')     
-                                    <a class="btn btn-sm btn-warning" href="{{ route('roles.edit',$role->id) }}">Edit</a>
+                                    <a class="btn btn-sm btn-primary" href="{{ route('roles.edit',$role->id) }}">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
                                     @endcan
                                     @can('delete role')
-                                    <form action="{{ route('roles.destroy',$role->id) }}" 
+                                    <form id="deleteForm{{ $role->id }}" action="{{ route('roles.destroy',$role->id) }}" 
                                             method="POST" 
                                             class="d-inline"
                                             onsubmit="return confirm('Are you sure you want to delete this role?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-form="#deleteForm{{ $role->id }}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </form>
                                     @endcan
                                 </td>

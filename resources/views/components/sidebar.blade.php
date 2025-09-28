@@ -51,7 +51,7 @@
             >
               <li class="nav-item ">
                 <a href="{{route('dashboard')}}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                  <i class="nav-icon bi bi-speedometer text-warning"></i>
+                  <i class="nav-icon bi bi-speedometer text-white"></i>
                   <p>
                     Dashboard
                   </p>
@@ -60,7 +60,7 @@
               <!--begin::Business Menu-->
               <li class="nav-item {{ request()->routeIs('companies.*','branches.*','buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'menu-open' : '' }}">
                   <a href="#" class="nav-link {{ request()->routeIs('companies.*','branches.*','buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'active' : '' }}">
-                      <i class="nav-icon bi bi-building text-primary"></i>
+                      <i class="nav-icon bi bi-hospital  text-white"></i>
                       <p>
                           Business
                           <i class="nav-arrow bi bi-chevron-right"></i>
@@ -72,7 +72,7 @@
                       <li class="nav-item">
                           <a href="{{ route('companies.index') }}" 
                             class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}">
-                              <i class="nav-icon bi bi-globe2 text-success"></i>
+                              <i class="nav-icon bi bi-globe2 text-white"></i>
                               <p>Company</p>
                           </a>
                       </li>
@@ -82,7 +82,7 @@
                       <li class="nav-item">
                           <a href="{{ route('branches.index') }}" 
                             class="nav-link {{ request()->routeIs('branches.*') ? 'active' : '' }}">
-                              <i class="nav-icon bi bi-diagram-3 text-warning"></i>
+                              <i class="nav-icon bi bi-diagram-3 text-white"></i>
                               <p>Branch</p>
                           </a>
                       </li>
@@ -93,7 +93,7 @@
                         @can('view building')
                           <a href="{{ route('buildings.index') }}" 
                             class="nav-link {{ request()->routeIs('buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'active' : '' }}">
-                              <i class="nav-icon bi bi-house-door text-info"></i>
+                              <i class="nav-icon bi bi-building text-white"></i>
                               <p>
                                   Building
                                   <i class="nav-arrow bi bi-chevron-right"></i>
@@ -106,7 +106,7 @@
                               <li class="nav-item">
                                   <a href="{{ route('floors.index') }}" 
                                     class="nav-link {{ request()->routeIs('floors.*') ? 'active' : '' }}">
-                                      <i class="bi bi-layers text-danger"></i>
+                                      <i class="bi bi-layers text-white"></i>
                                       <p>Floor</p>
                                   </a>
                               </li>
@@ -115,7 +115,7 @@
                               <li class="nav-item">
                                   <a href="{{ route('flats.index') }}" 
                                     class="nav-link {{ request()->routeIs('flats.*') ? 'active' : '' }}">
-                                      <i class="bi bi-house text-success"></i>
+                                      <i class="bi bi-house text-white"></i>
                                       <p>Flat</p>
                                   </a>
                               </li>
@@ -124,7 +124,7 @@
                               <li class="nav-item">
                                   <a href="{{ route('rooms.index') }}" 
                                     class="nav-link {{ request()->routeIs('rooms.*') ? 'active' : '' }}">
-                                      <i class="bi bi-door-open text-primary"></i>
+                                      <i class="bi bi-door-open text-white"></i>
                                       <p>Room</p>
                                   </a>
                               </li>
@@ -133,7 +133,7 @@
                               <li class="nav-item">
                                   <a href="{{ route('seats.index') }}" 
                                     class="nav-link {{ request()->routeIs('seats.*') ? 'active' : '' }}">
-                                      <i class="bi bi-circle text-success"></i>
+                                      <i class="bi bi-star text-white"></i>
                                       <p>Seat</p>
                                   </a>
                               </li>
@@ -146,14 +146,14 @@
               @can('view user')
                   <li class="nav-item">           
                     <a href="{{route('users.index')}}" class="nav-link {{ request()->routeIs('users.index','users.create','users.edit') ? 'active' : '' }}">
-                      <i class="bi bi-person text-primary"></i>
+                      <i class="bi bi-person text-white"></i>
                       <p>User</p>
                     </a>
                   </li>
               @endcan
                   <li class="nav-item">           
                     <a href="{{route('members.index')}}" class="nav-link {{ request()->routeIs('members.index','members.create','members.edit') ? 'active' : '' }}">
-                      <i class="bi bi-person text-primary"></i>
+                      <i class="bi bi-person-vcard text-white"></i>
                       <p>Member</p>
                     </a>
                   </li>
@@ -161,7 +161,7 @@
               @can('view permission')
                     <li class="nav-item">                    
                       <a href="{{route('permissions.index')}}" class="nav-link {{ request()->routeIs('permissions.index','permissions.create','permissions.edit') ? 'active' : '' }}">
-                        <i class="bi bi-key text-danger"></i>
+                        <i class="bi bi-key text-white"></i>
                         <p>Permissions</p>
                       </a>
                     </li>
@@ -169,7 +169,7 @@
               @can('view role')
                     <li class="nav-item">                      
                       <a href="{{route('roles.index')}}" class="nav-link {{ request()->routeIs('roles.index','roles.create','roles.edit') ? 'active' : '' }}">
-                        <i class="bi bi-shield-lock text-danger"></i>
+                        <i class="bi bi-shield-lock text-white"></i>
                         <p>Roles</p>
                       </a>
                     </li>
@@ -177,11 +177,38 @@
               @can('view product')
                     <li class="nav-item">                      
                       <a href="{{route('products.index')}}" class="nav-link {{ request()->routeIs('products.index','products.create','products.edit') ? 'active' : '' }}">
-                        <i class="bi bi-cart-fill text-success"></i>
+                        <i class="bi bi-cart-fill text-white"></i>
                         <p>Product</p>
                       </a>
                     </li>
               @endcan
+
+                    <li class="nav-item">                      
+                      <a href="{{route('slots.index')}}" class="nav-link {{ request()->routeIs('slots.index') ? 'active' : '' }}">
+                        <i class="bi bi-alarm text-white"></i>
+                        <p>Slots</p>
+                      </a>
+                    </li>
+
+                    <li class="nav-item">                      
+                      <a href="{{route('routines.index')}}" class="nav-link {{ request()->routeIs('routines.index') ? 'active' : '' }}">
+                        <i class="bi bi-journal-text text-white"></i>
+                        <p>Routines</p>
+                      </a>
+                    </li>
+                    
+                    <li class="nav-item">                      
+                      <a href="{{route('product_orders.index')}}" class="nav-link {{ request()->routeIs('product_orders.index') ? 'active' : '' }}">
+                        <i class="bi bi-box-seam text-white"></i>
+                        <p>Meal-Orders</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">                      
+                      <a href="{{route('product-discounts.index')}}" class="nav-link {{ request()->routeIs('product-discounts.index') ? 'active' : '' }}">
+                        <i class="bi bi-tag-fill text-white"></i>
+                        <p>Meal-Discount</p>
+                      </a>
+                    </li>
 
 
 

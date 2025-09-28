@@ -326,6 +326,159 @@
         <!-- Select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @stack('scripts')
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+              // Suspend User Alert
+             // Suspend Confirm
+            document.querySelectorAll(".suspend-btn").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    const form = btn.closest("form");
+                    Swal.fire({
+                        title: 'Suspend Member?',
+                        text: "This member will be suspended!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Yes, Suspend',
+                        width: '28rem'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+
+            // Reactivate Confirm
+            document.querySelectorAll(".reactivate-btn").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    const form = btn.closest("form");
+                    Swal.fire({
+                        title: 'Reactivate Member?',
+                        text: "This member will be reactivated!",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#28a745',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Yes, Reactivate',
+                        width: '28rem'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+
+
+        // 🔹 Toggle Status
+        document.querySelectorAll('.btn-toggle-status').forEach(btn => {
+            btn.addEventListener('click', function () {
+                let formId = this.getAttribute('data-form');
+                let status = this.getAttribute('data-status');
+                let actionText = status === 'active' ? 'Deactivate this branch?' : 'Activate this branch?';
+                let confirmText = status === 'active' ? 'Yes, deactivate it!' : 'Yes, activate it!';
+
+                Swal.fire({
+                    title: actionText,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: confirmText
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.querySelector(formId).submit();
+                    }
+                });
+            });
+        });
+
+            // 🔹 Cancel button
+            document.querySelectorAll('.btn-cancel').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    let formId = this.getAttribute('data-form');
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "This order will be cancelled!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, cancel it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.querySelector(formId).submit();
+                        }
+                    });
+                });
+            });
+
+            // 🔹 Deliver button
+            document.querySelectorAll('.btn-deliver').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    let formId = this.getAttribute('data-form');
+                    Swal.fire({
+                        title: 'Mark as delivered?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#28a745',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Yes, deliver'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.querySelector(formId).submit();
+                        }
+                    });
+                });
+            });
+
+            // 🔹 Delete button (generic for other models)
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    let formId = this.getAttribute('data-form');
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "This record will be deleted permanently!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#e3342f',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.querySelector(formId).submit();
+                        }
+                    });
+                });
+            });
+            
+            // 🔹 SweetAlert success notifications from session
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: "{{ session('success') }}",
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+            @endif
+
+            // 🔹 SweetAlert error notifications from session
+            @if($errors->any())
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    html: `{!! implode('<br>', $errors->all()) !!}`,
+                });
+            @endif
+
+        });
+      </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
   <!--end::Body-->
 </html>

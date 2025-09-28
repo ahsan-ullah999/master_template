@@ -75,10 +75,12 @@ class ProductController extends Controller implements HasMiddleware
         $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'nullable|string|max:255|unique:products,code',
+            'description'=>'nullable|string',
+            'price'=>'required|numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $product = $request->only('name', 'code','description');
+        $product = $request->only('name', 'code','description','price');
 
         if ($request->hasFile('image')) {
             $product['image'] = $request->file('image')->store('products', 'public');
@@ -101,10 +103,12 @@ class ProductController extends Controller implements HasMiddleware
         $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'nullable|string|max:255|unique:products,code,' . $product->id,
+            'description'=>'nullable|string',
+            'price'=>'nullable|numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $products = $request->only('name', 'code','description');
+        $products = $request->only('name', 'code','description','price');
 
         if ($request->hasFile('image')) {
             if ($product->image) {

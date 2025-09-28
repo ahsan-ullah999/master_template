@@ -20,7 +20,7 @@
             </div>
             <div class="col-md-12">
                 <label class="form-label">Floor Number *</label>
-                <input type="text" name="number" value="{{ old('number',$floor->number ?? '') }}" class="form-control">
+                <input type="text" name="number" value="{{ old('number',$floor->number ?? '') }}" class="form-control" required>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Status</label>

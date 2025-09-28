@@ -7,9 +7,11 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Members List</h2>
-        <a href="{{ route('members.create') }}" class="btn btn-primary">
+        @can('create member')
+            <a href="{{ route('members.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Add Member
-        </a>
+             </a>
+        @endcan
     </div>
 
     @if(session('success')) 
@@ -23,7 +25,10 @@
                     <th>Building</th>
                     <th>Seat</th>
                     <th>Status</th>
-                    <th class="text-center">Actions</th>
+                    @canany(['edit member', 'delete member', 'view member'])
+                        <th class="text-center">Actions</th>
+                    @endcanany
+                    
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +40,7 @@
                             <div class="me-3">
                                 @if($member->photo)
                                     <img src="{{ asset('storage/'.$member->photo) }}" 
-                                        alt="{{ $member->name }}" 
+                                        alt=" {{ ucfirst(strtolower($member->name )) }}" 
                                         class="rounded-circle" 
                                         width="50" height="50">
                                 @else
@@ -46,62 +51,77 @@
                                 @endif
                             </div>
                             <div>
-                                <h6 class="mb-0">{{ $member->name ?? '-' }}</h6>
+                                <h6 class="mb-0">{{ ucfirst(strtolower($member->name ?? '-')) }}</h6>
                                 <small class="text-muted">{{ $member->email ?? '-' }}</small>
                             </div>
                         </div>
                     </td>
 
                     <!-- Building -->
-                    <td>{{ $member->building->name ?? '-' }}</td>
+                    <td>{{ ucfirst(strtolower($member->building->name ?? '-')) }}</td>
 
                     <!-- Seat -->
-                    <td>{{ $member->seat->seat_number ?? '-' }}</td>
+                    <td>
+                        @if($member->seats->isEmpty())
+                            -
+                        @else
+                            {{ $member->seats->pluck('seat_number')->join(', ') }}
+                        @endif
+                    </td>
 
                     <!-- Status + Toggle -->
                     <td>
-                        @if($member->status == 'active')
-                            <form action="{{ route('members.suspend',$member->id) }}" method="POST" class="d-inline">
-                                @csrf @method('PATCH')
-                                <button type="submit" class="btn btn-sm btn-success rounded-pill">
-                                    <i class="bi bi-check-circle"></i> Active
-                                </button>
-                            </form>
-                        @else
-                            <form action="{{ route('members.reactivate',$member->id) }}" method="POST" class="d-inline">
-                                @csrf @method('PATCH')
-                                <button type="submit" class="btn btn-sm btn-danger rounded-pill">
-                                    <i class="bi bi-slash-circle"></i> Suspended
-                                </button>
-                            </form>
-                        @endif
-                    </td>
+                            @if($member->status == 'active')
+                                <form action="{{ route('members.suspend',$member->id) }}" method="POST" class="d-inline suspend-form">
+                                    @csrf @method('PATCH')
+                                    <button type="button" class="btn btn-sm btn-success suspend-btn rounded-pill">
+                                        <i class="bi bi-check-circle"></i> Active
+                                    </button>
+                                </form>
+                            @else
+                                <form action="{{ route('members.reactivate',$member->id) }}" method="POST" class="d-inline reactivate-form">
+                                    @csrf @method('PATCH')
+                                    <button type="button" class="btn btn-sm btn-danger reactivate-btn rounded-pill">
+                                        <i class="bi bi-slash-circle"></i> Suspended
+                                    </button>
+                                </form>
+                            @endif
+                        </td>
+
 
                     <!-- Actions -->
                     <td class="text-center">
                         <div class="gap-2 justify-content-center">
                             <!-- View -->
-                            <a href="{{ route('members.show',$member->id) }}" 
-                            class="btn btn-info rounded-circle {{ $member->status == 'suspended' ? 'disabled' : '' }}"
-                            title="View">
-                                <i class="bi bi-eye"></i>
-                            </a>
+                            @can('view member')
+                                <a href="{{ route('members.show',$member->id) }}" 
+                                class="btn btn-info btn-sm {{ $member->status == 'suspended' ? 'disabled' : '' }}"
+                                title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                            @endcan
+                            
 
                             <!-- Edit -->
-                            <a href="{{ route('members.edit',$member->id) }}" 
-                            class="btn btn-primary rounded-circle {{ $member->status == 'suspended' ? 'disabled' : '' }}"
-                            title="Edit">
-                                <i class="bi bi-pencil"></i>
-                            </a>
+                            @can('edit member')
+                                <a href="{{ route('members.edit',$member->id) }}" 
+                                class="btn btn-primary btn-sm {{ $member->status == 'suspended' ? 'disabled' : '' }}"
+                                title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            @endcan
+                            
 
                             <!-- Delete -->
-                            <form action="{{ route('members.destroy',$member->id) }}" method="POST" class="d-inline"
-                                onsubmit="return confirm('Delete this member?');">
+                            @can('delete member')
+                                <form id="deleteForm{{ $member->id }}" action="{{ route('members.destroy',$member->id) }}" method="POST" class="d-inline">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-danger rounded-circle" title="Delete">
+                                <button type="button" class="btn btn-danger btn-sm btn-delete" data-form="#deleteForm{{ $member->id }}">
                                     <i class="bi bi-trash"></i>
                                 </button>
-                            </form>
+                                </form>
+                            @endcan
+                            
                         </div>
                     </td>
                 </tr>

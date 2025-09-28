@@ -2,6 +2,7 @@
     <table class="table align-middle table-hover table-striped">
         <thead class="table-light sticky-top" style="z-index: 1;">
             <tr>
+                <th>No.</th>
                 <th>Building</th>
                 <th>Flat</th>
                 <th>Room</th>
@@ -15,6 +16,7 @@
         <tbody>
             @forelse($seats as $seat)
             <tr>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $seat->room->flat->floor->building->name ?? '-' }}</td>
                 <td>{{ $seat->room->flat->name ?? '-' }}</td>
                 <td>{{ $seat->room->name ?? '-' }}</td>
@@ -28,15 +30,14 @@
                 <td>
                     <div class="gap-2">
                         @can('edit seat')
-                        <a href="{{ route('seats.edit',$seat->id) }}" class="btn btn-primary rounded-circle btn-sm">
+                        <a href="{{ route('seats.edit',$seat->id) }}" class="btn btn-primary btn-sm">
                             <i class="bi bi-pencil"></i>
                         </a>
                         @endcan
                         @can('delete seat')
-                        <form action="{{ route('seats.destroy',$seat->id) }}" method="POST" class="d-inline">
+                        <form id="deleteForm{{ $seat->id }}" action="{{ route('seats.destroy',$seat->id) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
-                            <button class="btn btn-danger rounded-circle btn-sm"
-                                    onclick="return confirm('Delete this seat?')">
+                            <button type="button" class="btn btn-danger btn-delete btn-sm" data-form="#deleteForm{{ $seat->id }}">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>

@@ -11,10 +11,24 @@ use App\Models\Flat;
 use App\Models\Room;
 use App\Models\Seat;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 
-class MemberController extends Controller
+class MemberController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            // new Middleware('permission:view member', only: ['index']),
+            new Middleware('permission:edit member', only: ['edit']),
+            new Middleware('permission:create member', only: ['create']),
+            new Middleware('permission:delete member', only: ['delete']),
+        ];
+    }
+
+
+
     /** LIST (active by default) */
     public function index(Request $request)
     {
@@ -74,22 +88,25 @@ class MemberController extends Controller
             'floor_id'    => ['nullable','exists:floors,id'],
             'flat_id'     => ['nullable','exists:flats,id'],
             'room_id'     => ['nullable','exists:rooms,id'],
-            'seat_id'     => ['nullable','exists:seats,id'],
+            
+            // 🔹 seat_id is now array (multiple select)
+            'seat_id'     => ['required','array'],
+            'seat_id.*'   => ['exists:seats,id'],
 
-            'rental_id'   => ['nullable','string','max:100','unique:members,rental_id'],
+            'rental_id'   => ['required','string','max:100','unique:members,rental_id'],
 
-            'admission_date' => ['nullable','date'],
-            'effective_date' => ['nullable','date'],
+            'admission_date' => ['required','date'],
+            'effective_date' => ['required','date'],
 
-            'photo'          => ['nullable','image','mimes:jpg,jpeg,png','max:2048'],
+            'photo'          => ['required','image','mimes:jpg,jpeg,png','max:2048'],
             'name'           => ['required','string','max:255'],
-            'phone'          => ['nullable','string','max:30'],
-            'email'          => ['nullable','email','max:255'],
-            'date_of_birth'  => ['nullable','date'],
-            'national_id'    => ['nullable','string','max:100'],
+            'phone'          => ['required','string','max:30'],
+            'email'          => ['required','email','max:255'],
+            'date_of_birth'  => ['required','date'],
+            'national_id'    => ['required','string','max:100'],
 
-            'father_name'    => ['nullable','string','max:255'],
-            'father_contact' => ['nullable','string','max:30'],
+            'father_name'    => ['required','string','max:255'],
+            'father_contact' => ['required','string','max:30'],
             'mother_name'    => ['nullable','string','max:255'],
 
             'blood_group'    => ['nullable','string','max:10'],
@@ -105,8 +122,11 @@ class MemberController extends Controller
         if ($request->hasFile('photo')) {
             $data['photo'] = $request->file('photo')->store('members','public');
         }
+        // 🔹 Remove seat_id before insert to members table
+        $member = Member::create(collect($data)->except('seat_id')->toArray());
 
-        Member::create($data);
+        // 🔹 Sync many-to-many seats
+        $member->seats()->sync($data['seat_id']);
 
         return redirect()->route('members.index')->with('success','Member created successfully');
     }
@@ -167,7 +187,10 @@ class MemberController extends Controller
             'floor_id'    => ['nullable','exists:floors,id'],
             'flat_id'     => ['nullable','exists:flats,id'],
             'room_id'     => ['nullable','exists:rooms,id'],
-            'seat_id'     => ['nullable','exists:seats,id'],
+
+            // 🔹 seat_id is now array (multiple select)
+            'seat_id'     => ['required','array'],
+            'seat_id.*'   => ['exists:seats,id'],
 
             'rental_id'   => ['nullable','string','max:100','unique:members,rental_id,'.$member->id.',id'],
 
@@ -202,7 +225,11 @@ class MemberController extends Controller
             $data['photo'] = $request->file('photo')->store('members','public');
         }
 
-        $member->update($data);
+        // 🔹 Update member (except seat_id)
+        $member->update(collect($data)->except('seat_id')->toArray());
+
+        // 🔹 Sync many-to-many seats
+        $member->seats()->sync($data['seat_id']);
 
         return redirect()->route('members.index')->with('success','Member updated successfully');
     }

@@ -23,6 +23,7 @@
             <table class="table align-middle table-hover table-striped">
                 <thead class="table-light sticky-top" style="z-index: 1;">
                     <tr>
+                        <th>No.</th>
                         <th>Flat</th>
                         <th>Room Name</th>
                         <th>Room Number</th>
@@ -35,8 +36,9 @@
                 <tbody>
                     @forelse($rooms as $room)
                     <tr>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $room->flat->name }}</td>
-                        <td>{{ $room->name }}</td>
+                        <td>{{ ucfirst(strtolower($room->name)) }}</td>
                         <td>{{ $room->room_number }}</td>
                         <td>
                             <span class="badge {{ $room->status == 'active' ? 'bg-success' : 'bg-secondary' }}">
@@ -47,15 +49,14 @@
                         <td>
                             <div class="gap-2">
                                 @can('edit room')
-                                <a href="{{ route('rooms.edit',$room->id) }}" class="btn btn-primary rounded-circle btn-sm">
+                                <a href="{{ route('rooms.edit',$room->id) }}" class="btn btn-primary btn-sm">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 @endcan
                                 @can('delete room')
-                                <form action="{{ route('rooms.destroy',$room->id) }}" method="POST" class="d-inline">
+                                <form id="deleteForm{{ $room->id }}" action="{{ route('rooms.destroy',$room->id) }}" method="POST" class="d-inline">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-danger rounded-circle btn-sm"
-                                            onclick="return confirm('Delete this room?')">
+                                    <button type="button" class="btn btn-danger btn-delete btn-sm" data-form="#deleteForm{{ $room->id }}">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>

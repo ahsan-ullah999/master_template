@@ -1,6 +1,7 @@
 <table class="table table-hover align-middle">
     <thead class="table-light">
         <tr>
+            <th>No.</th>
             <th>User</th>
             <th>Created</th>
             <th>Status</th>
@@ -13,6 +14,7 @@
     <tbody>
         @forelse($users as $user)
             <tr>
+                <td>{{ $loop->iteration }}</td>
                 <!-- User Info -->
                 <td>
                     <div class="d-flex align-items-center">
@@ -21,7 +23,7 @@
                              class="rounded-circle me-2" width="45" height="45" alt="avatar"> --}}
                         <div>
                             <div class="fw-bold">
-                                {{ $user->name }}
+                                {{ ucfirst(strtolower($user->name)) }}
                             </div>
                             <small class="text-muted">
                                 {{ $user->roles->pluck('name')->implode(', ') ?: 'Member' }}
@@ -32,7 +34,7 @@
 
                 <!-- Created -->
                 <td>
-                    {{ \Carbon\Carbon::parse($user->created_at)->format('Y/m/d') }}
+                    {{ \Carbon\Carbon::parse($user->create_at)->format('d M, Y') }}
                 </td>
 
                 <!-- Status -->
@@ -47,7 +49,7 @@
 
                 <!-- Email -->
                 <td>
-                    <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
+                    {{ $user->email }}
                 </td>
 
                 <!-- Actions -->
@@ -56,22 +58,19 @@
                     <div class="gap-2 justify-content-center">
                         @can('edit user')
                         <a href="{{ route('users.edit',$user->id) }}" 
-                        class="btn btn-primary btn-sm rounded-circle"
+                        class="btn btn-primary btn-sm "
                         title="Edit">
-                            <i class="bi bi-pencil">Edit</i>
+                            <i class="bi bi-pencil"></i>
                         </a>
                         @endcan
 
                         @can('delete user')
-                        <form action="{{ route('users.destroy',$user->id) }}" 
+                        <form id="deleteForm{{ $user->id }}" action="{{ route('users.destroy',$user->id) }}" 
                             method="POST" 
-                            class="d-inline"
-                            onsubmit="return confirm('Delete this user?')">
+                            class="d-inline">
                             @csrf @method('DELETE')
-                            <button type="submit" 
-                                    class="btn btn-danger btn-sm rounded-circle"
-                                    title="Delete">
-                                <i class="bi bi-trash">Delete</i>
+                            <button type="button" class="btn btn-danger btn-delete btn-sm" data-form="#deleteForm{{ $user->id }}">
+                                <i class="bi bi-trash"></i>
                             </button>
                         </form>
                         @endcan

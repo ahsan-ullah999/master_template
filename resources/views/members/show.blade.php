@@ -12,7 +12,7 @@
             <div class="col-md-3 text-center mt-4">
                 @if($member->photo)
                     <img alt="Member Photo" class="img-circle img-thumbnail shadow-sm" 
-                         src="{{ asset('storage/'.$member->photo) }}" style="width:200px; height:200px; object-fit;">
+                         src="{{ asset('storage/'.$member->photo) }}" style="width:140px; height:150px; object-fit;">
                 @else
                     <img alt="Default Avatar" class="img-circle img-thumbnail shadow-sm" 
                          src="https://bootdey.com/img/Content/avatar/avatar7.png" style="width:200px;">
@@ -66,8 +66,10 @@
                                     <b>Building:</b>{{ $member->building->name ?? '-' }}<br>
                                     <b>Floor:</b>{{ $member->floor->name ?? '-' }} |
                                     <b>Flat:</b>{{ $member->flat->name ?? '-' }} |
-                                    <b>Room:</b>{{ $member->room->name ?? '-' }} |
-                                    <b>Seat:</b>{{ $member->seat->seat_number ?? '-' }} ({{ $member->seat->description ?? '-' }})
+                                    <b>Room:</b>{{ $member->room->name ?? '-' }} |                                   
+                                    <b>Seat:</b> {{ $member->seats->pluck('seat_number')->join(', ') ?: '-' }}
+                                    ({{ $member->seats->pluck('description')->join(', ') ?: '-' }})
+
                                 </td>
                             </tr>
                             <tr>
@@ -111,7 +113,7 @@
                     <a href="{{ route('members.index') }}" class="btn btn-secondary">
                         <i class="bi bi-arrow-left"></i> Back to List
                     </a>
-                    <a href="{{ route('members.edit', $member->id) }}" class="btn btn-warning">
+                    <a href="{{ route('members.edit', $member->id) }}" class="btn btn-primary">
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
                 </div>

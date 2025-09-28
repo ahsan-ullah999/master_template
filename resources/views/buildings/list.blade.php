@@ -23,6 +23,7 @@
             <table class="table align-middle table-hover table-striped">
                 <thead class="table-light sticky-top" style="z-index: 1;">
                     <tr>
+                        <th>No.</th>
                         <th>Branch</th>
                         <th>Building</th>
                         <th>Address</th>
@@ -35,8 +36,9 @@
                 <tbody>
                     @forelse($buildings as $building)
                     <tr>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $building->branch->name }}</td>
-                        <td>{{ $building->name }}</td>
+                        <td>{{ ucfirst(strtolower($building->name)) }}</td>
                         <td>{{ $building->address }}</td>
                         <td>
                             <span class="badge {{ $building->status == 'active' ? 'bg-success' : 'bg-secondary' }}">
@@ -48,15 +50,14 @@
                             <div class="gap-2">
                                 @can('edit building')
                                 <a href="{{ route('buildings.edit',$building->id) }}" 
-                                class="btn btn-primary rounded-circle btn-sm" title="Edit">
+                                class="btn btn-primary btn-sm" title="Edit">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 @endcan
                                 @can('delete building')
-                                <form action="{{ route('buildings.destroy',$building->id) }}" method="POST" class="d-inline">
+                                <form id="deleteForm{{ $building->id }}" action="{{ route('buildings.destroy',$building->id) }}" method="POST" class="d-inline">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-danger rounded-circle btn-sm" title="Delete"
-                                            onclick="return confirm('Delete this building?')">
+                                    <button type="button" class="btn btn-danger btn-sm btn-delete" data-form="#deleteForm{{ $building->id }}">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>

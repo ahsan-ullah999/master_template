@@ -20,6 +20,9 @@
                     <div class="col-md-6 p-3">
                         <h5 class="fw-bold text-dark mb-1">{{ $product->name }}</h5>
                         <p class="mb-1 text-muted">
+                            <strong>Price:</strong> {{ $product->price ?? 'N/A' }}
+                        </p>
+                        <p class="mb-1 text-muted">
                             <strong>Code:</strong> {{ $product->code ?? 'N/A' }}
                         </p>
                         <p class="small text-muted">
@@ -36,11 +39,10 @@
                         </a>
                         @endcan
                         @can('delete product')
-                        <form action="{{ route('products.destroy', $product->id) }}" 
+                        <form id="deleteForm{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" 
                               method="POST" class="d-inline w-100">
                             @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-danger w-100"
-                                    onclick="return confirm('Delete this product?')">
+                            <button type="button" class="btn btn-danger btn-sm btn-delete w-100" data-form="#deleteForm{{ $product->id }}">
                                 <i class="bi bi-trash"></i> Delete
                             </button>
                         </form>

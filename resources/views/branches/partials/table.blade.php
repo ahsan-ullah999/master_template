@@ -1,7 +1,8 @@
     {{-- Branches Table --}}
-    <table class="table table-bordered table-rounded table-striped align-middle">
-        <thead class="table-dark text-center">
+    <table class="table align-middle table-hover table-striped">
+        <thead class="table-light  sticky-top" style="z-index: 1;">
             <tr>
+                <th>No.</th>
                 <th>Company</th>
                 <th> Name</th>
                 <th> Email</th>
@@ -20,8 +21,9 @@
         <tbody>
             @forelse($branches as $branch)
                  <tr class="{{ $branch->status == 'inactive' ? 'table-secondary bg-secondary text-muted' : '' }}">
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $branch->company->name ?? 'N/A' }}</td>
-                    <td>{{ $branch->name }}</td>
+                    <td>{{  ucfirst(strtolower($branch->name)) }}</td>
                     <td>{{ $branch->email }}</td>
                     <td>{{ $branch->branch_id }}</td>
                     <td>{{ $branch->mobile_number }}</td>
@@ -43,9 +45,9 @@
                             </a>
                             @endcan
                             @can('deactivate branch')
-                            <form action="{{ route('branches.toggleStatus', $branch->id) }}" method="POST" class="d-inline">
+                            <form id="toggleStatusForm{{ $branch->id }}" action="{{ route('branches.toggleStatus', $branch->id) }}" method="POST" class="d-inline">
                                 @csrf @method('PUT')
-                                <button type="submit" class="btn btn-sm {{ $branch->status == 'active' ? 'btn-warning' : 'btn-secondary' }}">
+                                <button type="button" data-form="#toggleStatusForm{{ $branch->id }}" class="btn btn-sm btn-toggle-status {{ $branch->status == 'active' ? 'btn-warning' : 'btn-secondary' }}" data-status="{{ $branch->status }}">
                                     <i class="bi {{ $branch->status == 'active' ? 'bi-x-circle' : 'bi-check-circle' }}"></i>
                                     {{ $branch->status == 'active' ? 'Deactivate' : 'Activate' }}
                                 </button>

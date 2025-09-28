@@ -11,5 +11,9 @@ class Seat extends Model
     public function room() {
         return $this->belongsTo(Room::class);
     }
+    public function members()
+    {
+        return $this->belongsToMany(Member::class, 'member_seat')->withTimestamps();
+    }
 
 }

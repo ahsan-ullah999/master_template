@@ -20,7 +20,7 @@
             </div>
             <div class="col-md-12">
                 <label class="form-label">Address</label>
-                <input type="text" name="address" value="{{ old('address',$building->address ?? '') }}" class="form-control">
+                <input type="text" name="address" value="{{ old('address',$building->address ?? '') }}" class="form-control" required>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Status</label>

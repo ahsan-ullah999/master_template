@@ -1,7 +1,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>#</th>
+            <th>No.</th>
             <th>Name</th>
             <th>Created</th>
             @canany(['edit permission','delete permission'])
@@ -12,23 +12,26 @@
     <tbody>
         @forelse ($permissions as $permission)
             <tr>
-                <td>{{ $permission->id }}</td>
-                <td>{{ $permission->name }}</td>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ ucfirst(strtolower($permission->name )) }}</td>
                 <td>{{ \Carbon\Carbon::parse($permission->created_at)->format('d M, Y') }}</td>
                 @canany(['edit permission','delete permission'])
                   <td>
                       @can('edit permission')
-                        <a class="btn btn-sm btn-warning" href="{{ route('permissions.edit',$permission->id) }}">Edit</a>
+                        <a class="btn btn-sm btn-primary" href="{{ route('permissions.edit',$permission->id) }}">
+                            <i class="bi bi-pencil"></i>
+                        </a>
                       @endcan
 
                       @can('delete permission')          
-                        <form action="{{ route('permissions.destroy',$permission->id) }}" 
+                        <form id="deleteForm{{ $permission->id }}" action="{{ route('permissions.destroy',$permission->id) }}" 
                               method="POST" 
-                              class="d-inline"
-                              onsubmit="return confirm('Are you sure you want to delete this permission?');">
+                              class="d-inline">
                           @csrf
                           @method('DELETE')
-                          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                          <button type="button" class="btn btn-danger btn-sm btn-delete" data-form="#deleteForm{{ $permission->id }}">
+                            <i class="bi bi-trash"></i>
+                          </button>
                         </form>
                       @endcan
                   </td>

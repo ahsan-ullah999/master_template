@@ -9,6 +9,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\NameController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductOrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
@@ -17,14 +18,19 @@ use App\Http\Controllers\UserContrioller;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home');
-})->name('home');
+    return view('auth.login');
+    })->name('login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::middleware('auth')->group(function () {
+    Route::get('/', function(){
+    return view('home');
+    })->name('home');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -51,7 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles/create', [RoleController::class,'create'])->name('roles.create');
     Route::post('/roles', [RoleController::class,'store'])->name('roles.store');
     Route::get('/roles/{id}/edit', [RoleController::class,'edit'])->name('roles.edit');
-    Route::post('/roles/{id}', [RoleController::class,'update'])->name('roles.update');
+    Route::put('/roles/{id}', [RoleController::class,'update'])->name('roles.update');
     Route::delete('/roles/{id}', [RoleController::class,'destroy'])->name('roles.destroy');
     //route for products
     Route::get('/products', [ProductController::class,'index'])->name('products.index');
@@ -60,6 +66,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/{id}/edit', [ProductController::class,'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class,'update'])->name('products.update');
     Route::delete('/products/{id}', [ProductController::class,'destroy'])->name('products.destroy');
+    // Slots
+    Route::resource('slots', \App\Http\Controllers\SlotController::class);
+    // Routines
+    Route::resource('routines', \App\Http\Controllers\RoutineController::class);
+    // Product discount
+    Route::resource('product-discounts', \App\Http\Controllers\ProductDiscountController::class);
+
+    // Product orders (members)
+    Route::get('product-orders', [ProductOrderController::class,'index'])->name('product_orders.index');
+    Route::get('product-orders/create', [ProductOrderController::class,'create'])->name('product_orders.create');
+    Route::post('product-orders', [ProductOrderController::class,'store'])->name('product_orders.store');
+    Route::get('product-orders/{product_order}', [ProductOrderController::class,'show'])->name('product_orders.show');
+    // deliver/cancel
+    Route::patch('product-orders/{id}/deliver', [ProductOrderController::class,'deliver'])->name('product_orders.deliver');
+    Route::patch('product-orders/{id}/cancel', [ProductOrderController::class,'cancel'])->name('product_orders.cancel');
+    // Member self-order (frontend)
+    
+    // Route::get('my-orders/create', [ProductOrderController::class, 'memberCreate'])->name('member_orders.create');
+    // Route::post('my-orders', [ProductOrderController::class, 'memberStore'])->name('member_orders.store');
+    // Route::get('my-orders', [ProductOrderController::class, 'memberIndex'])->name('member_orders.index');
     //route for company
 
     Route::get('/companies', [CompanyController::class,'index'])->name('companies.index');

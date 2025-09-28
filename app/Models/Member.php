@@ -31,4 +31,11 @@ class Member extends Model
     /** Scopes */
     public function scopeActive($q)    { $q->where('status', 'active'); }
     public function scopeSuspended($q) { $q->where('status', 'suspended'); }
+
+    // Member.php
+    public function seats()
+    {
+        return $this->belongsToMany(Seat::class, 'member_seat'); 
+    }
+
 }

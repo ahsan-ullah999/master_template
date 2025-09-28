@@ -16,7 +16,7 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">Seat Number *</label>
-                <input type="text" name="seat_number" value="{{ old('seat_number',$seat->seat_number ?? '') }}" class="form-control">
+                <input type="text" name="seat_number" value="{{ old('seat_number',$seat->seat_number ?? '') }}" class="form-control" required>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Description *</label>

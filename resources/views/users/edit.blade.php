@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Create Permission')
+@section('title','User Edit')
 <x-navbar/>
 @section('content')
 <x-sidebar/>
