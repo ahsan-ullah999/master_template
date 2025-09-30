@@ -24,6 +24,8 @@ class MemberController extends Controller implements HasMiddleware
             new Middleware('permission:edit member', only: ['edit']),
             new Middleware('permission:create member', only: ['create']),
             new Middleware('permission:delete member', only: ['delete']),
+            new Middleware('permission:suspend member', only: ['suspend']),
+            new Middleware('permission:reactivate member', only: ['reactivate']),
         ];
     }
 
@@ -100,8 +102,8 @@ class MemberController extends Controller implements HasMiddleware
 
             'photo'          => ['required','image','mimes:jpg,jpeg,png','max:2048'],
             'name'           => ['required','string','max:255'],
-            'phone'          => ['required','string','max:30'],
-            'email'          => ['required','email','max:255'],
+            'phone'          => ['required','string','max:30','unique:members'],
+            'email'          => ['required','email','unique:members','max:255'],
             'date_of_birth'  => ['required','date'],
             'national_id'    => ['required','string','max:100'],
 
@@ -199,8 +201,8 @@ class MemberController extends Controller implements HasMiddleware
 
             'photo'          => ['nullable','image','mimes:jpg,jpeg,png','max:2048'],
             'name'           => ['nullable','string','max:255'],
-            'phone'          => ['nullable','string','max:30'],
-            'email'          => ['nullable','email','max:255'],
+            'phone'          => ['nullable','string','unique:members,phone,'.$id.',id','max:30'],
+            'email'          => ['nullable','max:255','unique:members,email,'.$id.',id'],
             'date_of_birth'  => ['nullable','date'],
             'national_id'    => ['nullable','string','max:100'],
 

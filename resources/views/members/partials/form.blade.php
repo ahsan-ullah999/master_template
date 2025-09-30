@@ -47,9 +47,18 @@
                             <input type="text" name="mother_name" value="{{ old('mother_name',$member->mother_name ?? '') }}" class="form-control" required>
                         </div>
 
+                         {{-- Blood Group (Dropdown) --}}
                         <div class="col-md-3">
-                            <label class="form-label">Blood Group*</label>
-                            <input type="text" name="blood_group" value="{{ old('blood_group',$member->blood_group ?? '') }}" class="form-control" required>
+                            <label class="form-label">Blood Group</label>
+                            <select name="blood_group" class="form-select @error('blood_group') is-invalid @enderror">
+                                <option value="">Select Blood Group</option>
+                                @foreach(['A+','A-','B+','B-','O+','O-','AB+','AB-'] as $bg)
+                                    <option value="{{ $bg }}" {{ old('blood_group',$member->blood_group ?? '') == $bg ? 'selected' : '' }}>
+                                        {{ $bg }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('blood_group') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
                         <div class="col-md-3">
@@ -73,23 +82,27 @@
                             <textarea name="permanent_address" class="form-control" required>{{ old('permanent_address',$member->permanent_address ?? '') }}</textarea>
                         </div>
                      
-                        <div class="col-md-4">
-                            <label class="form-label">Upload Photo*</label>
-                            <input type="file" name="photo" id="photoInput" class="form-control" accept="image/*">
+                         {{-- Photo Upload --}}
+                            <div class="col-md-4">
+                                <label class="form-label">Upload Photo* (Passport Size)</label>
+                                <input type="file" name="photo" id="photoInput" 
+                                    class="form-control @error('photo') is-invalid @enderror" 
+                                    accept="image/*"
+                                    @if(empty($member) || empty($member->photo)) required @endif>
+                                @error('photo') <div class="invalid-feedback">{{ $message }}</div> @enderror
 
-
-                            <div class="mt-2">
-                                <img id="photoPreview" 
-                                    src="{{ !empty($member->photo) ? asset('storage/'.$member->photo) : '' }}" 
-                                    class="rounded" width="100" 
-                                    style="{{ empty($member->photo) ? 'display:none;' : '' }}">
+                                <div class="mt-2">
+                                    <img id="photoPreview" 
+                                        src="{{ !empty($member->photo) ? asset('storage/'.$member->photo) : '' }}" 
+                                        class="rounded" width="100" 
+                                        style="{{ empty($member->photo) ? 'display:none;' : '' }}">
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ================= PLACEMENT INFO ================= -->
+        <!-- ================= PLACEMENT INFO ================= -->
             <div class="card shadow-sm border-0 rounded-3 mb-4">
                 <div class="card-header bg-secondary text-white fw-bold">
                     Placement & Admission
@@ -97,107 +110,148 @@
                 <div class="card-body">
                     <div class="row g-3">
 
+                        {{-- Company --}}
                         <div class="col-md-3">
                             <label class="form-label">Company *</label>
-                            <select name="company_id" id="company_id" class="form-select select2" required>
+                            <select name="company_id" id="company_id" 
+                                    class="form-select select2 @error('company_id') is-invalid @enderror" required>
                                 <option value="">Select Company</option>
                                 @foreach($companies as $company)
-                                    <option value="{{ $company->id }}" {{ old('company_id',$member->company_id ?? '') == $company->id ? 'selected' : '' }}>
+                                    <option value="{{ $company->id }}" 
+                                        {{ old('company_id',$member->company_id ?? '') == $company->id ? 'selected' : '' }}>
                                         {{ $company->name }}
                                     </option>
                                 @endforeach
                             </select>
+                            @error('company_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
+                        {{-- Branch --}}
                         <div class="col-md-3">
                             <label class="form-label">Branch *</label>
-                            <select name="branch_id" id="branch_id" class="form-select select2" required>
-                                @foreach ( $branches as $branch )                                 
-                                <option value="{{ $branch->id }}" {{ old('branch_id',$member->branch_id ?? '') == $branch->id ? 'selected' : '' }}>
+                            <select name="branch_id" id="branch_id" 
+                                    class="form-select select2 @error('branch_id') is-invalid @enderror" required>
+                                <option value="">Select Branch</option>
+                                @foreach ($branches as $branch)                                 
+                                    <option value="{{ $branch->id }}" 
+                                        {{ old('branch_id',$member->branch_id ?? '') == $branch->id ? 'selected' : '' }}>
                                         {{ $branch->name }}
-                                </option>
+                                    </option>
                                 @endforeach
                             </select>
+                            @error('branch_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
+                        {{-- Building --}}
                         <div class="col-md-3">
                             <label class="form-label">Building *</label>
-                            <select name="building_id" id="building_id" class="form-select select2" required>
-                                @foreach ( $buildings as $building )                                 
-                                <option value="{{ $building->id }}" {{ old('building_id',$member->building_id ?? '') == $building->id ? 'selected' : '' }}>
+                            <select name="building_id" id="building_id" 
+                                    class="form-select select2 @error('building_id') is-invalid @enderror" required>
+                                <option value="">Select Building</option>
+                                @foreach ($buildings as $building)                                 
+                                    <option value="{{ $building->id }}" 
+                                        {{ old('building_id',$member->building_id ?? '') == $building->id ? 'selected' : '' }}>
                                         {{ $building->name }}
-                                </option>
+                                    </option>
                                 @endforeach
                             </select>
+                            @error('building_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
+                        {{-- Floor --}}
                         <div class="col-md-3">
                             <label class="form-label">Floor *</label>
-                            <select name="floor_id" id="floor_id" class="form-select select2" required>
-                                @foreach ( $floors as $floor )                                 
-                                <option value="{{ $floor->id }}" {{ old('floor_id',$member->floor_id ?? '') == $floor->id ? 'selected' : '' }}>
+                            <select name="floor_id" id="floor_id" 
+                                    class="form-select select2 @error('floor_id') is-invalid @enderror" required>
+                                <option value="">Select Floor</option>
+                                @foreach ($floors as $floor)                                 
+                                    <option value="{{ $floor->id }}" 
+                                        {{ old('floor_id',$member->floor_id ?? '') == $floor->id ? 'selected' : '' }}>
                                         {{ $floor->name }}
-                                </option>
+                                    </option>
                                 @endforeach
                             </select>
+                            @error('floor_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
+                        {{-- Flat --}}
                         <div class="col-md-3">
                             <label class="form-label">Flat *</label>
-                            <select name="flat_id" id="flat_id" class="form-select select2" required>
-                                @foreach ( $flats as $flat )                                 
-                                <option value="{{ $flat->id }}" {{ old('flat_id',$member->flat_id ?? '') == $flat->id ? 'selected' : '' }}>
+                            <select name="flat_id" id="flat_id" 
+                                    class="form-select select2 @error('flat_id') is-invalid @enderror" required>
+                                <option value="">Select Flat</option>
+                                @foreach ($flats as $flat)                                 
+                                    <option value="{{ $flat->id }}" 
+                                        {{ old('flat_id',$member->flat_id ?? '') == $flat->id ? 'selected' : '' }}>
                                         {{ $flat->name }}
-                                </option>
+                                    </option>
                                 @endforeach
                             </select>
+                            @error('flat_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
+                        {{-- Room --}}
                         <div class="col-md-3">
                             <label class="form-label">Room *</label>
-                            <select name="room_id" id="room_id" class="form-select select2" required>
-                                @foreach ( $rooms as $room )                                 
-                                <option value="{{ $room->id }}" {{ old('room_id',$member->room_id ?? '') == $room->id ? 'selected' : '' }}>
+                            <select name="room_id" id="room_id" 
+                                    class="form-select select2 @error('room_id') is-invalid @enderror" required>
+                                <option value="">Select Room</option>
+                                @foreach ($rooms as $room)                                 
+                                    <option value="{{ $room->id }}" 
+                                        {{ old('room_id',$member->room_id ?? '') == $room->id ? 'selected' : '' }}>
                                         {{ $room->name }}
-                                </option>
+                                    </option>
                                 @endforeach
                             </select>
+                            @error('room_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
+                        {{-- Seats (multiple) --}}
                         <div class="col-md-3">
                             <label class="form-label">Seats *</label>
-                            <select name="seat_id[]" id="seat_id" class="form-select select2" multiple required>
+                            <select name="seat_id[]" id="seat_id" 
+                                    class="form-select select2 @error('seat_id') is-invalid @enderror" multiple required>
                                 @foreach ($seats as $seat)
                                     <option value="{{ $seat->id }}"
-                                        @if(collect(old('seat_id', isset($member) ? $member->seats->pluck('id')->toArray() : []))->contains($seat->id)) selected @endif>
+                                        @if(collect(old('seat_id', isset($member) ? $member->seats->pluck('id')->toArray() : []))->contains($seat->id)) 
+                                            selected 
+                                        @endif>
                                         {{ $seat->seat_number }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('seat_id') <small class="text-danger">{{ $message }}</small> @enderror
+                            @error('seat_id') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         </div>
 
-
-
+                        {{-- Rental ID --}}
                         <div class="col-md-3">
                             <label class="form-label">Rental ID*</label>
-                            <input type="text" name="rental_id" value="{{ old('rental_id',$member->rental_id ?? '') }}" class="form-control" required>
+                            <input type="text" name="rental_id" 
+                                value="{{ old('rental_id',$member->rental_id ?? '') }}" 
+                                class="form-control @error('rental_id') is-invalid @enderror" required>
+                            @error('rental_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
+                        {{-- Admission Date --}}
                         <div class="col-md-3">
                             <label class="form-label">Admission Date*</label>
-                            <input type="date" name="admission_date" value="{{ old('admission_date',$member->admission_date ?? '') }}" class="form-control" required>
+                            <input type="date" name="admission_date" 
+                                value="{{ old('admission_date',$member->admission_date ?? '') }}" 
+                                class="form-control @error('admission_date') is-invalid @enderror" required>
+                            @error('admission_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
+                        {{-- Effective Date --}}
                         <div class="col-md-3">
                             <label class="form-label">Effective Date*</label>
-                            <input type="date" name="effective_date" value="{{ old('effective_date',$member->effective_date ?? '') }}" class="form-control" required>
+                            <input type="date" name="effective_date" 
+                                value="{{ old('effective_date',$member->effective_date ?? '') }}" 
+                                class="form-control @error('effective_date') is-invalid @enderror" required>
+                            @error('effective_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                     </div>
                 </div>
             </div>
-
-
     </div>
 {{-- JS for live preview --}}
 @push('scripts')

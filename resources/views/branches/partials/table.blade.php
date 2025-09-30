@@ -40,8 +40,8 @@
                         <div class="d-inline gap-2">
                             @can('edit branch')
                             <a href="{{ $branch->status == 'active' ? route('branches.edit', $branch->id) : '#' }}"
-                            class="btn btn-sm btn-primary {{ $branch->status == 'inactive' ? 'disabled' : '' }}">
-                                <i class="bi bi-pencil-square"></i> Edit
+                            class="btn btn-primary {{ $branch->status == 'inactive' ? 'disabled' : '' }}">
+                                <i class="bi bi-pencil-square"></i>
                             </a>
                             @endcan
                             @can('deactivate branch')

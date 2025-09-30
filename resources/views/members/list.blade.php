@@ -24,7 +24,10 @@
                     <th>Name</th>
                     <th>Building</th>
                     <th>Seat</th>
-                    <th>Status</th>
+                    @canany(['suspend member', 'reactivate member'])
+                    <th>Status</th>                        
+                    @endcanany
+
                     @canany(['edit member', 'delete member', 'view member'])
                         <th class="text-center">Actions</th>
                     @endcanany
@@ -70,22 +73,26 @@
                     </td>
 
                     <!-- Status + Toggle -->
-                    <td>
+                        <td>                         
                             @if($member->status == 'active')
+                             @can('suspend member')
                                 <form action="{{ route('members.suspend',$member->id) }}" method="POST" class="d-inline suspend-form">
                                     @csrf @method('PATCH')
                                     <button type="button" class="btn btn-sm btn-success suspend-btn rounded-pill">
                                         <i class="bi bi-check-circle"></i> Active
                                     </button>
                                 </form>
+                              @endcan   
                             @else
+                            @can('reactivate member')
                                 <form action="{{ route('members.reactivate',$member->id) }}" method="POST" class="d-inline reactivate-form">
                                     @csrf @method('PATCH')
                                     <button type="button" class="btn btn-sm btn-danger reactivate-btn rounded-pill">
                                         <i class="bi bi-slash-circle"></i> Suspended
                                     </button>
                                 </form>
-                            @endif
+                            @endcan                               
+                            @endif                           
                         </td>
 
 

@@ -63,7 +63,7 @@ class BranchController extends Controller implements HasMiddleware
             'company_id' => 'required|exists:companies,id',
             'name'       => 'required|string|max:255',
             'branch_id'  => 'required|string|max:100|unique:branches,branch_id',
-            'email'      => 'required|email',
+            'email'      => 'required|email|unique:branches',
             'mobile_number' => 'required|string|max:20',
             'status'     => 'nullable|in:active,inactive',
         ]);
@@ -86,7 +86,7 @@ class BranchController extends Controller implements HasMiddleware
             'company_id' => 'required|exists:companies,id',
             'name'       => 'required|string|max:255',
             'branch_id'  => 'required|string|max:100|unique:branches,branch_id,'.$branch->id,
-            'email'      => 'required|email',
+            'email'      => 'required|email|unique:branches,email,'.$branch->id,
             'mobile_number' => 'required|string|max:20',
         ]);
 

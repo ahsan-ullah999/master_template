@@ -32,23 +32,23 @@ class ProductOrderController extends Controller implements HasMiddleware
      * Display a listing of the resource.
      */
     // index
-    public function index(Request $r)
+    public function index(Request $request)
     {
-        $query = ProductOrder::with(['items.product','slot','member']);
-        if ($r->member_id) {
-            $query->where('member_id', $r->member_id);
+        $query = ProductOrder::query();
+
+        if ($request->filled('order_date')) {
+            $query->whereDate('order_date', $request->order_date);
         }
 
-        $orders = $query->orderBy('order_date','desc')->paginate(10);
-
-        // Attach discount info for each order
-        foreach ($orders as $order) {
-            $totalQty = $order->items->sum('qty');
-            $order->calculated_discount = ProductDiscount::discountAmountFor($totalQty, (float) $order->total);
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
         }
+
+        $orders = $query->latest()->paginate(20);
 
         return view('product_orders.list', compact('orders'));
     }
+
 
 
 

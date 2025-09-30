@@ -7,6 +7,7 @@
                 <th>Flat</th>
                 <th>Room</th>
                 <th>Seat Number</th>
+                <th>Description</th>
                 <th>Status</th>
                 @canany(['edit seat','delete seat'])
                     <th>Actions</th>
@@ -21,6 +22,7 @@
                 <td>{{ $seat->room->flat->name ?? '-' }}</td>
                 <td>{{ $seat->room->name ?? '-' }}</td>
                 <td>{{ $seat->seat_number }}</td>
+                <td>{{ $seat->description }}</td>
                 <td>
                     <span class="badge {{ $seat->status == 'active' ? 'bg-success' : 'bg-secondary' }}">
                         {{ ucfirst($seat->status) }}

@@ -150,7 +150,7 @@ class UserContrioller extends Controller implements HasMiddleware
             'email'=>'required|email|unique:users,email,'.$id.',id'
         ]);
         if($validator->fails()){
-            return redirect()->route('users.edit',$id)->withInput()->withErrors('$validator');
+            return redirect()->route('users.edit',$id)->withInput()->withErrors('The email has already been taken.');
         }
         $user->name=$request->name;
         $user->email=$request->email;

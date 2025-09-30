@@ -22,18 +22,26 @@
               <!--end::Brand Text-->
           </a> --}}
 
-          <a href="{{ route('home') }}" class="brand-link">
-            <!--begin::Brand Image-->
-            <img
-              src="{{ asset('adminlte/dist/assets/img/logo.png') }}"
-              alt=""
-              class="brand-image opacity-75 shadow"
-            />
-            <!--end::Brand Image-->
-            <!--begin::Brand Text-->
-            <span class="brand-text fw-light">Web-Xpress</span>
-            <!--end::Brand Text-->
+          <a href="{{ route('home') }}" class="brand-link d-flex align-items-center justify-content-between">
+              <!--begin::Brand Image-->
+              <img
+                src="{{ asset('adminlte/dist/assets/img/logo.png') }}"
+                alt=""
+                class="brand-image opacity-75 shadow"
+              />
+              <!--end::Brand Image-->
+
+              <!--begin::Brand Text-->
+              <span class="brand-text fw-light">Web-Xpress</span>
+              <!--end::Brand Text-->
+
+              <!--begin::Sidebar Toggle Button-->
+              <button class="btn btn-outline-secondary btn-sm text-white ms-5" data-lte-toggle="sidebar" type="button" title="Toggle Sidebar">
+                  <i class="bi bi-chevron-double-left"></i>
+              </button>
+              <!--end::Sidebar Toggle Button-->
           </a>
+
           <!--end::Brand Link-->
         </div>
         <!--end::Sidebar Brand-->
@@ -146,14 +154,14 @@
               @can('view user')
                   <li class="nav-item">           
                     <a href="{{route('users.index')}}" class="nav-link {{ request()->routeIs('users.index','users.create','users.edit') ? 'active' : '' }}">
-                      <i class="bi bi-person text-white"></i>
+                      <i class="bi bi-person text-white mt-1"></i>
                       <p>User</p>
                     </a>
                   </li>
               @endcan
                   <li class="nav-item">           
                     <a href="{{route('members.index')}}" class="nav-link {{ request()->routeIs('members.index','members.create','members.edit') ? 'active' : '' }}">
-                      <i class="bi bi-person-vcard text-white"></i>
+                      <i class="bi bi-person-vcard text-white mt-1"></i>
                       <p>Member</p>
                     </a>
                   </li>
@@ -161,7 +169,7 @@
               @can('view permission')
                     <li class="nav-item">                    
                       <a href="{{route('permissions.index')}}" class="nav-link {{ request()->routeIs('permissions.index','permissions.create','permissions.edit') ? 'active' : '' }}">
-                        <i class="bi bi-key text-white"></i>
+                        <i class="bi bi-key text-white mt-1"></i>
                         <p>Permissions</p>
                       </a>
                     </li>
@@ -169,7 +177,7 @@
               @can('view role')
                     <li class="nav-item">                      
                       <a href="{{route('roles.index')}}" class="nav-link {{ request()->routeIs('roles.index','roles.create','roles.edit') ? 'active' : '' }}">
-                        <i class="bi bi-shield-lock text-white"></i>
+                        <i class="bi bi-shield-lock text-white mt-1"></i>
                         <p>Roles</p>
                       </a>
                     </li>
@@ -177,7 +185,7 @@
               @can('view product')
                     <li class="nav-item">                      
                       <a href="{{route('products.index')}}" class="nav-link {{ request()->routeIs('products.index','products.create','products.edit') ? 'active' : '' }}">
-                        <i class="bi bi-cart-fill text-white"></i>
+                        <i class="bi bi-cart-fill text-white mt-1"></i>
                         <p>Product</p>
                       </a>
                     </li>
@@ -185,27 +193,27 @@
 
                     <li class="nav-item">                      
                       <a href="{{route('slots.index')}}" class="nav-link {{ request()->routeIs('slots.index') ? 'active' : '' }}">
-                        <i class="bi bi-alarm text-white"></i>
+                        <i class="bi bi-alarm text-white mt-1"></i>
                         <p>Slots</p>
                       </a>
                     </li>
 
                     <li class="nav-item">                      
                       <a href="{{route('routines.index')}}" class="nav-link {{ request()->routeIs('routines.index') ? 'active' : '' }}">
-                        <i class="bi bi-journal-text text-white"></i>
+                        <i class="bi bi-journal-text text-white mt-1"></i>
                         <p>Routines</p>
                       </a>
                     </li>
                     
                     <li class="nav-item">                      
                       <a href="{{route('product_orders.index')}}" class="nav-link {{ request()->routeIs('product_orders.index') ? 'active' : '' }}">
-                        <i class="bi bi-box-seam text-white"></i>
+                        <i class="bi bi-box-seam text-white mt-1"></i>
                         <p>Meal-Orders</p>
                       </a>
                     </li>
                     <li class="nav-item">                      
                       <a href="{{route('product-discounts.index')}}" class="nav-link {{ request()->routeIs('product-discounts.index') ? 'active' : '' }}">
-                        <i class="bi bi-tag-fill text-white"></i>
+                        <i class="bi bi-tag-fill text-white mt-1"></i>
                         <p>Meal-Discount</p>
                       </a>
                     </li>

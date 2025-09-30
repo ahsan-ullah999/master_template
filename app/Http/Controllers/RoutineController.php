@@ -28,18 +28,28 @@ class RoutineController extends Controller implements HasMiddleware
     {
         $query = Routine::with(['slot','items.product','items.alternative','building','company','branch']);
 
-        // search: we wrap into a single where to avoid or precedence issues
+        // 🔹 search
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->whereHas('slot', fn($q2) => $q2->where('name', 'like', "%$search%"))
-                  ->orWhereHas('items.product', fn($q2) => $q2->where('name', 'like', "%$search%"))
-                  ->orWhereHas('items.alternative', fn($q2) => $q2->where('name', 'like', "%$search%"))
-                  ->orWhere('date', 'like', "%$search%");
+                ->orWhereHas('items.product', fn($q2) => $q2->where('name', 'like', "%$search%"))
+                ->orWhereHas('items.alternative', fn($q2) => $q2->where('name', 'like', "%$search%"))
+                ->orWhere('date', 'like', "%$search%");
             });
         }
 
-        // sort
+        // 🔹 filter by date (for Dashboard “More info” links)
+        if ($request->filled('date')) {
+            $date = \Carbon\Carbon::parse($request->date);
+
+            $query->where(function($q) use ($date) {
+                $q->whereDate('date', $date)
+                ->orWhere('day_of_week', $date->dayOfWeek);
+            });
+        }
+
+        // 🔹 sort
         if ($request->sort === 'oldest') {
             $query->orderBy('created_at','asc');
         } else {
@@ -54,6 +64,7 @@ class RoutineController extends Controller implements HasMiddleware
 
         return view('routines.list', compact('routines'));
     }
+
 
     public function create()
     {

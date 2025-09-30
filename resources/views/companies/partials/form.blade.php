@@ -1,11 +1,21 @@
 
 <div class="card p-4 shadow rounded">
+    {{-- ================= COMPANY INFO ================= --}}
+    <div class="card-header bg-secondary text-white fw-bold mb-3">Company Information</div>
     <div class="row g-3">
+
         {{-- Company Name --}}
         <div class="col-md-4">
             <label class="form-label fw-bold">Company Name *</label>
             <input type="text" name="name" class="form-control" 
                    value="{{ old('name', $company->name ?? '') }}" required>
+        </div>
+
+        {{-- Branch --}}
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Branch *</label>
+            <input type="text" name="branch" class="form-control" 
+                   value="{{ old('branch', $company->branch ?? '') }}">
         </div>
 
         {{-- Email --}}
@@ -14,12 +24,54 @@
             <input type="email" name="email" class="form-control" 
                    value="{{ old('email', $company->email ?? '') }}" required>
         </div>
-        {{-- Email --}}
+
+        {{-- Contact --}}
         <div class="col-md-4">
-            <label class="form-label fw-bold">Address *</label>
-            <input type="text" name="address" class="form-control" 
-                   value="{{ old('address', $company->address ?? '') }}" required>
+            <label class="form-label fw-bold">Contact Number *</label>
+            <input type="text" name="contact_number" class="form-control" 
+                   value="{{ old('contact_number', $company->contact_number ?? '') }}" required>
         </div>
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Alternate Contact Number</label>
+            <input type="text" name="alternate_contact_number" class="form-control" 
+                   value="{{ old('alternate_contact_number', $company->alternate_contact_number ?? '') }}">
+        </div>
+
+        {{-- Website --}}
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Website</label>
+            <input type="text" name="website" class="form-control" 
+                   value="{{ old('website', $company->website ?? '') }}">
+        </div>
+
+        {{-- Status --}}
+        <div class="col-md-4">
+            <label  class="form-label fw-bold">Status *</label>
+            <select name="status" class="form-select" required>
+                <option value="active" {{ old('status', $company->status ?? '') == 'active' ? 'selected' : '' }}>Active</option>
+                <option value="inactive" {{ old('status', $company->status ?? '') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+            </select>
+            @error('status') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+
+        {{-- Logo Upload --}}
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Upload Logo</label>
+            <input type="file" name="logo" id="logoInput" class="form-control" accept="image/*">
+            <div class="mt-2">
+                <img id="logoPreview" 
+                     src="{{ !empty($company->logo) ? asset('storage/'.$company->logo) : '' }}" 
+                     class="img-thumbnail" width="100" 
+                     style="{{ empty($company->logo) ? 'display:none;' : '' }}">
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- ================= FINANCIALS ================= --}}
+<div class="card p-4 shadow rounded mt-4">
+    <div class="card-header bg-secondary text-white fw-bold mb-3">Financials</div>
+    <div class="row g-3">
 
         {{-- Business Code --}}
         <div class="col-md-4">
@@ -90,32 +142,34 @@
             </select>
         </div>
 
-        {{-- Contact --}}
+        {{-- Probation Period --}}
         <div class="col-md-4">
-            <label class="form-label fw-bold">Contact Number *</label>
-            <input type="text" name="contact_number" class="form-control" 
-                   value="{{ old('contact_number', $company->contact_number ?? '') }}" required>
-        </div>
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Alternate Contact Number</label>
-            <input type="text" name="alternate_contact_number" class="form-control" 
-                   value="{{ old('alternate_contact_number', $company->alternate_contact_number ?? '') }}">
+            <label class="form-label fw-bold">Probation Period</label>
+            <input type="text" name="probation_period" class="form-control" 
+                   value="{{ old('probation_period', $company->probation_period ?? '') }}">
         </div>
 
-        {{-- Website --}}
+        {{-- Service Age --}}
         <div class="col-md-4">
-            <label class="form-label fw-bold">Website</label>
-            <input type="text" name="website" class="form-control" 
-                   value="{{ old('website', $company->website ?? '') }}">
+            <label class="form-label fw-bold">Service Age</label>
+            <input type="text" name="service_age" class="form-control" 
+                   value="{{ old('service_age', $company->service_age ?? '') }}">
         </div>
-        {{-- branch --}}
+    </div>
+</div>
+
+{{-- ================= LOCATION ================= --}}
+<div class="card p-4 shadow rounded mt-4">
+    <div class="card-header bg-secondary text-white fw-bold mb-3">Location</div>
+    <div class="row g-3">
+
+        {{-- Address --}}
         <div class="col-md-4">
-            <label class="form-label fw-bold">Branch *</label>
-            <input type="text" name="branch" class="form-control" 
-                   value="{{ old('branch', $company->branch ?? '') }}">
+            <label class="form-label fw-bold">Address *</label>
+            <input type="text" name="address" class="form-control" 
+                   value="{{ old('address', $company->address ?? '') }}" required>
         </div>
 
-        
         {{-- Country --}}
         <div class="col-md-4">
             <label class="form-label fw-bold">Country</label>
@@ -127,16 +181,16 @@
             </select>
         </div>
 
-    {{-- District --}}
-    <div class="col-md-4">
-        <label class="form-label fw-bold">District</label>
-        <select name="district" id="district" class="form-select select2">
-            <option value="">-- Select District --</option>
-            @foreach(['Dhaka','Chattogram','Rajshahi','Sylhet','Khulna'] as $d)
-                <option value="{{ $d }}" {{ old('district', $company->district ?? '') == $d ? 'selected' : '' }}>{{ $d }}</option>
-            @endforeach
-        </select>
-    </div>
+        {{-- District --}}
+        <div class="col-md-4">
+            <label class="form-label fw-bold">District</label>
+            <select name="district" id="district" class="form-select select2">
+                <option value="">-- Select District --</option>
+                @foreach(['Dhaka','Chattogram','Rajshahi','Sylhet','Khulna'] as $d)
+                    <option value="{{ $d }}" {{ old('district', $company->district ?? '') == $d ? 'selected' : '' }}>{{ $d }}</option>
+                @endforeach
+            </select>
+        </div>
 
         {{-- Upazila --}}
         <div class="col-md-4">
@@ -148,7 +202,6 @@
                 @endforeach
             </select>
         </div>
-
 
         {{-- Zip Code --}}
         <div class="col-md-4">
@@ -192,44 +245,9 @@
                 <option value="3">Approval 3</option>
             </select>
         </div>
-
-        {{-- Probation Period --}}
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Probation Period</label>
-            <input type="text" name="probation_period" class="form-control" 
-                   value="{{ old('probation_period', $company->probation_period ?? '') }}">
-        </div>
-
-        {{-- Service Age --}}
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Service Age</label>
-            <input type="text" name="service_age" class="form-control" 
-                   value="{{ old('service_age', $company->service_age ?? '') }}">
-        </div>
-            <div class="col-md-4">
-                    <label  class="form-label fw-bold">Status *</label>
-                    <select name="status" class="form-select" required>
-                        <option value="active" {{ old('status', $company->status ?? '') == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="inactive" {{ old('status', $company->status ?? '') == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                    </select>
-                    @error('status') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
-
-        {{-- Logo Upload --}}
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Upload Logo</label>
-            <input type="file" name="logo" id="logoInput" class="form-control" accept="image/*">
-
-            {{-- Preview --}}
-            <div class="mt-2">
-                <img id="logoPreview" 
-                     src="{{ !empty($company->logo) ? asset('storage/'.$company->logo) : '' }}" 
-                     class="img-thumbnail" width="100" 
-                     style="{{ empty($company->logo) ? 'display:none;' : '' }}">
-            </div>
-        </div>
     </div>
 </div>
+
 
 {{-- JS for live preview --}}
 @push('scripts')

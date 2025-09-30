@@ -7,7 +7,7 @@
 <div class="container mt-3">
 
     <div class="d-flex justify-content-between align-items-center mb-2">
-        <h2>Product Orders</h2>
+        <h2>Meal Orders</h2>
         @can('create order')
             <a href="{{ route('product_orders.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> New Order
