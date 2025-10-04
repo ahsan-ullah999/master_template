@@ -177,7 +177,7 @@
 
                                 <!-- Footer -->
                                 <div class="card-footer bg-transparent border-0 text-end">
-                                    <a href="{{ route('buildings.index') }}" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Back to List</a>
+                                    <a href="{{ route('companies.index') }}" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Back to List</a>
                                 </div>
                             </div>
                         </div>
@@ -221,7 +221,7 @@
                                             </p>
                                         </div>
                                         <div class="card-footer bg-transparent border-0 text-end">
-                                            <a href="{{ route('flats.index') }}" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Back to List</a>
+                                            <a href="{{ route('companies.index') }}" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Back to List</a>
                                         </div>
                                     </div>
                                 </div>
@@ -276,7 +276,7 @@
                                                 </p>
                                             </div>
                                             <div class="card-footer bg-transparent border-0 text-end">
-                                                    <a href="{{ route('rooms.index') }}" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Back to List</a>
+                                                    <a href="{{ route('companies.index') }}" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Back to List</a>
                                             </div>
                                         </div>
                                     </div>
@@ -335,7 +335,7 @@
                                                     </p>
                                                 </div>
                                                 <div class="card-footer bg-transparent border-0 text-end">
-                                                    <a href="{{ route('seats.index') }}" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Back to List</a>
+                                                    <a href="{{ route('companies.index') }}" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Back to List</a>
                                                 </div>
                                             </div>
                                         </div>

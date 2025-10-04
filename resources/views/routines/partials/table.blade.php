@@ -13,7 +13,7 @@
                             @endif
                         </h5>
                         <p class="mb-1 text-muted">
-                            <strong>Day:</strong> {{ $routine->dayName() }} |
+                            <strong>Off Day:</strong> {{ $routine->dayName() }} |
                             <strong>Date:</strong> {{ $routine->date ?? '-' }} |
                             <strong>Building:</strong> {{ $routine->building->name ?? '-' }}
                         </p>

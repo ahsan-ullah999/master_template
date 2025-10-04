@@ -22,6 +22,11 @@
             </div>
 
             <div class="col-md-4">
+                <label class="form-label">Date :</label>
+                <input type="date" name="date" value="{{ old('date') }}" class="form-control">
+            </div>
+
+            <div class="col-md-4">
                 <label class="form-label">Day of Week (optional)</label>
                 <select name="day_of_week" class="form-select">
                     <option value="">-- Optional --</option>
@@ -29,12 +34,7 @@
                     <option value="{{ $i }}" @selected(old('day_of_week') == $i)>{{ $day }}</option>
                     @endforeach
                 </select>
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label">Date (special day)</label>
-                <input type="date" name="date" value="{{ old('date') }}" class="form-control">
-            </div>
+            </div>           
         </div>
 
         <hr>
@@ -109,7 +109,7 @@
         </button>
 
         <div class="mb-3">
-            <label class="form-label">Product Count (optional)</label>
+            <label class="form-label">Meal Count (optional)</label>
             <input type="number" name="product_count" class="form-control" value="{{ old('product_count') }}">
         </div>
 

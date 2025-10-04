@@ -18,6 +18,32 @@ class DashboardController extends Controller
         return view('dashboard', compact('companies'));
     }
 
+
+    public function routineMeals()
+    {
+        $today = Carbon::today();
+        $tomorrow = Carbon::tomorrow();
+
+        // Today's routines (based on either fixed date or matching day_of_week)
+        $todaysMeals = Routine::with('slot')
+            ->whereDate('date', $today)
+            //->orWhere('day_of_week', $today->dayOfWeek)
+            ->orderBy('slot_id')
+            ->get();
+
+        // Tomorrow's routines (either date or weekday)
+        $nextDayMeals = Routine::with('slot')
+            ->whereDate('date', $tomorrow)
+            //->orWhere('day_of_week', $tomorrow->dayOfWeek)
+            ->orderBy('slot_id')
+            ->get();
+
+        return response()->json([
+            'today' => $todaysMeals,
+            'tomorrow' => $nextDayMeals,
+        ]);
+    }
+
     // Provide stats for AJAX
     
 

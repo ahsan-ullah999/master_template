@@ -22,14 +22,15 @@ Route::get('/', function () {
     return view('auth.login');
     })->name('login');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('dashboard.stats');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/routine-meals', [DashboardController::class, 'routineMeals'])->name('dashboard.routineMeals');
 
     Route::get('/', function(){
     return view('home');

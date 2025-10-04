@@ -8,199 +8,302 @@
 <div class="container-fluid mt-3">
     <h3 class="mb-4">Dashboard</h3>
 
-    <!-- ========== FILTERS ========== -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form id="filterForm" class="row g-2 align-items-end">
-                <div class="col-md-2">
-                    <label class="form-label">Company</label>
-                    <select name="company_id" id="company_id" class="form-select select2">
-                        <option value="">All</option>
-                        @foreach($companies as $company)
-                            <option value="{{ $company->id }}">{{ $company->name }}</option>
-                        @endforeach
-                    </select>
+
+      <!-- ========== FILTERS (Enhanced with colorful body) ========== -->
+      <div class="card shadow-lg border-0 mb-4" style="border-radius: 15px;">
+          <!-- Card Header -->
+          <div class="card-header fw-bold text-white" 
+              style="background: linear-gradient(135deg, #007bff, #6610f2); border-radius: 15px 15px 0 0;">
+              <i class="bi bi-funnel-fill me-2"></i> Search Filters
+          </div>
+
+          <!-- Card Body with soft background -->
+          <div class="card-body" 
+              style="background: linear-gradient(145deg, #f8f9fa, #eef2f7); border-radius: 0 0 15px 15px;">
+
+              <form id="filterForm" class="row g-3 align-items-end">
+
+                  <!-- Company -->
+                  <div class="col-md-2">
+                      <label class="form-label fw-semibold text-primary">
+                          <i class="bi bi-building me-1"></i> Company
+                      </label>
+                      <select name="company_id" id="company_id" 
+                              class="form-select shadow-sm border-primary" 
+                              style="background-color:#e9f3ff; border-radius:10px;">
+                          <option value="">All</option>
+                          @foreach($companies as $company)
+                              <option value="{{ $company->id }}">{{ $company->name }}</option>
+                          @endforeach
+                      </select>
+                  </div>
+
+                  <!-- Branch -->
+                  <div class="col-md-2">
+                      <label class="form-label fw-semibold text-info">
+                          <i class="bi bi-diagram-3 me-1"></i> Branch
+                      </label>
+                      <select name="branch_id" id="branch_id" 
+                              class="form-select shadow-sm border-info" 
+                              style="background-color:#e9f9ff; border-radius:10px;">
+                          <option value="">All</option>
+                      </select>
+                  </div>
+
+                  <!-- Building -->
+                  <div class="col-md-2">
+                      <label class="form-label fw-semibold text-success">
+                          <i class="bi bi-houses me-1"></i> Building
+                      </label>
+                      <select name="building_id" id="building_id" 
+                              class="form-select shadow-sm border-success" 
+                              style="background-color:#eaffea; border-radius:10px;">
+                          <option value="">All</option>
+                      </select>
+                  </div>
+
+                  <!-- Floor -->
+                  <div class="col-md-2">
+                      <label class="form-label fw-semibold text-warning">
+                          <i class="bi bi-layers me-1"></i> Floor
+                      </label>
+                      <select name="floor_id" id="floor_id" 
+                              class="form-select shadow-sm border-warning" 
+                              style="background-color:#fff8e5; border-radius:10px;">
+                          <option value="">All</option>
+                      </select>
+                  </div>
+
+                  <!-- Flat -->
+                  <div class="col-md-2">
+                      <label class="form-label fw-semibold text-danger">
+                          <i class="bi bi-door-open me-1"></i> Flat
+                      </label>
+                      <select name="flat_id" id="flat_id" 
+                              class="form-select shadow-sm border-danger" 
+                              style="background-color:#ffeaea; border-radius:10px;">
+                          <option value="">All</option>
+                      </select>
+                  </div>
+
+                  <!-- Room -->
+                  <div class="col-md-2">
+                      <label class="form-label fw-semibold text-dark">
+                          <i class="bi bi-person-workspace me-1"></i> Room
+                      </label>
+                      <select name="room_id" id="room_id" 
+                              class="form-select shadow-sm border-dark" 
+                              style="background-color:#f2f2f2; border-radius:10px;">
+                          <option value="">All</option>
+                      </select>
+                  </div>
+
+                  <!-- Apply Button -->
+                  <div class="col-md-2 text-end">
+                      <button type="button" id="applyFilter" 
+                              class="btn btn-gradient w-100 fw-bold shadow-sm" 
+                              style="border-radius: 12px;
+                                    background: linear-gradient(135deg, #007bff, #6610f2);
+                                    color:white;">
+                          <i class="bi bi-search me-1"></i> Apply
+                      </button>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+
+      <!-- ========== STATS CARDS (Redesigned) ========== -->
+      <div class="app-content">
+        <div class="container-fluid">
+          <div class="row g-3">
+
+            <!-- Total Members -->
+            <div class="col-lg-4 col-md-6">
+              <div class="card shadow-lg border-0 h-100" 
+                  style="border-radius: 18px; background: linear-gradient(135deg, #fceabb, #f8b500); color:#2c2c2c;">
+                <div class="card-body d-flex align-items-center justify-content-between p-4">
+                  <div>
+                    <h2 class="display-6 fw-bold mb-1" id="totalMembers">0</h2>
+                    <p class="mb-0 fw-semibold">Total Members</p>
+                  </div>
+                  <div class="rounded-circle d-flex align-items-center justify-content-center"
+                      style="width:60px;height:60px;background:rgba(255,255,255,0.4);">
+                    <i class="bi bi-person-circle fs-2"></i>
+                  </div>
                 </div>
-                <div class="col-md-2">
-                    <label class="form-label">Branch</label>
-                    <select name="branch_id" id="branch_id" class="form-select select2">
-                        <option value="">All</option>
-                    </select>
+                <a href="{{ route('members.index') }}" 
+                  class="card-footer text-center small text-dark fw-semibold text-decoration-none py-2"
+                  style="background: rgba(255,255,255,0.3); border-top: none; border-radius: 0 0 18px 18px;">
+                  More info <i class="bi bi-arrow-right-circle-fill ms-1"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Last Day Orders -->
+            <div class="col-lg-4 col-md-6">
+              <div class="card shadow-lg border-0 h-100" 
+                  style="border-radius: 18px; background: linear-gradient(135deg, #1e3c72, #2a5298); color:white;">
+                <div class="card-body d-flex align-items-center justify-content-between p-4">
+                  <div>
+                    <h2 class="display-6 fw-bold mb-1" id="lastDayOrders">0</h2>
+                    <p class="mb-0 fw-semibold">Last Day Orders</p>
+                  </div>
+                  <div class="rounded-circle d-flex align-items-center justify-content-center"
+                      style="width:60px;height:60px;background:rgba(255,255,255,0.25);">
+                    <i class="bi bi-basket fs-2"></i>
+                  </div>
                 </div>
-                <div class="col-md-2">
-                    <label class="form-label">Building</label>
-                    <select name="building_id" id="building_id" class="form-select select2">
-                        <option value="">All</option>
-                    </select>
+                <a href="{{ route('product_orders.index', ['order_date' => now()->subDay()->toDateString()]) }}" 
+                  class="card-footer text-center small text-white fw-semibold text-decoration-none py-2"
+                  style="background: rgba(255,255,255,0.2); border-top: none; border-radius: 0 0 18px 18px;">
+                  More info <i class="bi bi-arrow-right-circle-fill ms-1"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Delivered Meals -->
+            <div class="col-lg-4 col-md-6">
+              <div class="card shadow-lg border-0 h-100" 
+                  style="border-radius: 18px; background: linear-gradient(135deg, #11998e, #38ef7d); color:white;">
+                <div class="card-body d-flex align-items-center justify-content-between p-4">
+                  <div>
+                    <h2 class="display-6 fw-bold mb-1" id="deliveredMeals">0</h2>
+                    <p class="mb-0 fw-semibold">Last Day Delivered Meals</p>
+                  </div>
+                  <div class="rounded-circle d-flex align-items-center justify-content-center"
+                      style="width:60px;height:60px;background:rgba(255,255,255,0.25);">
+                    <i class="bi bi-check-circle fs-2"></i>
+                  </div>
                 </div>
-                <div class="col-md-2">
-                    <label class="form-label">Floor</label>
-                    <select name="floor_id" id="floor_id" class="form-select select2">
-                        <option value="">All</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">Flat</label>
-                    <select name="flat_id" id="flat_id" class="form-select select2">
-                        <option value="">All</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">Room</label>
-                    <select name="room_id" id="room_id" class="form-select select2">
-                        <option value="">All</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" id="applyFilter" class="btn btn-primary w-100">Apply</button>
-                </div>
-            </form>
+                <a href="{{ route('product_orders.index', [
+                                    'order_date' => now()->subDay()->toDateString(),
+                                    'status' => 'delivered'
+                                ]) }}" 
+                  class="card-footer text-center small text-white fw-semibold text-decoration-none py-2"
+                  style="background: rgba(255,255,255,0.2); border-top: none; border-radius: 0 0 18px 18px;">
+                  More info <i class="bi bi-arrow-right-circle-fill ms-1"></i>
+                </a>
+              </div>
+            </div>
+
+          </div>
         </div>
+      </div>
+
+    <div class="row mt-4" id="routineCards">
+
+          {{-- Today's Meals --}}
+          <div class="col-lg-6 mb-3">
+              <div class="card shadow-lg border-0 h-100" style="border-radius: 18px; overflow: hidden;">
+                  <div class="card-header d-flex justify-content-between align-items-center text-white"
+                      style="background: linear-gradient(135deg, #198754, #28a745); padding: 1rem 1.2rem; border: none;">
+                      <h5 class="mb-0 fw-bold"><i class="bi bi-calendar-check me-2"></i>Today's Meals</h5>
+                      <span class="badge bg-light text-dark px-3 py-2" style="font-size: 0.85rem;">
+                          {{ now()->toFormattedDateString() }}
+                      </span>
+                  </div>
+                  <div class="card-body p-4" id="todayMealsBody">
+                      <div class="text-center text-muted">
+                          <i class="bi bi-hourglass-split fs-3 d-block mb-2"></i>
+                          <p class="mb-0">Loading...</p>
+                      </div>
+                  </div>
+                  <div class="card-footer bg-light text-center small text-muted" style="border-top: 1px solid #eee;">
+                      <i class="bi bi-info-circle me-1"></i> Updated automatically
+                  </div>
+              </div>
+          </div>
+
+          {{-- Next Day Meals --}}
+          <div class="col-lg-6 mb-3">
+              <div class="card shadow-lg border-0 h-100" style="border-radius: 18px; overflow: hidden;">
+                  <div class="card-header d-flex justify-content-between align-items-center text-white"
+                      style="background: linear-gradient(135deg, #0d6efd, #1d4ed8); padding: 1rem 1.2rem; border: none;">
+                      <h5 class="mb-0 fw-bold"><i class="bi bi-calendar-event me-2"></i>Next Day Meals</h5>
+                      <span class="badge bg-light text-dark px-3 py-2" style="font-size: 0.85rem;">
+                          {{ now()->addDay()->toFormattedDateString() }}
+                      </span>
+                  </div>
+                  <div class="card-body p-4" id="nextMealsBody">
+                      <div class="text-center text-muted">
+                          <i class="bi bi-hourglass-split fs-3 d-block mb-2"></i>
+                          <p class="mb-0">Loading...</p>
+                      </div>
+                  </div>
+                  <div class="card-footer bg-light text-center small text-muted" style="border-top: 1px solid #eee;">
+                      <i class="bi bi-info-circle me-1"></i> Updated automatically
+                  </div>
+              </div>
+          </div>
     </div>
 
-    <!-- ========== STATS CARDS ========== -->
-    <div class="app-content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-3 col-6">
-                <!--begin::Small Box Widget 3-->
-                    <div class="small-box text-bg-warning">
-                    <div class="inner">
-                        <h3 id="totalMembers">0</h3>
-                        <p>Total Members</p>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-lg border-0" style="border-radius: 18px; overflow: hidden;">
+
+                <!-- Card Header -->
+                <div class="card-header d-flex justify-content-between align-items-center text-white"
+                    style="background: linear-gradient(135deg, #65a1fc, #032557); padding: 1rem 1.2rem; border: none;">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="bi bi-building me-2"></i> Registered Companies
+                    </h5>
+                    <span class="badge bg-light text-dark px-3 py-2 shadow-sm" style="font-size: 0.85rem; border-radius: 12px;">
+                        Total: {{ $companies->count() }}
+                    </span>
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle mb-0">
+                            <thead class="text-white" style="background: linear-gradient(135deg, #6c757d, #495057);">
+                                <tr>
+                                    <th class="py-3 ps-4">SL.</th>
+                                    <th class="py-3">Company Name</th>
+                                    <th class="py-3">Business Code</th>
+                                    <th class="py-3">Email</th>
+                                    <th class="py-3 text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($companies as $index => $company)
+                                <tr>
+                                    <td class="py-3 ps-4 fw-semibold text-muted">{{ $index + 1 }}</td>
+                                    <td class="py-3 fw-bold text-dark">
+                                        <i class="bi bi-building-check text-primary me-1"></i>
+                                        {{ $company->name }}
+                                    </td>
+                                    <td class="py-3 text-secondary">{{ $company->business_code }}</td>
+                                    <td class="py-3">
+                                        <i class="bi bi-envelope-at text-success me-1"></i>
+                                        {{ $company->email }}
+                                    </td>
+                                    <td class="py-3 text-center">
+                                        <a href="{{ route('companies.show', $company) }}" 
+                                        class="btn btn-sm btn-outline-primary shadow-sm rounded-pill px-3">
+                                            <i class="bi bi-eye-fill me-1"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        <i class="bi bi-exclamation-triangle text-warning me-1"></i> No companies found.
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
-                    <svg
-                        class="small-box-icon"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                    >
-                        <path
-                        d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z"
-                        ></path>
-                    </svg>
-                    <a
-                        href="{{ route('members.index') }}"
-                        class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover"
-                    >
-                        More info <i class="bi bi-link-45deg"></i>
-                    </a>
-                    </div>
-                <!--end::Small Box Widget 3-->
-              </div>
-              <div class="col-lg-3 col-6">
-                <!--begin::Small Box Widget 1-->
-                <div class="small-box text-bg-primary">
-                  <div class="inner">
-                    <h3 id="lastDayOrders">0</h3>
-                    <p>Last Day Orders</p>
-                  </div>
-                  <svg
-                    class="small-box-icon"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
-                    ></path>
-                  </svg>
-                  <a
-                    href="{{ route('product_orders.index', ['order_date' => now()->subDay()->toDateString()]) }}"
-                    class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
-                  >
-                    More info <i class="bi bi-link-45deg"></i>
-                  </a>
                 </div>
-                <!--end::Small Box Widget 1-->
-              </div>
-              <div class="col-lg-3 col-6">
-                <!--begin::Small Box Widget 2-->
-                <div class="small-box text-bg-primary">
-                  <div class="inner">
-                    <h3 id="deliveredMeals">0</h3>
-                    <p>Last Day Delivered Meals</p>
-                  </div>
-                  <svg
-                    class="small-box-icon"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z"
-                    ></path>
-                  </svg>
-                  <a href="{{ route('product_orders.index', [
-                          'order_date' => now()->subDay()->toDateString(),
-                          'status' => 'delivered'
-                      ]) }}"
-                    class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
-                      More info <i class="bi bi-link-45deg"></i>
-                  </a>
-                </div>
-                <!--end::Small Box Widget 2-->
-              </div>
-              <div class="col-lg-3 col-6">
-                <!--begin::Small Box Widget 2-->
-                <div class="small-box text-bg-success">
-                  <div class="inner">
-                    <h3  id="daysMeal">0</h3>
-                    <p>Todays Meals</p>
-                  </div>
-                  <svg
-                    class="small-box-icon"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z"
-                    ></path>
-                  </svg>
-                 {{-- Today’s Meals --}}
-                  <a href="{{ route('routines.index', ['date' => now()->toDateString()]) }}"
-                    class="small-box-footer link-light">
-                    More info <i class="bi bi-link-45deg"></i>
-                  </a>
-                </div>
-                <!--end::Small Box Widget 2-->
-              </div>
-              <div class="col-lg-3 col-6">
-                <!--begin::Small Box Widget 2-->
-                <div class="small-box text-bg-success">
-                  <div class="inner">
-                    <h3  id="nextDayMeal">0</h3>
-                    <p>Next Day Meal</p>
-                  </div>
-                  <svg
-                    class="small-box-icon"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z"
-                    ></path>
-                  </svg>
-                  {{-- Next Day Meals --}}
-                  <a href="{{ route('routines.index', ['date' => now()->addDay()->toDateString()]) }}"
-                    class="small-box-footer link-light">
-                    More info <i class="bi bi-link-45deg"></i>
-                  </a>
-                </div>
-                <!--end::Small Box Widget 2-->
-              </div>
-                <!--end::Small Box Widget 1-->
-              </div>
+
             </div>
         </div>
     </div>
+
+
 
 @endsection
 
@@ -282,18 +385,56 @@ $(document).ready(function () {
                 $('#lastDayOrders').text(data.lastDayOrders);
                 $('#deliveredMeals').text(data.deliveredMeals);
             }
-
         });
     }
 
-    // On button click
+    // ================= Routine Meals Loader (Today + Next Day) =================
+    function loadRoutineMeals() {
+        $.ajax({
+            url: "{{ route('dashboard.routineMeals') }}",
+            success: function (data) {
+                const renderMeals = (meals, containerId) => {
+                    const container = $(`#${containerId}`);
+                    if (!meals.length) {
+                        container.html(`<p class="text-muted mb-0">No meals available.</p>`);
+                        return;
+                    }
+                    let html = `<div class="list-group">`;
+                    meals.forEach(r => {
+                        html += `
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>${r.slot ? r.slot.name : 'Unknown Slot'}</strong><br>
+                                    <small class="text-muted">Count: ${r.product_count ?? '-'}</small>
+                                </div>
+                                <a href="/routines/${r.id}" class="btn btn-sm btn-primary">View</a>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                    container.html(html);
+                };
+
+                renderMeals(data.today, 'todayMealsBody');
+                renderMeals(data.tomorrow, 'nextMealsBody');
+            },
+            error: function () {
+                $('#todayMealsBody').html('<p class="text-danger">Error loading meals.</p>');
+                $('#nextMealsBody').html('<p class="text-danger">Error loading meals.</p>');
+            }
+        });
+    }
+
+    // ================= Event Bindings =================
     $('#applyFilter').on('click', function () {
         loadStats();
     });
 
-    // 🔹 Load stats immediately on page load
+    // 🔹 Load everything immediately on page load
     loadStats();
+    loadRoutineMeals();
 });
 </script>
 @endpush
+
 
