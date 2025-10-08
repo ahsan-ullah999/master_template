@@ -20,11 +20,30 @@ class RoomController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $rooms = Room::with('flat')->paginate(10);
+        $query = Room::with('flat');
+
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('room_number', 'like', "%{$search}%")
+                ->orWhereHas('flat', function ($f) use ($search) {
+                    $f->where('name', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        $rooms = $query->paginate(10);
+
+        if ($request->ajax()) {
+            return view('rooms.partials.table', compact('rooms'))->render();
+        }
+
         return view('rooms.list', compact('rooms'));
     }
+
 
     public function create()
     {

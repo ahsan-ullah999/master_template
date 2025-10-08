@@ -21,11 +21,30 @@ class FlatController extends Controller implements HasMiddleware
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $flats = Flat::with('floor')->paginate(10);
+        $query = Flat::with('floor');
+
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('flat_number', 'like', "%{$search}%")
+                ->orWhereHas('floor', function ($f) use ($search) {
+                    $f->where('name', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        $flats = $query->paginate(10);
+
+        if ($request->ajax()) {
+            return view('flats.partials.table', compact('flats'))->render();
+        }
+
         return view('flats.list', compact('flats'));
     }
+
 
     public function create()
     {

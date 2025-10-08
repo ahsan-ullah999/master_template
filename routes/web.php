@@ -153,6 +153,7 @@ Route::middleware('auth')->group(function () {
 
     /** Members */
     Route::get('/members',                [MemberController::class,'index'])->name('members.index');
+    Route::get('/members/{id}/account',[MemberController::class,'accountInfo'])->name('members.account');
     Route::get('/members/suspended',      [MemberController::class,'suspended'])->name('members.suspended');
     Route::get('/members/create',         [MemberController::class,'create'])->name('members.create');
     Route::post('/members',               [MemberController::class,'store'])->name('members.store');

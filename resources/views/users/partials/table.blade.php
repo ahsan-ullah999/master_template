@@ -34,7 +34,7 @@
 
                 <!-- Created -->
                 <td>
-                    {{ \Carbon\Carbon::parse($user->create_at)->format('d M, Y') }}
+                    {{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}
                 </td>
 
                 <!-- Status -->

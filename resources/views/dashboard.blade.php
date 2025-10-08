@@ -19,18 +19,18 @@
 
           <!-- Card Body with soft background -->
           <div class="card-body" 
-              style="background: linear-gradient(145deg, #f8f9fa, #eef2f7); border-radius: 0 0 15px 15px;">
+              style="background: linear-gradient(145deg, #e3f2fd,#e8eaf6); border-radius: 0 0 15px 15px;">
 
               <form id="filterForm" class="row g-3 align-items-end">
 
                   <!-- Company -->
                   <div class="col-md-2">
-                      <label class="form-label fw-semibold text-primary">
+                      <label class="form-label fw-semibold text-dark">
                           <i class="bi bi-building me-1"></i> Company
                       </label>
                       <select name="company_id" id="company_id" 
-                              class="form-select shadow-sm border-primary" 
-                              style="background-color:#e9f3ff; border-radius:10px;">
+                              class="form-select shadow-sm border-dark" 
+                              style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                           @foreach($companies as $company)
                               <option value="{{ $company->id }}">{{ $company->name }}</option>
@@ -40,48 +40,48 @@
 
                   <!-- Branch -->
                   <div class="col-md-2">
-                      <label class="form-label fw-semibold text-info">
+                      <label class="form-label fw-semibold text-dark">
                           <i class="bi bi-diagram-3 me-1"></i> Branch
                       </label>
                       <select name="branch_id" id="branch_id" 
-                              class="form-select shadow-sm border-info" 
-                              style="background-color:#e9f9ff; border-radius:10px;">
+                              class="form-select shadow-sm border-dark" 
+                              style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                       </select>
                   </div>
 
                   <!-- Building -->
                   <div class="col-md-2">
-                      <label class="form-label fw-semibold text-success">
+                      <label class="form-label fw-semibold text-dark">
                           <i class="bi bi-houses me-1"></i> Building
                       </label>
                       <select name="building_id" id="building_id" 
-                              class="form-select shadow-sm border-success" 
-                              style="background-color:#eaffea; border-radius:10px;">
+                              class="form-select shadow-sm border-dark" 
+                              style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                       </select>
                   </div>
 
                   <!-- Floor -->
                   <div class="col-md-2">
-                      <label class="form-label fw-semibold text-warning">
+                      <label class="form-label fw-semibold text-dark">
                           <i class="bi bi-layers me-1"></i> Floor
                       </label>
                       <select name="floor_id" id="floor_id" 
-                              class="form-select shadow-sm border-warning" 
-                              style="background-color:#fff8e5; border-radius:10px;">
+                              class="form-select shadow-sm border-dark" 
+                              style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                       </select>
                   </div>
 
                   <!-- Flat -->
                   <div class="col-md-2">
-                      <label class="form-label fw-semibold text-danger">
+                      <label class="form-label fw-semibold text-dark">
                           <i class="bi bi-door-open me-1"></i> Flat
                       </label>
                       <select name="flat_id" id="flat_id" 
-                              class="form-select shadow-sm border-danger" 
-                              style="background-color:#ffeaea; border-radius:10px;">
+                              class="form-select shadow-sm border-dark" 
+                              style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                       </select>
                   </div>
@@ -93,7 +93,7 @@
                       </label>
                       <select name="room_id" id="room_id" 
                               class="form-select shadow-sm border-dark" 
-                              style="background-color:#f2f2f2; border-radius:10px;">
+                              style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                       </select>
                   </div>
@@ -245,7 +245,7 @@
 
                 <!-- Card Header -->
                 <div class="card-header d-flex justify-content-between align-items-center text-white"
-                    style="background: linear-gradient(135deg, #65a1fc, #032557); padding: 1rem 1.2rem; border: none;">
+                    style="background: linear-gradient(135deg, #0a2650, #82aae2); padding: 1rem 1.2rem; border: none;">
                     <h5 class="mb-0 fw-bold">
                         <i class="bi bi-building me-2"></i> Registered Companies
                     </h5>

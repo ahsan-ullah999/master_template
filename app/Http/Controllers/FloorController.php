@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Building;
+use App\Models\Flat;
 use App\Models\Floor;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -21,11 +22,30 @@ class FloorController extends Controller implements HasMiddleware
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $floors = Floor::with('building')->paginate(10);
-        return view('floors.list', compact('floors'));
+        $query = Flat::with('floor');
+
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('flat_number', 'like', "%{$search}%")
+                ->orWhereHas('floor', function ($f) use ($search) {
+                    $f->where('name', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        $flats = $query->paginate(10);
+
+        if ($request->ajax()) {
+            return view('flats.partials.table', compact('flats'))->render();
+        }
+
+        return view('flats.list', compact('flats'));
     }
+
 
     public function create()
     {

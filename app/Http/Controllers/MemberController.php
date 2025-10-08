@@ -8,12 +8,16 @@ use App\Models\Branch;
 use App\Models\Building;
 use App\Models\Floor;
 use App\Models\Flat;
+use App\Models\ProductOrder;
 use App\Models\Room;
 use App\Models\Seat;
+use Carbon\Carbon;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
+
 
 class MemberController extends Controller implements HasMiddleware
 {
@@ -34,27 +38,29 @@ class MemberController extends Controller implements HasMiddleware
     /** LIST (active by default) */
     public function index(Request $request)
     {
-        $query = Member::with(['company','branch','building','floor','flat','room','seat','user']);
+        $query = Member::with(['company','branch','building','floor','flat','room','seats','user']);
 
-        if ($request->filled('status') && in_array($request->status, ['active','suspended'])) {
-            $query->where('status', $request->status);
-        }
-
+        // 🔹 Search logic (name, phone, email, rental_id)
         if ($request->filled('search')) {
             $s = $request->search;
             $query->where(function($q) use ($s) {
                 $q->where('name', 'like', "%$s%")
-                  ->orWhere('phone', 'like', "%$s%")
-                  ->orWhere('email', 'like', "%$s%")
-                  ->orWhere('rental_id', 'like', "%$s%");
+                ->orWhere('phone', 'like', "%$s%")
+                ->orWhere('email', 'like', "%$s%")
+                ->orWhere('rental_id', 'like', "%$s%");
             });
         }
 
         $members = $query->orderBy('created_at','DESC')->paginate(10);
 
-        // return view later
+        // 🔹 For AJAX requests, return partial table only
+        if ($request->ajax()) {
+            return view('members.partials.table', compact('members'))->render();
+        }
+
         return view('members.list', compact('members'));
     }
+
 
     /** SUSPENDED LIST convenience (optional) */
     // public function suspended(Request $request)
@@ -134,11 +140,63 @@ class MemberController extends Controller implements HasMiddleware
     }
 
     /** SHOW */
-     public function show($id)
-     {
-         $member = Member::with(['company','branch','building','floor','flat','room','seat','user'])->findOrFail($id);
-         return view('members.show', compact('member'));
-     }
+    public function show($id)
+    {
+        $member = \App\Models\Member::with([
+            'company', 'branch', 'building', 'floor', 'flat', 'room', 'seats', 'user'
+        ])->findOrFail($id);
+        $orders = \App\Models\ProductOrder::with('routine')
+            ->where('member_id', $member->id)
+            ->where('status', '!=', 'cancelled')
+            ->get();
+          $startDate = Carbon::now()->subDays(30)->startOfDay();
+
+        $orderCount = \App\Models\ProductOrder::where('member_id', $member->id)
+        ->whereDate('order_date', '>=', $startDate)
+        ->count();
+        $balance = $orders->sum('grand_total');
+        $totalDue = max(0, $balance - 0);
+
+        return view('members.show', compact('member', 'orderCount', 'balance', 'totalDue'));
+    }
+
+
+
+        /** account */
+    public function accountInfo($id)
+    {
+        // Load the member with related data
+        $member = Member::with([
+            'company', 'branch', 'building', 'floor', 'flat', 'room', 'seats', 'user'
+        ])->findOrFail($id);
+
+        // Load all non-cancelled orders with routine relationship
+        $orders = ProductOrder::with(['routine', 'items.product', 'slot'])
+            ->where('member_id', $member->id)
+            ->where('status', '!=', 'cancelled')
+            ->orderByDesc('order_date')
+            ->get();
+
+        // Set the start date (last 30 days)
+        $startDate = Carbon::now()->subDays(30)->startOfDay();
+
+        // Count the number of orders in the last 30 days
+        $orderCount = ProductOrder::where('member_id', $member->id)
+            ->where('status', '!=', 'cancelled')
+            ->whereDate('order_date', '>=', $startDate)
+            ->count();
+
+        // Calculate total balance
+        $balance = $orders->sum('grand_total');
+
+        // If you later track payments, replace 0 with totalPaidAmount
+        $totalDue = max(0, $balance - 0);
+
+        return view('members.account', compact('member', 'orders', 'orderCount', 'balance', 'totalDue'));
+    }
+
+
+
 
     /** EDIT */
     public function edit($id)
@@ -235,6 +293,7 @@ class MemberController extends Controller implements HasMiddleware
 
         return redirect()->route('members.index')->with('success','Member updated successfully');
     }
+
 
     /** DESTROY */
     public function destroy($id)

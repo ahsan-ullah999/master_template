@@ -1,215 +1,82 @@
 <!doctype html>
 <html lang="en">
-  <!--begin::Head-->
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Web-Xpress | Register Page</title>
-    <!--begin::Accessibility Meta Tags-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
-    <!--end::Accessibility Meta Tags-->
-    <!--begin::Primary Meta Tags-->
-    <meta name="title" content="AdminLTE 4 | Register Page" />
-    <meta name="author" content="ColorlibHQ" />
-    <meta
-      name="description"
-      content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS. Fully accessible with WCAG 2.1 AA compliance."
-    />
-    <meta
-      name="keywords"
-      content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard, accessible admin panel, WCAG compliant"
-    />
-    <!--end::Primary Meta Tags-->
-    <!--begin::Accessibility Features-->
-    <!-- Skip links will be dynamically added by accessibility.js -->
-    <meta name="supported-color-schemes" content="light dark" />
-    <link rel="preload" href="{{ asset('adminlte/dist/css/adminlte.css') }}" as="style" />
-    <!--end::Accessibility Features-->
-    <!--begin::Fonts-->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
-      integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q="
-      crossorigin="anonymous"
-      media="print"
-      onload="this.media='all'"
-    />
-    <!--end::Fonts-->
-    <!--begin::Third Party Plugin(OverlayScrollbars)-->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css"
-      crossorigin="anonymous"
-    />
-    <!--end::Third Party Plugin(OverlayScrollbars)-->
-    <!--begin::Third Party Plugin(Bootstrap Icons)-->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-      crossorigin="anonymous"
-    />
-    <!--end::Third Party Plugin(Bootstrap Icons)-->
-    <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.css') }}" />
-    <!--end::Required Plugin(AdminLTE)-->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Web-Xpress | Register</title>
+
+    <!-- Bootstrap + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
   </head>
-  <!--end::Head-->
-  <!--begin::Body-->
-  <body class="register-page bg-body-secondary">
-    <div class="register-box">
-      <div class="register-logo">
-        <a href="{{route('register')}}"><b>Web-</b>Xpress</a>
+
+  <body style="background: linear-gradient(135deg,#e3f2fd,#e8eaf6); min-height:100vh; display:flex; align-items:center; justify-content:center; font-family:'Source Sans 3',sans-serif;">
+    
+    <div class="card shadow-lg border-0" style="width: 400px; border-radius:12px;">
+      <div class="card-header text-center text-white fw-bold" style="background:linear-gradient(135deg,#adbecf,#747997); border-top-left-radius:15px; border-top-right-radius:15px; padding:1.2rem 0;">
+        <h3 class="mb-0"><i class="bi bi-globe2 me-2"></i>Web-<span class="fw-light">Xpress</span></h3>
       </div>
-      <!-- /.register-logo -->
-      <div class="card">
-        <div class="card-body register-card-body">
-          <p class="register-box-msg">Register a new membership</p>
-                <!--Success Message -->
-            @if(session('success'))
-              <div class="alert alert-success">
-                {{ session('success') }}
-              </div>
-            @endif
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+      <div class="card-body" style="padding: 2rem;">
+        <p class="text-center text-muted mb-4" style="font-size:15px;">Register a new membership</p>
 
-  <!-- Name -->
-    <div class="input-group mb-3">
-        <x-text-input id="name" 
-                      type="text" 
-                      name="name" 
-                      :value="old('name')" 
-                      required 
-                      autofocus 
-                      autocomplete="name"
-                      placeholder="Full Name"
-                      class="form-control"/>
-        <div class="input-group-text"><span class="bi bi-person"></span></div>
-        <x-input-error :messages="$errors->get('name')" class="text-danger mb-2" />
-    </div>
- 
+        <!-- Success Message -->
+        @if(session('success'))
+        <div class="alert alert-success text-center py-2" style="font-size:14px;">
+          {{ session('success') }}
+        </div>
+        @endif
 
-    <!-- Email -->
-    <div class="input-group mb-3">
-        <x-text-input id="email" 
-                      type="email" 
-                      name="email" 
-                      :value="old('email')" 
-                      required 
-                      autocomplete="useremail"
-                      placeholder="Email"
-                      class="form-control" />
-        <div class="input-group-text"><span class="bi bi-envelope"></span></div>
-        <x-input-error :messages="$errors->get('email')" class="text-danger mb-2" />
-    </div>
-    
+        <form method="POST" action="{{ route('register') }}">
+          @csrf
 
-    <!-- Password -->
-    <div class="input-group mb-3">
-        <x-text-input id="password" 
-                      type="password" 
-                      name="password" 
-                      required 
-                      autocomplete="new-password"
-                      placeholder="Password"
-                      class="form-control" />
-        <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
-        <x-input-error :messages="$errors->get('password')" class="text-danger mb-2" />
-    </div>
-    
-
-    <!-- Confirm Password -->
-    <div class="input-group mb-3">
-        <x-text-input id="password_confirmation" 
-                      type="password" 
-                      name="password_confirmation" 
-                      required 
-                      autocomplete="new-password"
-                      placeholder="Confirm Password"
-                      class="form-control" />
-        <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
-        <x-input-error :messages="$errors->get('password_confirmation')" class="text-danger mb-2" />
-    </div>
-
-
-
-    <!-- Terms & Submit -->
-            <div class="row">
-                <div class="col-8">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" required>
-                        <label class="form-check-label">
-                            I agree to the <a href="#">terms</a>
-                        </label>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <x-primary-button class="btn btn-primary btn-block">
-                        {{ __('Register') }}
-                    </x-primary-button>
-                </div>
-            </div>
-    </form>
-   <div class="social-auth-links text-center mb-3 d-grid gap-2">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-primary">
-              <i class="bi bi-facebook me-2"></i> Sign in using Facebook
-            </a>
-            <a href="#" class="btn btn-danger">
-              <i class="bi bi-google me-2"></i> Sign in using Google+
-            </a>
+          <!-- Name -->
+          <div class="input-group mb-3">
+            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" placeholder="Full Name" class="form-control" style="border-radius:8px 0 0 8px;" />
+            <span class="input-group-text" style="background-color:#f8f9fa; border-radius:0 8px 8px 0;"><i class="bi bi-person"></i></span>
           </div>
-          <!-- /.social-auth-links -->
-          <p class="mb-0">
-            <a href="{{route('login')}}" class="text-center"> I already have a membership </a>
+          <x-input-error :messages="$errors->get('name')" class="text-danger mb-2" />
+
+          <!-- Email -->
+          <div class="input-group mb-3">
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email" class="form-control" style="border-radius:8px 0 0 8px;" />
+            <span class="input-group-text" style="background-color:#f8f9fa; border-radius:0 8px 8px 0;"><i class="bi bi-envelope"></i></span>
+          </div>
+          <x-input-error :messages="$errors->get('email')" class="text-danger mb-2" />
+
+          <!-- Password -->
+          <div class="input-group mb-3">
+            <input id="password" type="password" name="password" required autocomplete="new-password" placeholder="Password" class="form-control" style="border-radius:8px 0 0 8px;" />
+            <span class="input-group-text" style="background-color:#f8f9fa; border-radius:0 8px 8px 0;"><i class="bi bi-lock-fill"></i></span>
+          </div>
+          <x-input-error :messages="$errors->get('password')" class="text-danger mb-2" />
+
+          <!-- Confirm Password -->
+          <div class="input-group mb-3">
+            <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password" class="form-control" style="border-radius:8px 0 0 8px;" />
+            <span class="input-group-text" style="background-color:#f8f9fa; border-radius:0 8px 8px 0;"><i class="bi bi-lock-fill"></i></span>
+          </div>
+          <x-input-error :messages="$errors->get('password_confirmation')" class="text-danger mb-2" />
+
+          <!-- Terms -->
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="terms" required />
+            <label class="form-check-label small" for="terms">I agree to the <a href="#" style="color:#007bff; text-decoration:none;">terms</a></label>
+          </div>
+
+          <!-- Register Button -->
+          <button type="submit" class="btn btn-primary w-100" style="font-weight:600; border-radius:8px;">Register</button>
+        </form>
+
+        <div class="text-center mt-4">
+          <p class="text-muted mb-2" style="font-size:14px;">- OR -</p>
+          <p style="font-size:14px;">Already have an account? 
+            <a href="{{ route('login') }}" style="color:#007bff; text-decoration:none;">Sign In</a>
           </p>
         </div>
-        <!-- /.register-card-body -->
       </div>
     </div>
-    <!-- /.register-box -->
-    <!--begin::Third Party Plugin(OverlayScrollbars)-->
-    <script
-      src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-    <script src="../js/adminlte.js"></script>
-    <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
-    <script>
-      const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
-      const Default = {
-        scrollbarTheme: 'os-theme-light',
-        scrollbarAutoHide: 'leave',
-        scrollbarClickScroll: true,
-      };
-      document.addEventListener('DOMContentLoaded', function () {
-        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
-        if (sidebarWrapper && OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined) {
-          OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
-            scrollbars: {
-              theme: Default.scrollbarTheme,
-              autoHide: Default.scrollbarAutoHide,
-              clickScroll: Default.scrollbarClickScroll,
-            },
-          });
-        }
-      });
-    </script>
-    <!--end::OverlayScrollbars Configure-->
-    <!--end::Script-->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
-  <!--end::Body-->
 </html>

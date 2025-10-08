@@ -34,4 +34,10 @@ class ProductOrder extends Model
     {
         return $this->belongsTo(\App\Models\Member::class);
     }
+    // app/Models/ProductOrder.php
+    public function routine()
+    {
+        return $this->belongsTo(\App\Models\Routine::class, 'routine_id');
+    }
+
 }

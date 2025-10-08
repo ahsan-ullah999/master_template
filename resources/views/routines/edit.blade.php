@@ -32,7 +32,7 @@
             </div>
 
             <div class="col-md-4">
-                <label class="form-label">Date (special day)</label>
+                <label class="form-label">Date </label>
                 <input type="date" name="date" value="{{ old('date',$routine->date) }}" class="form-control">
             </div>
         </div>

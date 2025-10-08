@@ -21,17 +21,21 @@
             </div>
 
             <div class="row mb-4 gx-5">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <p class="mb-1"><strong class="text-muted">Member:</strong></p>
                     <p class="fw-bold">{{ $order->member->name ?? '-' }}</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <p class="mb-1"><strong class="text-muted">Order Date:</strong></p>
                     <p class="fw-bold">{{ \Carbon\Carbon::parse($order->order_date)->format('d M, Y') }}</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <p class="mb-1"><strong class="text-muted">Slot:</strong></p>
                     <p class="fw-bold">{{ $order->slot->name ?? '-' }}</p>
+                </div>
+                <div class="col-md-3">
+                    <p class="mb-1"><strong class="text-muted">Count:</strong></p>
+                    <p class="fw-bold">{{ $order->routine ? $order->routine->product_count : '-' }}</p>
                 </div>
             </div>
 

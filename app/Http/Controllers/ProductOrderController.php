@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductOrder;
 use App\Models\ProductOrderItem;
 use App\Models\ProductDiscount;
+use App\Models\Routine;
 use App\Models\Slot;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -81,6 +82,12 @@ class ProductOrderController extends Controller implements HasMiddleware
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.qty' => 'required|integer|min:1'
         ]);
+        $orderDate = Carbon::parse($data['order_date']);
+        $routine = Routine::findForDateSlot($orderDate, $data['slot_id'], [
+        // optional: if you want to narrow by location, add keys here
+        // 'company_id' => $r->company_id ?? null,
+        // 'branch_id'  => $r->branch_id  ?? null,
+    ]);
 
         // Check slot cutoff time
         $slot = Slot::findOrFail($data['slot_id']);
@@ -105,6 +112,7 @@ class ProductOrderController extends Controller implements HasMiddleware
             $order = ProductOrder::create([
                 'member_id' => $data['member_id'],
                 'slot_id'   => $data['slot_id'],
+                'routine_id'  => $routine ? $routine->id : null,
                 'order_date'=> $data['order_date'],
                 'total'     => 0,
                 'discount_amount' => 0,
@@ -176,11 +184,25 @@ class ProductOrderController extends Controller implements HasMiddleware
     // }
     public function show(ProductOrder $productOrder)
     {
-        $productOrder->load('items.product','member','slot');
+        // Load relationships
+        $productOrder->load('items.product', 'member', 'slot', 'routine');
 
+        // If no routine is linked, try to find one automatically
+        if (!$productOrder->routine && $productOrder->order_date && $productOrder->slot_id) {
+            $routine = \App\Models\Routine::findForDateSlot(
+                \Carbon\Carbon::parse($productOrder->order_date),
+                $productOrder->slot_id,
+                [] // you can add filters if needed (e.g. building_id, etc.)
+            );
+
+            // Attach it to the model temporarily (no DB write)
+            $productOrder->setRelation('routine', $routine);
+        }
+
+        // Discount logic (as before)
         $totalQty = $productOrder->items->sum('qty');
-        $rule = ProductDiscount::matchingRule($totalQty, (float)$productOrder->total); // rule object
-        $discountAmount = ProductDiscount::discountAmountFor($totalQty, (float)$productOrder->total); // float amount
+        $rule = \App\Models\ProductDiscount::matchingRule($totalQty, (float) $productOrder->total);
+        $discountAmount = \App\Models\ProductDiscount::discountAmountFor($totalQty, (float) $productOrder->total);
 
         return view('product_orders.show', [
             'order' => $productOrder,
@@ -188,6 +210,7 @@ class ProductOrderController extends Controller implements HasMiddleware
             'discountAmount' => $discountAmount,
         ]);
     }
+
 
 
     /**

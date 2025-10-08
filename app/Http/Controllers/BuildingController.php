@@ -20,11 +20,30 @@ class BuildingController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $buildings = Building::with('branch')->paginate(10);
+        $query = Building::with('branch');
+
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%")
+                ->orWhereHas('branch', function ($b) use ($search) {
+                    $b->where('name', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        $buildings = $query->paginate(10);
+
+        if ($request->ajax()) {
+            return view('buildings.partials.table', compact('buildings'))->render();
+        }
+
         return view('buildings.list', compact('buildings'));
     }
+
 
     public function create()
     {

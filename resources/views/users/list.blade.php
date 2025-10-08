@@ -11,28 +11,28 @@
         <div class="d-flex align-items-center gap-2">
             <!-- Search box -->
          
-<div class="d-flex mb-2 gap-2">
-    <input 
-        type="text" 
-        name="search" 
-        id="searchInput" 
-        class="form-control" 
-        placeholder="Search users...">
+            <div class="d-flex mb-2 gap-2">
+                <input 
+                    type="text" 
+                    name="search" 
+                    id="searchInput" 
+                    class="form-control" 
+                    placeholder="Search users...">
 
-    <select id="sortSelect" class="form-select">
-        <option value="latest">Latest</option>
-        <option value="oldest">Oldest</option>
-        <option value="role_asc">Role (A → Z)</option>
-        <option value="role_desc">Role (Z → A)</option>
-    </select>
+                <select id="sortSelect" class="form-select">
+                    <option value="latest">Latest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="role_asc">Role (A → Z)</option>
+                    <option value="role_desc">Role (Z → A)</option>
+                </select>
 
-    <select id="roleFilter" class="form-select">
-        <option value="all">All Roles</option>
-        @foreach($roles as $role)
-            <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
-        @endforeach
-    </select>
-</div>
+                <select id="roleFilter" class="form-select">
+                    <option value="all">All Roles</option>
+                    @foreach($roles as $role)
+                        <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             
             

@@ -13,10 +13,12 @@
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label">Slot *</label>
-                <select name="slot_id" class="form-select" required>
+                <select name="slot_id" class="form-select select2" required>
                     <option value="">Select slot</option>
                     @foreach($slots as $slot)
-                    <option value="{{ $slot->id }}" @selected(old('slot_id') == $slot->id)>{{ $slot->name }}</option>
+                        <option value="{{ $slot->id }}" @selected(old('slot_id') == $slot->id)>
+                            {{ $slot->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -31,7 +33,7 @@
                 <select name="day_of_week" class="form-select">
                     <option value="">-- Optional --</option>
                     @foreach(['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'] as $i=>$day)
-                    <option value="{{ $i }}" @selected(old('day_of_week') == $i)>{{ $day }}</option>
+                        <option value="{{ $i }}" @selected(old('day_of_week') == $i)>{{ $day }}</option>
                     @endforeach
                 </select>
             </div>           
@@ -43,28 +45,28 @@
         <div class="row g-3 mb-3">
             <div class="col-md-4">
                 <label class="form-label">Company</label>
-                <select name="company_id" class="form-select">
+                <select name="company_id" class="form-select select2">
                     <option value="">-- Any --</option>
                     @foreach($companies as $c)
-                    <option value="{{ $c->id }}">{{ $c->name }}</option>
+                        <option value="{{ $c->id }}">{{ $c->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-4">
                 <label class="form-label">Branch</label>
-                <select name="branch_id" class="form-select">
+                <select name="branch_id" class="form-select select2">
                     <option value="">-- Any --</option>
                     @foreach($branches as $b)
-                    <option value="{{ $b->id }}">{{ $b->name }}</option>
+                        <option value="{{ $b->id }}">{{ $b->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-4">
                 <label class="form-label">Building</label>
-                <select name="building_id" class="form-select">
+                <select name="building_id" class="form-select select2">
                     <option value="">-- Any --</option>
                     @foreach($buildings as $bd)
-                    <option value="{{ $bd->id }}">{{ $bd->name }}</option>
+                        <option value="{{ $bd->id }}">{{ $bd->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -76,18 +78,18 @@
         <div id="routineItems">
             <div class="row mb-2 routine-item">
                 <div class="col-md-5">
-                    <select name="items[0][product_id]" class="form-select" required>
+                    <select name="items[0][product_id]" class="form-select select2" required>
                         <option value="">Select product</option>
                         @foreach($products as $p)
-                        <option value="{{ $p->id }}">{{ $p->name }}</option>
+                            <option value="{{ $p->id }}">{{ $p->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-5">
-                    <select name="items[0][alternative_product_id]" class="form-select">
+                    <select name="items[0][alternative_product_id]" class="form-select select2">
                         <option value="">-- Alternative (optional) --</option>
                         @foreach($products as $p)
-                        <option value="{{ $p->id }}">{{ $p->name }}</option>
+                            <option value="{{ $p->id }}">{{ $p->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -125,46 +127,49 @@
 
 @push('scripts')
 <script>
-    (function(){
-        const products = {!! json_encode($products->map(fn($p)=>['id'=>$p->id,'name'=>$p->name])) !!};
-        let idx = 1;
+$(function(){
+    $('.select2').select2({ width: '100%' });
 
-        $('#addItem').click(function(){
-            let options = '<option value="">Select product</option>';
-            products.forEach(p => options += `<option value="${p.id}">${p.name}</option>`);
+    const products = {!! json_encode($products->map(fn($p)=>['id'=>$p->id,'name'=>$p->name])) !!};
+    let idx = 1;
 
-            let altOptions = '<option value="">-- Alternative (optional) --</option>' + options;
-            let html = `
-                <div class="row mb-2 routine-item">
-                    <div class="col-md-5">
-                        <select name="items[${idx}][product_id]" class="form-select" required>
-                            ${options}
-                        </select>
-                    </div>
-                    <div class="col-md-5">
-                        <select name="items[${idx}][alternative_product_id]" class="form-select">
-                            ${altOptions}
-                        </select>
-                    </div>
-                    <div class="col-md-1">
-                        <input type="hidden" name="items[${idx}][is_optional]" value="0">
-                        <div class="form-check mt-2">
-                            <input class="form-check-input" type="checkbox" name="items[${idx}][is_optional]" value="1" id="opt${idx}">
-                            <label class="form-check-label small" for="opt${idx}">Optional</label>
-                        </div>
-                    </div>
-                    <div class="col-md-1 text-end">
-                        <button type="button" class="btn btn-sm btn-danger remove-item">&times;</button>
-                    </div>
-                </div>`;
-            $('#routineItems').append(html);
-            idx++;
-        });
+    $('#addItem').click(function(){
+        let options = '<option value="">Select product</option>';
+        products.forEach(p => options += `<option value="${p.id}">${p.name}</option>`);
+        let altOptions = '<option value="">-- Alternative (optional) --</option>' + options;
 
-        $(document).on('click', '.remove-item', function(){
-            $(this).closest('.routine-item').remove();
-        });
-    })();
+        let html = `
+            <div class="row mb-2 routine-item">
+                <div class="col-md-5">
+                    <select name="items[${idx}][product_id]" class="form-select select2" required>
+                        ${options}
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <select name="items[${idx}][alternative_product_id]" class="form-select select2">
+                        ${altOptions}
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <input type="hidden" name="items[${idx}][is_optional]" value="0">
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" name="items[${idx}][is_optional]" value="1" id="opt${idx}">
+                        <label class="form-check-label small" for="opt${idx}">Optional</label>
+                    </div>
+                </div>
+                <div class="col-md-1 text-end">
+                    <button type="button" class="btn btn-sm btn-danger remove-item">&times;</button>
+                </div>
+            </div>`;
+        $('#routineItems').append(html);
+        $('#routineItems .select2').select2({ width: '100%' });
+        idx++;
+    });
+
+    $(document).on('click', '.remove-item', function(){
+        $(this).closest('.routine-item').remove();
+    });
+});
 </script>
 @endpush
 
