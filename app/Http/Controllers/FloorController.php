@@ -22,29 +22,32 @@ class FloorController extends Controller implements HasMiddleware
     }
 
 
-    public function index(Request $request)
-    {
-        $query = Flat::with('floor');
+public function index(Request $request)
+{
+    // Base query: load related building for display
+    $query = \App\Models\Floor::with('building');
 
-        if ($request->has('search') && !empty($request->search)) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                ->orWhere('flat_number', 'like', "%{$search}%")
-                ->orWhereHas('floor', function ($f) use ($search) {
-                    $f->where('name', 'like', "%{$search}%");
-                });
-            });
-        }
-
-        $flats = $query->paginate(10);
-
-        if ($request->ajax()) {
-            return view('flats.partials.table', compact('flats'))->render();
-        }
-
-        return view('flats.list', compact('flats'));
+    // Search by floor name or building name
+    if ($request->filled('search')) {
+        $s = trim($request->search);
+        $query->where(function ($q) use ($s) {
+            $q->where('name', 'like', "%{$s}%")
+              ->orWhereHas('building', function ($qb) use ($s) {
+                  $qb->where('name', 'like', "%{$s}%");
+              });
+        });
     }
+    // Paginate and keep query string for links
+    $floors = $query->paginate(10)->appends($request->only(['search','sort']));
+
+    // If AJAX (for partial reloads), return the partial view only
+    if ($request->ajax()) {
+        return view('floors.partials.table', compact('floors'))->render();
+    }
+
+    // Full page
+    return view('floors.list', compact('floors'));
+}
 
 
     public function create()

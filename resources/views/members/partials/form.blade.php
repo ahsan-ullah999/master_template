@@ -355,17 +355,3 @@ $(document).ready(function() {
 });
 </script>
 @endpush
-{{-- Load Select2 --}}
-@push('scripts')
-<script>
-$(document).ready(function(){
-    $('.select2').select2({
-        placeholder: "Select an option",
-        allowClear: true,
-        width: '100%'
-    });
-
-    // same dependent dropdown JS you already had (company -> branch, etc.)
-});
-</script>
-@endpush

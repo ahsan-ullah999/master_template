@@ -14,94 +14,96 @@
             </a>
         @endcan
     </div>
+    {{-- 🔹 Filter Section --}}
+    <div class="card mb-4 shadow-lg border-0" style="border-radius: 12px;">
+        <div class="card-body d-flex flex-wrap align-items-end gap-3 p-4">
+
+            {{-- Member Filter --}}
+            <div class="flex-grow-1" style="min-width: 200px;">
+                <label class="form-label fw-semibold text-secondary mb-1">Select Member</label>
+                <select id="memberFilter" class="form-select select2 shadow-sm" style="border-radius: 8px;">
+                    <option value="all" {{ ($selectedMember ?? 'all') == 'all' ? 'selected' : '' }}>All Members</option>
+                    @foreach($members as $m)
+                        <option value="{{ $m->id }}" 
+                            {{ ($selectedMember ?? 'all') == $m->id ? 'selected' : '' }}>
+                            {{ $m->name }} ({{ $m->phone ?? 'N/A' }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Date Range Filter --}}
+            <div class="flex-grow-0" style="min-width: 150px;">
+                <label class="form-label fw-semibold text-secondary mb-1">From Date</label>
+                <input type="date" id="fromDate" class="form-control shadow-sm" style="border-radius: 8px;"
+                    value="{{ $fromDate ?? '' }}">
+            </div>
+            <div class="flex-grow-0" style="min-width: 150px;">
+                <label class="form-label fw-semibold text-secondary mb-1">To Date</label>
+                <input type="date" id="toDate" class="form-control shadow-sm" style="border-radius: 8px;"
+                    value="{{ $toDate ?? '' }}">
+            </div>
+        </div>
+    </div>
+
+        <div id="ordersTable">
+        @include('product_orders.partials.table', ['orders' => $orders])
+        </div>
+
+
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead class="table-light sticky-top">
-                <tr>
-                    <th>No.</th>
-                    <th>Member</th>
-                    <th>Date</th>
-                    <th>Slot</th>
-                    <th>Subtotal</th>
-                    <th>Discount</th>
-                    <th>Final Total</th>
-                    <th>Status</th>
-                    @canany(['show order', 'deliver order', 'cancel order'])
-                        <th width="200">Actions</th>
-                    @endcanany
-                    
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($orders as $order)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $order->member->name ?? 'N/A' }}</td>
-                    <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d M, Y') }}</td>
-                    <td>{{ $order->slot->name ?? '-' }}</td>
-                    <td>{{ number_format($order->total,2) }} Tk</td>
-                    <td>
-                        @if($order->discount_amount > 0)
-                            <span class="text-success fw-bold">-{{ number_format($order->discount_amount,2) }} Tk</span>
-                        @else
-                            <span class="text-muted">0 Tk</span>
-                        @endif
-                    </td>
-                    <td><span class="fw-bold text-success">{{ number_format($order->grand_total,2) }} Tk</span></td>
-                    <td>
-                        <span class="badge
-                            @if($order->status=='ordered') bg-info
-                            @elseif($order->status=='delivered') bg-success
-                            @elseif($order->status=='cancelled') bg-danger
-                            @else bg-secondary @endif">
-                            {{ ucfirst($order->status) }}
-                        </span>
-                    </td>
-                    <td>
-                        @can('show order')
-                            <a href="{{ route('product_orders.show', $order->id) }}" class="btn btn btn-info">
-                            <i class="bi bi-eye"></i>
-                            </a>
-                        @endcan
-                        @if($order->status != 'delivered')
-                        @can('deliver order')
-                            <!-- Deliver -->
-                            <button type="button" class="btn btn-success btn-deliver" data-form="#deliverForm{{ $order->id }}">
-                                <i class="bi bi-truck"></i>
-                            </button>
-                            <form id="deliverForm{{ $order->id }}" action="{{ route('product_orders.deliver',$order->id) }}" method="POST" class="d-none">
-                                @csrf @method('PATCH')
-                            </form>
-                        @endcan                        
-                        @endif
-
-                        @if($order->status != 'cancelled' && $order->status != 'delivered')
-                        @can('cancel order')
-                            <button type="button" class="btn btn-danger btn-cancel" data-form="#cancelForm{{ $order->id }}">
-                                <i class="bi bi-x-circle"></i>
-                            </button>
-
-                            <form id="cancelForm{{ $order->id }}" 
-                                action="{{ route('product_orders.cancel', $order->id) }}" 
-                                method="POST" class="d-none">
-                                @csrf @method('PATCH')
-                            </form>
-                        @endcan                       
-                        @endif
-                    </td>
-                </tr>
-                @empty
-                <tr><td colspan="8" class="text-center text-muted">No orders found</td></tr>
-                @endforelse
-                </tbody>
-        </table>
-    </div>
-
-    {{ $orders->links() }}
 </div>
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    $('.select2').select2({ width: '100%' });
+
+    function fetchOrders() {
+        const member = $('#memberFilter').val();
+        const from = $('#fromDate').val();
+        const to = $('#toDate').val();
+
+        $.ajax({
+            url: "{{ route('product_orders.index') }}",
+            data: { member, from, to },
+            beforeSend: function() {
+                $('#ordersTable').html('<div class="text-center py-5 text-muted"><i class="bi bi-hourglass-split me-2"></i>Loading...</div>');
+            },
+            success: function(data) {
+                $('#ordersTable').html(data);
+            },
+            error: function() {
+                $('#ordersTable').html('<div class="alert alert-danger text-center">Failed to load data.</div>');
+            }
+        });
+    }
+
+    // Auto-refresh on filter change
+    $('#memberFilter, #fromDate, #toDate').on('change', fetchOrders);
+
+    // Handle pagination links (AJAX)
+    $(document).on('click', '#ordersTable .pagination a', function(e) {
+        e.preventDefault();
+        const url = $(this).attr('href');
+        const params = {
+            member: $('#memberFilter').val(),
+            from: $('#fromDate').val(),
+            to: $('#toDate').val()
+        };
+        $.get(url, params, function(data) {
+            $('#ordersTable').html(data);
+        });
+    });
+});
+</script>
+@endpush
+
+
 @endsection
+
+
+

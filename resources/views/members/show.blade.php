@@ -89,7 +89,7 @@
                                 
                                 <tr>
                                     <td class="fw-semibold text-muted">
-                                        <i class="bi bi-egg-fried text-warning me-2"></i> Total Meal
+                                        <i class="bi bi-egg-fried text-warning me-2"></i> Total Order
                                     </td>
                                     <td class="text-end text-dark fw-bold">
                                         {{ $orderCount }}

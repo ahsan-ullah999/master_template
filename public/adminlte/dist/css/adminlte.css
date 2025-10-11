@@ -661,6 +661,16 @@ progress {
     font-size: 2.5rem;
   }
 }
+.select2-container .select2-selection--single {
+        height: 38px !important;
+        border-radius: 8px;
+        border-color: #dee2e6;
+    }
+.nav-tabs .nav-link.active {
+        background: linear-gradient(90deg, #007bff, #6610f2);
+        color: #fff !important;
+        border-radius: 8px 8px 0 0;
+    }
 
 .list-unstyled {
   padding-left: 0;

@@ -4,7 +4,7 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">Flat *</label>
-                <select name="flat_id" class="form-select" required>
+                <select name="flat_id" class="form-select select2" required>
                     <option value="">Select flat</option>
                     @foreach($flats as $flat)
                         <option value="{{ $flat->id }}" 
@@ -32,4 +32,5 @@
         </div>
     </div>
 </div>
+
 

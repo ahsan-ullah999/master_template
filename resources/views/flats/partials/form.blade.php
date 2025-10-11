@@ -4,7 +4,7 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">Floor *</label>
-                <select name="floor_id" class="form-select" required>
+                <select name="floor_id" class="form-select select2" required>
                     <option value="">Select floor</option>
                     @foreach($floors as $floor)
                         <option value="{{ $floor->id }}" 
@@ -33,3 +33,18 @@
     </div>
 </div>
 
+
+{{-- Load Select2 --}}
+@push('scripts')
+<script>
+$(document).ready(function(){
+    $('.select2').select2({
+        placeholder: "Select an option",
+        allowClear: true,
+        width: '100%'
+    });
+
+    // same dependent dropdown JS you already had (company -> branch, etc.)
+});
+</script>
+@endpush

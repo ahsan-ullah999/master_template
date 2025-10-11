@@ -12,6 +12,7 @@ use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductOrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SeatController;
@@ -164,6 +165,16 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/members/{id}/suspend',   [MemberController::class,'suspend'])->name('members.suspend');
     Route::patch('/members/{id}/reactivate',[MemberController::class,'reactivate'])->name('members.reactivate');
+       /** Reports */
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/today', [ReportController::class, 'today'])->name('reports.today');
+    Route::get('/reports/tomorrow', [ReportController::class, 'tomorrow'])->name('reports.tomorrow');
+    Route::get('/reports/monthly', [ReportController::class, 'monthly'])->name('reports.monthly');
+    Route::get('/reports/yearly', [ReportController::class, 'yearly'])->name('reports.yearly');
+    Route::get('/reports/date-range', [ReportController::class, 'dateRange'])->name('reports.dateRange');
+     /** Reports */
+    Route::resource('notices', \App\Http\Controllers\NoticeController::class);
+
 
     /** Dependent select JSON endpoints */
     Route::get('/members/deps/branches/{company}',  [MemberController::class,'branchesByCompany'])->name('members.deps.branches');
@@ -173,6 +184,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/members/deps/rooms/{flat}',        [MemberController::class,'roomsByFlat'])->name('members.deps.rooms');
     Route::get('/members/deps/seats/{room}',        [MemberController::class,'seatsByRoom'])->name('members.deps.seats');
 
+ 
     
 
 

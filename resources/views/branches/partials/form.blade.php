@@ -3,7 +3,7 @@
         {{-- Select Company --}}
         <div class="col-md-4">
             <label class="form-label fw-bold">Company *</label>
-            <select name="company_id" class="form-select" required>
+            <select name="company_id" class="form-select select2" required>
                 <option value="">-- Select Company --</option>
                 @foreach($companies as $company)
                     <option value="{{ $company->id }}" 
@@ -59,7 +59,7 @@
         {{-- Country --}}
         <div class="col-md-4">
             <label class="form-label fw-bold">Country *</label>
-            <select name="country" class="form-select" required>
+            <select name="country" class="form-select select2" required>
                 <option value="">-- Select Country --</option>
                 @foreach(['Bangladesh','India','USA','UK','Canada'] as $c)
                     <option value="{{ $c }}" {{ old('country', $branch->country ?? '') == $c ? 'selected' : '' }}>
@@ -72,7 +72,7 @@
         {{-- District --}}
         <div class="col-md-4">
             <label class="form-label fw-bold">District *</label>
-            <select name="district" class="form-select" required>
+            <select name="district" class="form-select select2" required>
                 <option value="">-- Select District --</option>
                 @foreach(['Dhaka','Chattogram','Rajshahi','Sylhet','Khulna'] as $d)
                     <option value="{{ $d }}" {{ old('district', $branch->district ?? '') == $d ? 'selected' : '' }}>
@@ -85,7 +85,7 @@
         {{-- Upazila --}}
         <div class="col-md-4">
             <label class="form-label fw-bold">Upazila *</label>
-            <select name="upazila" class="form-select" required>
+            <select name="upazila" class="form-select select2" required>
                 <option value="">-- Select Upazila --</option>
                 @foreach(['Savar','Gazipur','Narayanganj','Comilla','Rangpur'] as $u)
                     <option value="{{ $u }}" {{ old('upazila', $branch->upazila ?? '') == $u ? 'selected' : '' }}>
@@ -119,3 +119,4 @@
         </div>
     </div>
 </div>
+

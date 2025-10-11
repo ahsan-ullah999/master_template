@@ -454,6 +454,15 @@
                     });
                 });
             });
+            $(document).ready(function(){
+              $('.select2').select2({
+                  placeholder: "Select an option",
+                  allowClear: true,
+                  width: '100%'
+              });
+
+              // same dependent dropdown JS you already had (company -> branch, etc.)
+            });
             
             // 🔹 SweetAlert success notifications from session
             @if(session('success'))

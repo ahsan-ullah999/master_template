@@ -29,7 +29,7 @@
                           <i class="bi bi-building me-1"></i> Company
                       </label>
                       <select name="company_id" id="company_id" 
-                              class="form-select shadow-sm border-dark" 
+                              class="form-select select2 shadow-sm border-dark" 
                               style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                           @foreach($companies as $company)
@@ -44,7 +44,7 @@
                           <i class="bi bi-diagram-3 me-1"></i> Branch
                       </label>
                       <select name="branch_id" id="branch_id" 
-                              class="form-select shadow-sm border-dark" 
+                              class="form-select select2 shadow-sm border-dark" 
                               style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                       </select>
@@ -56,7 +56,7 @@
                           <i class="bi bi-houses me-1"></i> Building
                       </label>
                       <select name="building_id" id="building_id" 
-                              class="form-select shadow-sm border-dark" 
+                              class="form-select select2 shadow-sm border-dark" 
                               style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                       </select>
@@ -68,7 +68,7 @@
                           <i class="bi bi-layers me-1"></i> Floor
                       </label>
                       <select name="floor_id" id="floor_id" 
-                              class="form-select shadow-sm border-dark" 
+                              class="form-select select2 shadow-sm border-dark" 
                               style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                       </select>
@@ -80,7 +80,7 @@
                           <i class="bi bi-door-open me-1"></i> Flat
                       </label>
                       <select name="flat_id" id="flat_id" 
-                              class="form-select shadow-sm border-dark" 
+                              class="form-select select2 shadow-sm border-dark" 
                               style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                       </select>
@@ -92,7 +92,7 @@
                           <i class="bi bi-person-workspace me-1"></i> Room
                       </label>
                       <select name="room_id" id="room_id" 
-                              class="form-select shadow-sm border-dark" 
+                              class="form-select select2 shadow-sm border-dark" 
                               style="background-color:#eff0f1; border-radius:10px;">
                           <option value="">All</option>
                       </select>

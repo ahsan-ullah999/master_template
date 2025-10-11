@@ -4,7 +4,7 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">Branch *</label>
-                <select name="branch_id" class="form-select" required>
+                <select name="branch_id" class="form-select select2" required>
                     <option value="">Select Branch</option>
                     @foreach($branches as $branch)
                         <option value="{{ $branch->id }}" 

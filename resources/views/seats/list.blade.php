@@ -17,7 +17,10 @@
     <!--  Search & Filters -->
     <div class="row g-2 mb-3">
         <div class="col-md-3">
-            <select id="buildingFilter" class="form-select">
+            <label class="form-label fw-semibold text-dark">
+                <i class="bi bi-houses me-1"></i> Building
+            </label>
+            <select id="buildingFilter" class="form-select select2">
                 <option value="">All Buildings</option>
                 @foreach($buildings as $building)
                     <option value="{{ $building->id }}">{{ $building->name }}</option>
@@ -25,16 +28,25 @@
             </select>
         </div>
         <div class="col-md-3">
-            <select id="flatFilter" class="form-select">
+            <label class="form-label fw-semibold text-dark">
+                <i class="bi bi-door-open me-1"></i> Flat
+            </label>
+            <select id="flatFilter" class="form-select select2">
                 <option value="">All Flats</option>
             </select>
         </div>
         <div class="col-md-3">
-            <select id="roomFilter" class="form-select">
+            <label class="form-label fw-semibold text-dark">
+                <i class="bi bi-person-workspace me-1"></i> Room
+            </label>
+            <select id="roomFilter" class="form-select select2">
                 <option value="">All Rooms</option>
             </select>
         </div>
         <div class="col-md-3">
+            <label class="form-label fw-semibold text-dark">
+                <i class="bi bi-search me-1"></i> Search
+            </label>
             <input type="text" id="searchInput" class="form-control" placeholder="Search seats...">
         </div>
     </div>
@@ -116,6 +128,7 @@
                         let page = $(this).attr('href').split('page=')[1];
                         fetchSeats(page);
                     });
+                                           
                 });
         </script>
     @endpush

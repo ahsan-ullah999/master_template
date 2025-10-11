@@ -36,7 +36,7 @@
 
             
             
-            <!-- Add product button -->
+            
             @can('create user')
             <a href="{{ route('users.create') }}" class="btn btn-primary mb-2">
                 <i class="bi bi-plus-lg"></i> Create Users
@@ -48,7 +48,6 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    <!-- Product table (load partial here) -->
     <div id="userTable">
         @include('users.partials.table', ['users' => $users])
     </div>

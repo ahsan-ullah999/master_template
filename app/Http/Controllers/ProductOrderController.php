@@ -35,20 +35,42 @@ class ProductOrderController extends Controller implements HasMiddleware
     // index
     public function index(Request $request)
     {
-        $query = ProductOrder::query();
+        $query = ProductOrder::with(['member', 'slot']);
 
-        if ($request->filled('order_date')) {
-            $query->whereDate('order_date', $request->order_date);
+        // 🔹 Member filter
+        if ($request->filled('member') && $request->member !== 'all') {
+            $query->where('member_id', $request->member);
         }
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+        // 🔹 Date range filter
+        if ($request->filled('from') && $request->filled('to')) {
+            $from = \Carbon\Carbon::parse($request->from)->startOfDay();
+            $to   = \Carbon\Carbon::parse($request->to)->endOfDay();
+            $query->whereBetween('order_date', [$from, $to]);
+        } elseif ($request->filled('from')) {
+            $query->whereDate('order_date', '>=', $request->from);
+        } elseif ($request->filled('to')) {
+            $query->whereDate('order_date', '<=', $request->to);
         }
 
         $orders = $query->latest()->paginate(20);
 
-        return view('product_orders.list', compact('orders'));
+        // 🔹 Handle AJAX refresh (partial reload)
+        if ($request->ajax()) {
+            return view('product_orders.partials.table', compact('orders'))->render();
+        }
+
+        $members = \App\Models\Member::orderBy('name')->get();
+
+        return view('product_orders.list', compact('orders', 'members'))
+            ->with([
+                'selectedMember' => $request->member ?? 'all',
+                'fromDate' => $request->from ?? '',
+                'toDate' => $request->to ?? '',
+            ]);
     }
+
+
 
 
 
