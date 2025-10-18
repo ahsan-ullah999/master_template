@@ -113,83 +113,115 @@
       </div>
 
 
-      <!-- ========== STATS CARDS (Redesigned) ========== -->
-      <div class="app-content">
-        <div class="container-fluid">
-          <div class="row g-3">
+            <!-- ========== COMPACT STATS CARDS (Uniform Small Height) ========== -->
+            <div class="app-content">
+            <div class="container-fluid">
+                <div class="row g-3 align-items-stretch">
 
-            <!-- Total Members -->
-            <div class="col-lg-4 col-md-6">
-              <div class="card shadow-lg border-0 h-100" 
-                  style="border-radius: 18px; background: linear-gradient(135deg, #fceabb, #f8b500); color:#2c2c2c;">
-                <div class="card-body d-flex align-items-center justify-content-between p-4">
-                  <div>
-                    <h2 class="display-6 fw-bold mb-1" id="totalMembers">0</h2>
-                    <p class="mb-0 fw-semibold">Total Members</p>
-                  </div>
-                  <div class="rounded-circle d-flex align-items-center justify-content-center"
-                      style="width:60px;height:60px;background:rgba(255,255,255,0.4);">
-                    <i class="bi bi-person-circle fs-2"></i>
-                  </div>
+                    <!-- Total Members -->
+                    <div class="col-lg-3 col-md-6 d-flex">
+                    <div class="card shadow-lg border-0 flex-fill"
+                        style="border-radius:16px;background:linear-gradient(135deg,#fceabb,#f8b500);color:#2c2c2c;">
+                        <div class="card-body d-flex align-items-center justify-content-between p-2" style="min-height:90px;">
+                        <div>
+                            <h3 class="fw-bold mb-0" id="totalMembers">0</h3>
+                            <p class="mb-0 small fw-semibold">Total Members</p>
+                        </div>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center"
+                            style="width:40px;height:40px;background:rgba(255,255,255,0.4);">
+                            <i class="bi bi-person-circle fs-5"></i>
+                        </div>
+                        </div>
+
+                        {{-- 🔹 UPDATED: dynamic href (highlighted) --}}
+                        <a href="#" id="memberMoreInfoLink"
+                        class="card-footer text-center small text-dark fw-semibold text-decoration-none py-1"
+                        style="background:rgba(255,255,255,0.3);border-top:none;border-radius:0 0 16px 16px;">
+                        More info <i class="bi bi-arrow-right-circle-fill ms-1"></i>
+                        </a>
+                    </div>
+                    </div>
+
+
+                <!-- Today Orders -->
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <div class="card shadow-lg border-0 flex-fill"
+                        style="border-radius:16px;background:linear-gradient(135deg,#45015a,#570d0d);color:white;">
+                    <div class="card-body d-flex align-items-center justify-content-between p-2" style="min-height:90px;">
+                        <div>
+                        <h3 class="fw-bold mb-0" id="todayOrder">0</h3>
+                        <p class="mb-0 small fw-semibold">Today Orders</p>
+                        </div>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center"
+                            style="width:40px;height:40px;background:rgba(255,255,255,0.25);">
+                        <i class="bi bi-basket fs-5"></i>
+                        </div>
+                    </div>
+                        <a href="{{ route('product_orders.index', [
+                                'order_date' => now()->toDateString(),
+                                'status' => 'ordered'
+                            ]) }}" 
+                            class="card-footer text-center small text-white fw-semibold text-decoration-none py-1"
+                            style="background:rgba(255,255,255,0.2);border-top:none;border-radius:0 0 16px 16px;">
+                            More info <i class="bi bi-arrow-right-circle-fill ms-1"></i>
+                        </a>
+                    </div>
                 </div>
-                <a href="{{ route('members.index') }}" 
-                  class="card-footer text-center small text-dark fw-semibold text-decoration-none py-2"
-                  style="background: rgba(255,255,255,0.3); border-top: none; border-radius: 0 0 18px 18px;">
-                  More info <i class="bi bi-arrow-right-circle-fill ms-1"></i>
-                </a>
-              </div>
+
+                <!-- Next Day Orders -->
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <div class="card shadow-lg border-0 flex-fill"
+                        style="border-radius:16px;background:linear-gradient(135deg,#1e3c72,#2a5298);color:white;">
+                    <div class="card-body d-flex align-items-center justify-content-between p-2" style="min-height:90px;">
+                        <div>
+                        <h3 class="fw-bold mb-0" id="nextdayOrder">0</h3>
+                        <p class="mb-0 small fw-semibold">Next Day Orders</p>
+                        </div>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center"
+                            style="width:40px;height:40px;background:rgba(255,255,255,0.25);">
+                        <i class="bi bi-basket fs-5"></i>
+                        </div>
+                    </div>
+                        <a href="{{ route('product_orders.index', [
+                                'order_date' => now()->addDay()->toDateString(),
+                                'status' => 'ordered'
+                            ])}}" 
+                            class="card-footer text-center small text-white fw-semibold text-decoration-none py-1"
+                            style="background:rgba(255,255,255,0.2);border-top:none;border-radius:0 0 16px 16px;">
+                            More info <i class="bi bi-arrow-right-circle-fill ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Last Day Delivered Meals -->
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <div class="card shadow-lg border-0 flex-fill"
+                        style="border-radius:16px;background:linear-gradient(135deg,#11998e,#38ef7d);color:white;">
+                    <div class="card-body d-flex align-items-center justify-content-between p-2" style="min-height:90px;">
+                        <div>
+                        <h3 class="fw-bold mb-0" id="deliveredMeals">0</h3>
+                        <p class="mb-0 small fw-semibold">Last Day Delivered</p>
+                        </div>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center"
+                            style="width:40px;height:40px;background:rgba(255,255,255,0.25);">
+                        <i class="bi bi-check-circle fs-5"></i>
+                        </div>
+                    </div>
+                        <a href="{{ route('product_orders.index', [
+                            'order_date' => now()->subDay()->toDateString(),
+                            'status' => 'delivered'
+                        ]) }}" 
+                        class="card-footer text-center small text-white fw-semibold text-decoration-none py-1"
+                        style="background:rgba(255,255,255,0.2);border-top:none;border-radius:0 0 16px 16px;">
+                        More info <i class="bi bi-arrow-right-circle-fill ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                </div>
+            </div>
             </div>
 
-            <!-- Last Day Orders -->
-            <div class="col-lg-4 col-md-6">
-              <div class="card shadow-lg border-0 h-100" 
-                  style="border-radius: 18px; background: linear-gradient(135deg, #1e3c72, #2a5298); color:white;">
-                <div class="card-body d-flex align-items-center justify-content-between p-4">
-                  <div>
-                    <h2 class="display-6 fw-bold mb-1" id="lastDayOrders">0</h2>
-                    <p class="mb-0 fw-semibold">Last Day Orders</p>
-                  </div>
-                  <div class="rounded-circle d-flex align-items-center justify-content-center"
-                      style="width:60px;height:60px;background:rgba(255,255,255,0.25);">
-                    <i class="bi bi-basket fs-2"></i>
-                  </div>
-                </div>
-                <a href="{{ route('product_orders.index', ['order_date' => now()->subDay()->toDateString()]) }}" 
-                  class="card-footer text-center small text-white fw-semibold text-decoration-none py-2"
-                  style="background: rgba(255,255,255,0.2); border-top: none; border-radius: 0 0 18px 18px;">
-                  More info <i class="bi bi-arrow-right-circle-fill ms-1"></i>
-                </a>
-              </div>
-            </div>
-
-            <!-- Delivered Meals -->
-            <div class="col-lg-4 col-md-6">
-              <div class="card shadow-lg border-0 h-100" 
-                  style="border-radius: 18px; background: linear-gradient(135deg, #11998e, #38ef7d); color:white;">
-                <div class="card-body d-flex align-items-center justify-content-between p-4">
-                  <div>
-                    <h2 class="display-6 fw-bold mb-1" id="deliveredMeals">0</h2>
-                    <p class="mb-0 fw-semibold">Last Day Delivered Meals</p>
-                  </div>
-                  <div class="rounded-circle d-flex align-items-center justify-content-center"
-                      style="width:60px;height:60px;background:rgba(255,255,255,0.25);">
-                    <i class="bi bi-check-circle fs-2"></i>
-                  </div>
-                </div>
-                <a href="{{ route('product_orders.index', [
-                                    'order_date' => now()->subDay()->toDateString(),
-                                    'status' => 'delivered'
-                                ]) }}" 
-                  class="card-footer text-center small text-white fw-semibold text-decoration-none py-2"
-                  style="background: rgba(255,255,255,0.2); border-top: none; border-radius: 0 0 18px 18px;">
-                  More info <i class="bi bi-arrow-right-circle-fill ms-1"></i>
-                </a>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
 
     <div class="row mt-4" id="routineCards">
 
@@ -198,7 +230,7 @@
               <div class="card shadow-lg border-0 h-100" style="border-radius: 18px; overflow: hidden;">
                   <div class="card-header d-flex justify-content-between align-items-center text-white"
                       style="background: linear-gradient(135deg, #198754, #28a745); padding: 1rem 1.2rem; border: none;">
-                      <h5 class="mb-0 fw-bold"><i class="bi bi-calendar-check me-2"></i>Today's Meals</h5>
+                      <h5 class="mb-0 fw-bold"><i class="bi bi-calendar-check me-2"></i>Today's Routine</h5>
                       <span class="badge bg-light text-dark px-3 py-2" style="font-size: 0.85rem;">
                           {{ now()->toFormattedDateString() }}
                       </span>
@@ -220,7 +252,7 @@
               <div class="card shadow-lg border-0 h-100" style="border-radius: 18px; overflow: hidden;">
                   <div class="card-header d-flex justify-content-between align-items-center text-white"
                       style="background: linear-gradient(135deg, #0d6efd, #1d4ed8); padding: 1rem 1.2rem; border: none;">
-                      <h5 class="mb-0 fw-bold"><i class="bi bi-calendar-event me-2"></i>Next Day Meals</h5>
+                      <h5 class="mb-0 fw-bold"><i class="bi bi-calendar-event me-2"></i>Next Day Routine</h5>
                       <span class="badge bg-light text-dark px-3 py-2" style="font-size: 0.85rem;">
                           {{ now()->addDay()->toFormattedDateString() }}
                       </span>
@@ -311,6 +343,26 @@
 <script>
 $(document).ready(function () {
     $('.select2').select2({ width: '100%', allowClear: true });
+    // ================= Member "More Info" dynamic link =================
+// 🔹 ADDED CODE START
+function updateMemberMoreInfoLink() {
+    let params = $('#filterForm').serialize(); // collect current filters
+    let baseUrl = "{{ route('members.index') }}";
+    let fullUrl = params ? `${baseUrl}?${params}` : baseUrl;
+    $('#memberMoreInfoLink').attr('href', fullUrl);
+}
+
+// Update link dynamically when filters change or applied
+$('#filterForm select').on('change', updateMemberMoreInfoLink);
+$('#applyFilter').on('click', function() {
+    loadStats();
+    updateMemberMoreInfoLink();
+});
+
+// Initialize link on page load
+updateMemberMoreInfoLink();
+// 🔹 ADDED CODE END
+
 
     // ================= Dependent dropdowns =================
     $('#company_id').on('change', function() {
@@ -382,7 +434,8 @@ $(document).ready(function () {
                 $('#totalMembers').text(data.totalMembers);
                 $('#todaysMeals').text(data.todaysMeals);
                 $('#nextDayMeals').text(data.nextDayMeals);
-                $('#lastDayOrders').text(data.lastDayOrders);
+                $('#todayOrder').text(data.todayOrder);
+                $('#nextdayOrder').text(data.nextdayOrder);
                 $('#deliveredMeals').text(data.deliveredMeals);
             }
         });
@@ -424,6 +477,7 @@ $(document).ready(function () {
             }
         });
     }
+    
 
     // ================= Event Bindings =================
     $('#applyFilter').on('click', function () {

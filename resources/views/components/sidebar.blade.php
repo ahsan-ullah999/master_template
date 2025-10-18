@@ -1,26 +1,7 @@
       <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
         <!--begin::Sidebar Brand-->
         <div class="sidebar-brand">
-          <!--begin::Brand Link-->
-          {{-- <a href="{{ route('companies.index') }}" class="brand-link">
-              <!--begin::Brand Image-->
-              @if($appCompany && $appCompany->logo)
-                  <img src="{{ asset('storage/'.$appCompany->logo) }}" 
-                      alt="{{ $appCompany->name }}" 
-                      class="brand-image opacity-75 shadow" />
-              @else
-                  <img src="{{ asset('adminlte/dist/assets/img/AdminLTELogo.png') }}" 
-                      alt="Default Logo" 
-                      class="brand-image opacity-75 shadow" />
-              @endif
-              <!--end::Brand Image-->
 
-              <!--begin::Brand Text-->
-              <span class="brand-text fw-bold">
-                  {{ $appCompany->name ?? 'My Company' }}
-              </span>
-              <!--end::Brand Text-->
-          </a> --}}
 
           <a href="{{ route('home') }}" class="brand-link d-flex align-items-center justify-content-between">
               <!--begin::Brand Image-->
@@ -159,12 +140,15 @@
                     </a>
                   </li>
               @endcan
+              @if(auth()->check() && auth()->user()->can('view member'))
                   <li class="nav-item">           
                     <a href="{{route('members.index')}}" class="nav-link {{ request()->routeIs('members.index','members.create','members.edit') ? 'active' : '' }}">
                       <i class="bi bi-person-vcard text-white mt-1"></i>
                       <p>Member</p>
                     </a>
                   </li>
+              @endif
+                  
 
               @can('view permission')
                     <li class="nav-item">                    

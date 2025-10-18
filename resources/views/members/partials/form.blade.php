@@ -61,10 +61,7 @@
                             @error('blood_group') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
-                        <div class="col-md-3">
-                            <label class="form-label">Guardian Contact*</label>
-                            <input type="text" name="local_guardian_contact" value="{{ old('local_guardian_contact',$member->local_guardian_contact ?? '') }}" class="form-control" required>
-                        </div>
+                        
 
                         
                         <div class="col-md-3">
@@ -75,6 +72,10 @@
                         <div class="col-md-3">
                             <label class="form-label">Relation*</label>
                             <input type="text" name="local_guardian_relation" value="{{ old('local_guardian_relation',$member->local_guardian_relation ?? '') }}" class="form-control" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Guardian Contact*</label>
+                            <input type="text" name="local_guardian_contact" value="{{ old('local_guardian_contact',$member->local_guardian_contact ?? '') }}" class="form-control" required>
                         </div>
 
                         <div class="col-md-3">
@@ -250,7 +251,25 @@
                             @error('effective_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                     </div>
-                </div>
+                    {{-- Assign role --}}
+                    {{-- <div class="mb-3 mt-3">
+                        <label class="form-label fw-bold">Assign Roles *</label>
+                        <div class="d-flex flex-wrap gap-3">
+                            @foreach($roles as $role)
+                                <div class="form-check">
+                                    <input id="role-{{ $role->id }}" 
+                                        class="form-check-input" 
+                                        type="checkbox" 
+                                        name="role[]" 
+                                        value="{{ $role->name }}">
+                                    <label class="form-check-label" for="role-{{ $role->id }}">
+                                        {{ $role->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div> --}}
             </div>
     </div>
 {{-- JS for live preview --}}

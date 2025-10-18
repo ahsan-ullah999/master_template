@@ -6,8 +6,10 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FlatController;
 use App\Http\Controllers\FloorController;
+use App\Http\Controllers\Member\MemberAuthController;
+use App\Http\Controllers\Member\MemberDashboardController;
+use App\Http\Controllers\Member\MemberDetailsController;
 use App\Http\Controllers\MemberController;
-use App\Http\Controllers\NameController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductOrderController;
@@ -22,18 +24,25 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
     })->name('login');
+   //route for member login
+    Route::middleware('guest')->group(function () {
+        Route::get('/member/login', [MemberAuthController::class, 'showLoginForm'])->name('member.login');
+        Route::post('/member/login', [MemberAuthController::class, 'login'])->name('member.login.post');
+    });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::middleware(['auth', 'member.only'])->prefix('member')->group(function () {
+        Route::get('/dashboard', [MemberDashboardController::class, 'index'])->name('member.dashboard');
+        Route::post('/logout', [MemberAuthController::class, 'logout'])->name('member.logout');
+    });
 
 
-Route::middleware('auth')->group(function () {
+
+Route::middleware(['auth', 'not.member'])->group(function () {
     Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('dashboard.stats');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/routine-meals', [DashboardController::class, 'routineMeals'])->name('dashboard.routineMeals');
 
-    Route::get('/', function(){
+    Route::get('/home', function(){
     return view('home');
     })->name('home');
 

@@ -63,7 +63,9 @@ class DashboardController extends Controller
         $yesterday = Carbon::yesterday();
 
         // Meals from ProductOrders (as before)
-        $lastDayOrders = ProductOrder::whereDate('order_date',$yesterday)->count();
+        $todayOrder = ProductOrder::whereDate('order_date',$today)->where('status','ordered')->count();
+        $nextdayOrder = ProductOrder::whereDate('order_date',$tomorrow)->where('status','ordered')->count();
+        
         $deliveredMeals = ProductOrder::whereDate('order_date',$yesterday)->where('status','delivered')->count();
 
         // 🔹 Routines for today
@@ -77,7 +79,7 @@ class DashboardController extends Controller
             ->count();
 
         return response()->json(compact(
-            'totalMembers','todaysMeals','nextDayMeals','lastDayOrders','deliveredMeals'
+            'totalMembers','todaysMeals','nextDayMeals','todayOrder','deliveredMeals','nextdayOrder'
         ));
     }
 

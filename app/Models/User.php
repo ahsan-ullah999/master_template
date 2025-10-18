@@ -24,6 +24,7 @@ class User extends Authenticatable implements CanResetPassword
         'email',
         'password',
         'profile_image',
+        'member_id',
         'type'
     ];
 
@@ -49,4 +50,11 @@ class User extends Authenticatable implements CanResetPassword
             'password' => 'hashed',
         ];
     }
+
+        // 🔹 Relationship: each user belongs to one member (admin-created)
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'member_id');
+    }
+
 }

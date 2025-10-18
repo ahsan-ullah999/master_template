@@ -10,16 +10,19 @@ class Member extends Model
         'user_id','company_id','branch_id','building_id','floor_id','flat_id','room_id','seat_id',
         'rental_id',
         'admission_date','effective_date',
-        'photo','name','phone','email','date_of_birth','national_id',
+        'photo','name','phone','email','password','date_of_birth','national_id',
         'father_name','father_contact','mother_name',
         'blood_group','permanent_address',
         'local_guardian_name','local_guardian_relation','local_guardian_contact',
         'status',
     ];
+    protected $hidden = [
+        'password',
+    ];
 
 
     /** Relationships */
-    public function user()     { return $this->belongsTo(User::class); }
+    
     public function company()  { return $this->belongsTo(Company::class); }
     public function branch()   { return $this->belongsTo(Branch::class); }
     public function building() { return $this->belongsTo(Building::class); }
@@ -36,6 +39,11 @@ class Member extends Model
     public function seats()
     {
         return $this->belongsToMany(Seat::class, 'member_seat'); 
+    }
+        // 🔹 Reverse relationship — one Member has one linked User
+    public function user()
+    {
+        return $this->hasOne(User::class, 'member_id');
     }
 
 }

@@ -33,42 +33,53 @@ class ProductOrderController extends Controller implements HasMiddleware
      * Display a listing of the resource.
      */
     // index
-    public function index(Request $request)
-    {
-        $query = ProductOrder::with(['member', 'slot']);
+public function index(Request $request)
+{
+    $query = ProductOrder::with(['member', 'slot']);
 
-        // 🔹 Member filter
-        if ($request->filled('member') && $request->member !== 'all') {
-            $query->where('member_id', $request->member);
-        }
-
-        // 🔹 Date range filter
-        if ($request->filled('from') && $request->filled('to')) {
-            $from = \Carbon\Carbon::parse($request->from)->startOfDay();
-            $to   = \Carbon\Carbon::parse($request->to)->endOfDay();
-            $query->whereBetween('order_date', [$from, $to]);
-        } elseif ($request->filled('from')) {
-            $query->whereDate('order_date', '>=', $request->from);
-        } elseif ($request->filled('to')) {
-            $query->whereDate('order_date', '<=', $request->to);
-        }
-
-        $orders = $query->latest()->paginate(20);
-
-        // 🔹 Handle AJAX refresh (partial reload)
-        if ($request->ajax()) {
-            return view('product_orders.partials.table', compact('orders'))->render();
-        }
-
-        $members = \App\Models\Member::orderBy('name')->get();
-
-        return view('product_orders.list', compact('orders', 'members'))
-            ->with([
-                'selectedMember' => $request->member ?? 'all',
-                'fromDate' => $request->from ?? '',
-                'toDate' => $request->to ?? '',
-            ]);
+    // 🔹 Filter by member
+    if ($request->filled('member') && $request->member !== 'all') {
+        $query->where('member_id', $request->member);
     }
+
+    // 🔹 Filter by single order_date (from dashboard)
+    if ($request->filled('order_date')) {
+        $query->whereDate('order_date', $request->order_date);
+    }
+
+    // 🔹 Filter by status (from dashboard or manual)
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // 🔹 Date range filter (manual)
+    if ($request->filled('from') && $request->filled('to')) {
+        $from = \Carbon\Carbon::parse($request->from)->startOfDay();
+        $to   = \Carbon\Carbon::parse($request->to)->endOfDay();
+        $query->whereBetween('order_date', [$from, $to]);
+    } elseif ($request->filled('from')) {
+        $query->whereDate('order_date', '>=', $request->from);
+    } elseif ($request->filled('to')) {
+        $query->whereDate('order_date', '<=', $request->to);
+    }
+
+    $orders = $query->latest()->paginate(20);
+
+    // 🔹 Handle AJAX reload (partial)
+    if ($request->ajax()) {
+        return view('product_orders.partials.table', compact('orders'))->render();
+    }
+
+    $members = \App\Models\Member::orderBy('name')->get();
+
+    return view('product_orders.list', compact('orders', 'members'))
+        ->with([
+            'selectedMember' => $request->member ?? 'all',
+            'fromDate' => $request->from ?? '',
+            'toDate' => $request->to ?? '',
+        ]);
+}
+
 
 
 

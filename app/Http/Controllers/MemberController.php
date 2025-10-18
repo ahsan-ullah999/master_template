@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\User;
 use App\Models\Company;
 use App\Models\Branch;
 use App\Models\Building;
@@ -16,7 +17,9 @@ use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+//use Spatie\Permission\Models\Role;
 
 
 class MemberController extends Controller implements HasMiddleware
@@ -38,28 +41,31 @@ class MemberController extends Controller implements HasMiddleware
     /** LIST (active by default) */
     public function index(Request $request)
     {
-        $query = Member::with(['company','branch','building','floor','flat','room','seats','user']);
+        $query = Member::query();
 
-        // 🔹 Search logic (name, phone, email, rental_id)
-        if ($request->filled('search')) {
-            $s = $request->search;
-            $query->where(function($q) use ($s) {
-                $q->where('name', 'like', "%$s%")
-                ->orWhere('phone', 'like', "%$s%")
-                ->orWhere('email', 'like', "%$s%")
-                ->orWhere('rental_id', 'like', "%$s%");
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->search}%")
+                ->orWhere('phone', 'like', "%{$request->search}%")
+                ->orWhere('email', 'like', "%{$request->search}%");
             });
         }
 
-        $members = $query->orderBy('created_at','DESC')->paginate(10);
+        foreach (['company_id','branch_id','building_id','floor_id','flat_id','room_id'] as $filter) {
+            if ($request->$filter) {
+                $query->where($filter, $request->$filter);
+            }
+        }
 
-        // 🔹 For AJAX requests, return partial table only
+        $members = $query->orderBy('name')->paginate(10);
+
         if ($request->ajax()) {
             return view('members.partials.table', compact('members'))->render();
         }
 
         return view('members.list', compact('members'));
     }
+
 
 
     /** SUSPENDED LIST convenience (optional) */
@@ -81,63 +87,69 @@ class MemberController extends Controller implements HasMiddleware
         $flats = collect();
         $rooms = collect();
         $seats = collect();
+ //       $roles = Role::orderBy('name','ASC')->get();
 
         return view('members.create', compact('companies','branches','buildings','floors','flats','rooms','seats'));
     }
 
-    /** STORE (all fields optional; validate only “exists” when provided) */
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'user_id'     => ['nullable','exists:users,id'],
-            'company_id'  => ['nullable','exists:companies,id'],
-            'branch_id'   => ['nullable','exists:branches,id'],
-            'building_id' => ['nullable','exists:buildings,id'],
-            'floor_id'    => ['nullable','exists:floors,id'],
-            'flat_id'     => ['nullable','exists:flats,id'],
-            'room_id'     => ['nullable','exists:rooms,id'],
-            
-            // 🔹 seat_id is now array (multiple select)
-            'seat_id'     => ['required','array'],
-            'seat_id.*'   => ['exists:seats,id'],
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'company_id'  => ['nullable','exists:companies,id'],
+        'branch_id'   => ['nullable','exists:branches,id'],
+        'building_id' => ['nullable','exists:buildings,id'],
+        'floor_id'    => ['nullable','exists:floors,id'],
+        'flat_id'     => ['nullable','exists:flats,id'],
+        'room_id'     => ['nullable','exists:rooms,id'],
+        'seat_id'     => ['required','array'],
+        'seat_id.*'   => ['exists:seats,id'],
+        'rental_id'   => ['required','string','max:100','unique:members,rental_id'],
+        'admission_date' => ['required','date'],
+        'effective_date' => ['required','date'],
+        'photo'          => ['required','image','mimes:jpg,jpeg,png','max:2048'],
+        'name'           => ['required','string','max:255'],
+        'phone'          => ['required','string','max:30','unique:members'],
+        'email'          => ['required','email','unique:members','max:255'],
+        'date_of_birth'  => ['required','date'],
+        'national_id'    => ['required','string','max:100'],
+        'father_name'    => ['required','string','max:255'],
+        'father_contact' => ['required','string','max:30'],
+        'mother_name'    => ['nullable','string','max:255'],
+        'blood_group'    => ['nullable','string','max:10'],
+        'permanent_address' => ['nullable','string'],
+        'local_guardian_name'      => ['nullable','string','max:255'],
+        'local_guardian_relation'  => ['nullable','string','max:100'],
+        'local_guardian_contact'   => ['nullable','string','max:30'],
+        'status'         => ['nullable','in:active,suspended'],
+    ]);
 
-            'rental_id'   => ['required','string','max:100','unique:members,rental_id'],
-
-            'admission_date' => ['required','date'],
-            'effective_date' => ['required','date'],
-
-            'photo'          => ['required','image','mimes:jpg,jpeg,png','max:2048'],
-            'name'           => ['required','string','max:255'],
-            'phone'          => ['required','string','max:30','unique:members'],
-            'email'          => ['required','email','unique:members','max:255'],
-            'date_of_birth'  => ['required','date'],
-            'national_id'    => ['required','string','max:100'],
-
-            'father_name'    => ['required','string','max:255'],
-            'father_contact' => ['required','string','max:30'],
-            'mother_name'    => ['nullable','string','max:255'],
-
-            'blood_group'    => ['nullable','string','max:10'],
-            'permanent_address' => ['nullable','string'],
-
-            'local_guardian_name'      => ['nullable','string','max:255'],
-            'local_guardian_relation'  => ['nullable','string','max:100'],
-            'local_guardian_contact'   => ['nullable','string','max:30'],
-
-            'status'         => ['nullable','in:active,suspended'],
-        ]);
-
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('members','public');
-        }
-        // 🔹 Remove seat_id before insert to members table
-        $member = Member::create(collect($data)->except('seat_id')->toArray());
-
-        // 🔹 Sync many-to-many seats
-        $member->seats()->sync($data['seat_id']);
-
-        return redirect()->route('members.index')->with('success','Member created successfully');
+    // 🔹 Save photo
+    if ($request->hasFile('photo')) {
+        $data['photo'] = $request->file('photo')->store('members', 'public');
     }
+
+    // 1️⃣ Create Member first
+    $member = Member::create(collect($data)->except('seat_id')->toArray());
+
+    // 2️⃣ Create User linked to this Member
+    $user = User::create([
+        'name'       => $member->name,
+        'email'      => $member->email,
+        'password'   => Hash::make($data['password'] ?? '12345678'),
+        'profile_image' => $member->photo,
+        'type'       => 'member',
+        'member_id'  => $member->id,
+    ]);
+
+    // 3️⃣ Link the user_id back to the member (optional)
+    $member->update(['user_id' => $user->id]);
+
+    // 4️⃣ Sync seats
+    $member->seats()->sync($data['seat_id']);
+
+    return redirect()->route('members.index')->with('success', 'Member created successfully');
+}
+
 
     /** SHOW */
     public function show($id)
@@ -228,6 +240,8 @@ class MemberController extends Controller implements HasMiddleware
         $seats = $member->room_id
             ? Seat::where('room_id', $member->room_id)->orderBy('seat_number')->get()
             : collect();
+        
+ //       $roles = Role::orderBy('name','ASC')->get();
 
         return view('members.edit', compact(
             'member','companies','branches','buildings','floors','flats','rooms','seats'
@@ -235,64 +249,76 @@ class MemberController extends Controller implements HasMiddleware
     }
 
     /** UPDATE */
-    public function update(Request $request, $id)
-    {
-        $member = Member::findOrFail($id);
+public function update(Request $request, $id)
+{
+    $member = Member::findOrFail($id);
 
-        $data = $request->validate([
-            'user_id'     => ['nullable','exists:users,id'],
-            'company_id'  => ['nullable','exists:companies,id'],
-            'branch_id'   => ['nullable','exists:branches,id'],
-            'building_id' => ['nullable','exists:buildings,id'],
-            'floor_id'    => ['nullable','exists:floors,id'],
-            'flat_id'     => ['nullable','exists:flats,id'],
-            'room_id'     => ['nullable','exists:rooms,id'],
+    $data = $request->validate([
+        'user_id'     => ['nullable','exists:users,id'],
+        'company_id'  => ['nullable','exists:companies,id'],
+        'branch_id'   => ['nullable','exists:branches,id'],
+        'building_id' => ['nullable','exists:buildings,id'],
+        'floor_id'    => ['nullable','exists:floors,id'],
+        'flat_id'     => ['nullable','exists:flats,id'],
+        'room_id'     => ['nullable','exists:rooms,id'],
 
-            // 🔹 seat_id is now array (multiple select)
-            'seat_id'     => ['required','array'],
-            'seat_id.*'   => ['exists:seats,id'],
+        // Multiple seat selection
+        'seat_id'     => ['required','array'],
+        'seat_id.*'   => ['exists:seats,id'],
 
-            'rental_id'   => ['nullable','string','max:100','unique:members,rental_id,'.$member->id.',id'],
+        'rental_id'   => ['nullable','string','max:100','unique:members,rental_id,'.$member->id.',id'],
 
-            'admission_date' => ['nullable','date'],
-            'effective_date' => ['nullable','date'],
+        'admission_date' => ['nullable','date'],
+        'effective_date' => ['nullable','date'],
 
-            'photo'          => ['nullable','image','mimes:jpg,jpeg,png','max:2048'],
-            'name'           => ['nullable','string','max:255'],
-            'phone'          => ['nullable','string','unique:members,phone,'.$id.',id','max:30'],
-            'email'          => ['nullable','max:255','unique:members,email,'.$id.',id'],
-            'date_of_birth'  => ['nullable','date'],
-            'national_id'    => ['nullable','string','max:100'],
+        'photo'          => ['nullable','image','mimes:jpg,jpeg,png','max:2048'],
+        'name'           => ['nullable','string','max:255'],
+        'phone'          => ['nullable','string','max:30','unique:members,phone,'.$member->id],
+        'email'          => ['nullable','max:255','unique:members,email,'.$member->id],
 
-            'father_name'    => ['nullable','string','max:255'],
-            'father_contact' => ['nullable','string','max:30'],
-            'mother_name'    => ['nullable','string','max:255'],
+        // ✅ Make password optional, but must be at least 8 chars if given
+        'password'       => ['nullable','string','min:8'],
 
-            'blood_group'    => ['nullable','string','max:10'],
-            'permanent_address' => ['nullable','string'],
+        'date_of_birth'  => ['nullable','date'],
+        'national_id'    => ['nullable','string','max:100'],
 
-            'local_guardian_name'      => ['nullable','string','max:255'],
-            'local_guardian_relation'  => ['nullable','string','max:100'],
-            'local_guardian_contact'   => ['nullable','string','max:30'],
+        'father_name'    => ['nullable','string','max:255'],
+        'father_contact' => ['nullable','string','max:30'],
+        'mother_name'    => ['nullable','string','max:255'],
 
-            'status'         => ['nullable','in:active,suspended'],
-        ]);
+        'blood_group'    => ['nullable','string','max:10'],
+        'permanent_address' => ['nullable','string'],
 
-        if ($request->hasFile('photo')) {
-            if ($member->photo) {
-                Storage::disk('public')->delete($member->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('members','public');
+        'local_guardian_name'      => ['nullable','string','max:255'],
+        'local_guardian_relation'  => ['nullable','string','max:100'],
+        'local_guardian_contact'   => ['nullable','string','max:30'],
+
+        'status'         => ['nullable','in:active,suspended'],
+    ]);
+
+    // ✅ Handle photo upload
+    if ($request->hasFile('photo')) {
+        if ($member->photo) {
+            Storage::disk('public')->delete($member->photo);
         }
-
-        // 🔹 Update member (except seat_id)
-        $member->update(collect($data)->except('seat_id')->toArray());
-
-        // 🔹 Sync many-to-many seats
-        $member->seats()->sync($data['seat_id']);
-
-        return redirect()->route('members.index')->with('success','Member updated successfully');
+        $data['photo'] = $request->file('photo')->store('members','public');
     }
+
+    // ✅ Only hash password if user entered a new one
+    if (!empty($data['password'])) {
+        $data['password'] = Hash::make($data['password']);
+    } else {
+        unset($data['password']); // keep old password
+    }
+
+    // ✅ Update member except seat_id
+    $member->update(collect($data)->except('seat_id')->toArray());
+
+    // ✅ Sync seats (many-to-many)
+    $member->seats()->sync($data['seat_id']);
+
+    return redirect()->route('members.index')->with('success', 'Member updated successfully');
+}
 
 
     /** DESTROY */
