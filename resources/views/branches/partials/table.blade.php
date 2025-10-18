@@ -3,7 +3,6 @@
         <thead class="table-light  sticky-top" style="z-index: 1;">
             <tr>
                 <th>No.</th>
-                <th>Company</th>
                 <th> Name</th>
                 <th> Email</th>
                 <th> ID</th>
@@ -22,7 +21,6 @@
             @forelse($branches as $branch)
                  <tr class="{{ $branch->status == 'inactive' ? 'table-secondary bg-secondary text-muted' : '' }}">
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $branch->company->name ?? 'N/A' }}</td>
                     <td>{{  ucfirst(strtolower($branch->name)) }}</td>
                     <td>{{ $branch->email }}</td>
                     <td>{{ $branch->branch_id }}</td>

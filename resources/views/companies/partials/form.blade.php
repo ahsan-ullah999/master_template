@@ -4,20 +4,27 @@
     <div class="card-header bg-secondary text-white fw-bold mb-3">Company Information</div>
     <div class="row g-3">
 
+                
+                {{-- Select Group --}}
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Group *</label>
+            <select name="group_id" class="form-select select2" required>
+                <option value="">-- Select Group --</option>
+                @foreach($groups as $group)
+                    <option value="{{ $group->id }}" 
+                        {{ old('group_id', $campany->group_id ?? '') == $group->id ? 'selected' : '' }}>
+                        {{ $group->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         {{-- Company Name --}}
         <div class="col-md-4">
             <label class="form-label fw-bold">Company Name *</label>
             <input type="text" name="name" class="form-control" 
                    value="{{ old('name', $company->name ?? '') }}" required>
         </div>
-
-        {{-- Branch --}}
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Branch *</label>
-            <input type="text" name="branch" class="form-control" 
-                   value="{{ old('branch', $company->branch ?? '') }}">
-        </div>
-
         {{-- Email --}}
         <div class="col-md-4">
             <label class="form-label fw-bold">Email *</label>
@@ -72,6 +79,12 @@
 <div class="card p-4 shadow rounded mt-4">
     <div class="card-header bg-secondary text-white fw-bold mb-3">Financials</div>
     <div class="row g-3">
+        {{-- Business Code --}}
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Business Type</label>
+            <input type="text" name="business_type" class="form-control" 
+                   value="{{ old('business_type', $company->business_type ?? '') }}">
+        </div>
 
         {{-- Business Code --}}
         <div class="col-md-4">

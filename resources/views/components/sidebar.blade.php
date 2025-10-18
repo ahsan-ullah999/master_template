@@ -2,26 +2,37 @@
         <!--begin::Sidebar Brand-->
         <div class="sidebar-brand">
 
+            <a href="{{ route('home') }}" class="brand-link d-flex align-items-center justify-content-between">
+                <!--begin::Brand Image-->
+                @if(!empty($activeGroup?->logo))
+                    <img
+                        src="{{ asset('storage/' . $activeGroup->logo) }}"
+                        alt="{{ $activeGroup->name }}"
+                        class="brand-image opacity-75 shadow"
+                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;"
+                    />
+                @else
+                    <img
+                        src="{{ asset('adminlte/dist/assets/img/logo.png') }}"
+                        alt="Default Logo"
+                        class="brand-image opacity-75 shadow"
+                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;"
+                    />
+                @endif
+                <!--end::Brand Image-->
 
-          <a href="{{ route('home') }}" class="brand-link d-flex align-items-center justify-content-between">
-              <!--begin::Brand Image-->
-              <img
-                src="{{ asset('adminlte/dist/assets/img/logo.png') }}"
-                alt=""
-                class="brand-image opacity-75 shadow"
-              />
-              <!--end::Brand Image-->
+                <!--begin::Brand Text-->
+                <span class="brand-text fw-light ms-2">
+                    {{ $activeGroup?->name ?? 'Web-Xpress' }}
+                </span>
+                <!--end::Brand Text-->
 
-              <!--begin::Brand Text-->
-              <span class="brand-text fw-light">Web-Xpress</span>
-              <!--end::Brand Text-->
-
-              <!--begin::Sidebar Toggle Button-->
-              <button class="btn btn-outline-secondary btn-sm text-white ms-5" data-lte-toggle="sidebar" type="button" title="Toggle Sidebar">
-                  <i class="bi bi-chevron-double-left"></i>
-              </button>
-              <!--end::Sidebar Toggle Button-->
-          </a>
+                <!--begin::Sidebar Toggle Button-->
+                <button class="btn btn-outline-secondary btn-sm text-white ms-5" data-lte-toggle="sidebar" type="button" title="Toggle Sidebar">
+                    <i class="bi bi-chevron-double-left"></i>
+                </button>
+                <!--end::Sidebar Toggle Button-->
+            </a>
 
           <!--end::Brand Link-->
         </div>
@@ -47,8 +58,8 @@
                 </a>
               </li>
               <!--begin::Business Menu-->
-              <li class="nav-item {{ request()->routeIs('companies.*','branches.*','buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'menu-open' : '' }}">
-                  <a href="#" class="nav-link {{ request()->routeIs('companies.*','branches.*','buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'active' : '' }}">
+              <li class="nav-item {{ request()->routeIs('groups.*','companies.*','branches.*','buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'menu-open' : '' }}">
+                  <a href="#" class="nav-link {{ request()->routeIs('groups.*','companies.*','branches.*','buildings.*','floors.*','flats.*','rooms.*','seats.*') ? 'active' : '' }}">
                       <i class="nav-icon bi bi-hospital  text-white"></i>
                       <p>
                           Business
@@ -57,6 +68,15 @@
                   </a>
 
                   <ul class="nav nav-treeview">
+
+                      <li class="nav-item">
+                          <a href="{{ route('groups.index') }}" 
+                            class="nav-link {{ request()->routeIs('groups.*') ? 'active' : '' }}">
+                              <i class="nav-icon bi bi-collection text-white"></i>
+                              <p>Group</p>
+                          </a>
+                      </li>
+
                       @can('view company')
                       <li class="nav-item">
                           <a href="{{ route('companies.index') }}" 

@@ -102,6 +102,8 @@ Route::middleware(['auth', 'not.member'])->group(function () {
     // Route::post('my-orders', [ProductOrderController::class, 'memberStore'])->name('member_orders.store');
     // Route::get('my-orders', [ProductOrderController::class, 'memberIndex'])->name('member_orders.index');
     //route for company
+     /** group */
+    Route::resource('groups', \App\Http\Controllers\GroupController::class);
 
     Route::get('/companies', [CompanyController::class,'index'])->name('companies.index');
     Route::get('/companies/create', [CompanyController::class,'create'])->name('companies.create');

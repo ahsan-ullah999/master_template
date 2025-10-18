@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Models\Company;
+use App\Models\Group;
 use App\Models\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $group = Group::first(); // or use auth()->user()->company->group ?? etc.
+
+        View::share('activeGroup', $group);
+
         Paginator::useBootstrapFive();
 
         Gate::before(function ($user, $ability) {

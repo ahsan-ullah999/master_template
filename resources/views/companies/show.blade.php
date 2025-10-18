@@ -66,7 +66,7 @@
                     <p><strong>Contact:</strong> {{ $company->contact_number ?? '-' }}</p>
                     <p><strong>Alternate Contact:</strong> {{ $company->alternate_contact_number ?? '-' }}</p>
                     <p><strong>Time Zone:</strong> {{ $company->time_zone ?? '-' }}</p>
-                    <p><strong>Off Days:</strong> {{ $company->off_days ?? '-' }}</p>
+                    <p><strong>Business Type:</strong> {{ $company->business_type ?? '-' }}</p>
                 </div>
 
                 <!-- Right Column -->

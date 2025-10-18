@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     protected $fillable = [
+        'group_id',
         'name',
         'email',
+        'business_type',
         'business_code',
         'start_date',
         'financial_year_start_month',
@@ -35,6 +37,10 @@ class Company extends Model
         'address',
         'status',
     ];
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
     public function branches()
     {
         return $this->hasMany(Branch::class);

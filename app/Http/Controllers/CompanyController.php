@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -53,13 +54,15 @@ class CompanyController extends Controller implements HasMiddleware
 
     public function create()
     {
-        return view('companies.create');
+        $groups = Group::all();
+        return view('companies.create', compact('groups'));
     }
 
 
     public function store(Request $request)
     {
         $request->validate([
+            'group_id'       => 'required|exists:groups,id',
             'name'           => 'required|string|max:255',
             'email'          => 'required|email|unique:companies,email',
             'contact_number' => 'required|string|max:20',
@@ -91,6 +94,7 @@ class CompanyController extends Controller implements HasMiddleware
     public function update(Request $request, Company $company)
     {
         $request->validate([
+            'group_id'       => 'required|exists:groups,id',
             'name'           => 'required|string|max:255',
             'email'          => 'required|email|unique:companies,email,' . $company->id,
             'contact_number' => 'required|string|max:20',
